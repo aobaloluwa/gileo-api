@@ -40,12 +40,12 @@ async function bootstrap() {
     }),
   );
 
-  // Describe Vitaltron's API for Swagger.
+  // Describe Gileo's API for Swagger.
   
 const swaggerConfig = new DocumentBuilder()
-  .setTitle('Vitaltron API')
+  .setTitle('Gileo API')
   .setDescription(
-    'API documentation for Vitaltron, the Portable Intelligent Health Identity platform.',
+    'API documentation for Gileo, the Portable Intelligent Health Identity platform.',
   )
   .setVersion('1.0')
   .addBearerAuth(
@@ -53,7 +53,7 @@ const swaggerConfig = new DocumentBuilder()
       type: 'http',
       scheme: 'bearer',
       bearerFormat: 'JWT',
-      description: 'Enter your Vitaltron access token',
+      description: 'Enter your Gileo access token',
     },
     'bearer',
   )
@@ -74,7 +74,7 @@ const swaggerConfig = new DocumentBuilder()
 
   await app.listen(port);
 
-  console.log(`Vitaltron API is running on port ${port}`);
+  console.log(`Gileo API is running on port ${port}`);
 }
 
 bootstrap();

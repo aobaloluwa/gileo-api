@@ -15,7 +15,7 @@ export class HealthController {
 
     return {
       status: 'ok',
-      service: 'Vitaltron API',
+      service: 'Gileo API',
       database: 'connected',
     };
   }

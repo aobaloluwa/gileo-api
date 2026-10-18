@@ -457,7 +457,7 @@ export class AuthService {
     }
 
     const displayName =
-      payload.name?.trim() || email.split('@')[0] || 'Vitaltron user';
+      payload.name?.trim() || email.split('@')[0] || 'Gileo user';
 
     try {
       const user = await this.prisma.$transaction(async (tx) => {
@@ -684,17 +684,17 @@ export class AuthService {
     try {
       await this.mailService.sendMail({
         to: email,
-        subject: 'Your Vitaltron verification code',
+        subject: 'Your Gileo verification code',
         text: [
-          `Your Vitaltron verification code is: ${code}`,
+          `Your Gileo verification code is: ${code}`,
           '',
           'This code expires in 10 minutes.',
           'If you did not create this account, you can ignore this email.',
         ].join('\n'),
         html: `
           <div style="font-family:Arial,sans-serif;line-height:1.6">
-            <h2>Verify your Vitaltron email</h2>
-            <p>Enter this code in the Vitaltron app:</p>
+            <h2>Verify your Gileo email</h2>
+            <p>Enter this code in the Gileo app:</p>
             <p style="font-size:30px;font-weight:bold;letter-spacing:8px">
               ${code}
             </p>
@@ -755,17 +755,17 @@ export class AuthService {
     try {
       await this.mailService.sendMail({
         to: email,
-        subject: 'Your Vitaltron password-reset code',
+        subject: 'Your Gileo password-reset code',
         text: [
-          `Your Vitaltron password-reset code is: ${code}`,
+          `Your Gileo password-reset code is: ${code}`,
           '',
           'This code expires in 10 minutes.',
           'If you did not request a password reset, ignore this email.',
         ].join('\n'),
         html: `
           <div style="font-family:Arial,sans-serif;line-height:1.6">
-            <h2>Reset your Vitaltron password</h2>
-            <p>Enter this code in the Vitaltron app:</p>
+            <h2>Reset your Gileo password</h2>
+            <p>Enter this code in the Gileo app:</p>
             <p style="font-size:30px;font-weight:bold;letter-spacing:8px">
               ${code}
             </p>
