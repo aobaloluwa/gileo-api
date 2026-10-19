@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { HealthController } from './health/health.controller';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { BusinessModule } from './business.module';
 
 @Module({
   imports: [
@@ -28,6 +29,8 @@ import { AuthModule } from './auth/auth.module';
           .default(3000),
 
         CORS_ORIGINS: Joi.string().default('http://localhost:8081'),
+        PAYSTACK_SECRET_KEY: Joi.string().allow('').default(''),
+        PAYSTACK_CALLBACK_URL: Joi.string().uri().allow('').optional(),
       }),
     }),
 
@@ -39,6 +42,7 @@ import { AuthModule } from './auth/auth.module';
     ]),
     PrismaModule,
     AuthModule,
+    BusinessModule,
   ],
 
   controllers: [AppController, HealthController],

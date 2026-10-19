@@ -1,118 +1,104 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# GILEO Medicals API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+NestJS + PostgreSQL + Prisma API for the GILEO Medicals mobile platform. The existing authentication foundation is retained and extended with healthcare service requests, medical marketplace, Paystack payments, community content, Gileo Elevate cohorts, e-books, entitlements, support tickets, and staff operations.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Requirements
 
-## Description
+- Node.js 22.22.3+ (or Node.js 24.15.0+) as required by the locked NestJS 12 toolchain
+- PostgreSQL 15+
+- npm
+- Paystack test secret key for payment testing
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Local setup
 
-## Project setup
+1. Copy `.env.example` to `.env`.
+2. Set `DATABASE_URL`, strong unique JWT secrets, and mail configuration. Set `PAYSTACK_SECRET_KEY` to a **test** secret key from your Paystack dashboard.
+3. Install dependencies: `npm install`.
+4. Generate Prisma Client: `npm run db:generate`.
+5. Apply migrations to your development database: `npm run db:migrate:deploy`.
+6. Start the API: `npm run start:dev`.
+7. Open Swagger at `http://localhost:3000/api/docs` in development.
+8. Optional for a demo database only: apply `prisma/demo-seed.sql` manually after reviewing the sample estimates. These are illustrative listings, not approved prices or verified inventory.
 
-```bash
-$ npm install
-```
+Do not use `prisma migrate reset` against a database with data you need. Review migrations before applying them to shared/production databases. Make a backup first.
 
-## Compile and run the project
+## Paystack setup
 
-```bash
-# development
-$ npm run start
+`PAYSTACK_SECRET_KEY` is server-only. Never place it in the Expo app. Use a Paystack **test** secret key locally and configure a webhook URL in the Paystack dashboard pointing to:
 
-# watch mode
-$ npm run start:dev
+`https://YOUR_PUBLIC_API_HOST/api/v1/payments/paystack/webhook`
 
-# production mode
-$ npm run start:prod
-```
+The webhook verifies `x-paystack-signature` using the raw request body. The API also verifies transactions directly with Paystack before granting entitlements or marking an order/service request paid. Configure `PAYSTACK_CALLBACK_URL` to a callback URL supported by your mobile/deep-link flow. Payment initialization returns the Paystack authorization URL and reference.
 
-## Run tests
+Amounts are stored as integer kobo; for NGN, ₦1,000 is `100000` kobo. Product/service prices should be entered in kobo. Paystack transactions are verified against reference, status, amount, and currency. A client callback alone never proves payment.
 
-```bash
-# unit tests
-$ npm run test
+## Security notes
 
-# e2e tests
-$ npm run test:e2e
+- JWT-protected endpoints require `Authorization: Bearer <accessToken>`.
+- New accounts default to the `CUSTOMER` role. Do not assign staff roles to users through public registration.
+- Promote the initial administrator only after verifying the account identity, for example through a controlled database operation:
+  `UPDATE users SET role = 'ADMIN' WHERE email = 'your-verified-admin-email@example.com';`
+  Run that statement manually using a trusted database session; do not expose it as a public endpoint.
+- Staff-only operations check the user's server-side role on each request. Admin-only operations are limited to `ADMIN`.
+- Sensitive care details should be collected only at the appropriate stage. This API deliberately keeps the initial service request fields limited.
+- This is a starting production architecture, not a claim that a deployment is production-certified. Add operational monitoring, backups, retention policies, privacy/legal review, and security testing before launch.
 
-# test coverage
-$ npm run test:cov
-```
+## API overview
 
-## Deployment
+All routes use `/api/v1`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Authentication (existing)
+- `POST /auth/register`, `/auth/verify-email`, `/auth/login`
+- `POST /auth/forgot-password`, `/auth/reset-password`, `/auth/resend-verification`
+- `POST /auth/google`, `/auth/refresh`, `/auth/logout`
+- `GET /auth/me`
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Healthcare
+- `GET /services`
+- `POST /service-requests` (authenticated)
+- `POST /service-requests/onboarding` (authenticated; only after verified payment)
+- `GET /service-requests/:id/onboarding` (assigned nurse or admin only)
+- `POST /service-requests/:id/assign-provider` (admin; provider must have the `NURSE` role)
+- `GET /service-requests/mine` (authenticated)
+- `GET /service-requests` and `PATCH /service-requests/:id/status` (staff/admin)
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+A request is not a confirmed booking. Staff must review it and explicitly accept/confirm availability before the API permits payment initialization.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Marketplace
+- `GET /shop/categories`, `GET /shop/products`
+- `POST /shop/orders`, `GET /shop/orders/mine` (authenticated)
+- Admin operations: create categories/products/variants, edit product details, update product/variant stock, list orders, and update fulfilment status.
 
-## Observability
+Products marked `isDemo: true` and draft listings should not be presented as verified inventory. Variant stock is reserved during order creation and returned if staff cancel the order.
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+### Learning and community
+- `GET /learning/ebooks`, `GET /learning/cohorts`, `GET /community/resources`
+- `GET /learning/library`, `POST /community/join` (authenticated)
+- Admins can create/edit e-books, create cohorts, community resources, and announcements.
+- Entitlements are granted only after verified payment and are scoped to the specific e-book or cohort purchased.
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+### Paystack
+- `POST /payments/initialize` (authenticated): `{ "purchaseType": "SHOP_ORDER|SERVICE_REQUEST|EBOOK|ELEVATE_COHORT", "targetId": "..." }`
+- `POST /payments/verify/:reference` (authenticated)
+- `POST /payments/paystack/webhook` (Paystack webhook; signature verified)
+- `GET /admin/payments` (staff/admin)
+- `POST /admin/payments/:reference/refund` (admin)
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+### Support and administration
+- `POST /support/tickets`, `GET /support/tickets/mine` (authenticated)
+- Staff can list/update support tickets.
+- `GET /admin/dashboard` and `PATCH /admin/users/:id/role` (admin)
 
-This project is already instrumented. Create a free account at [observe.nestjs.com](https://observe.nestjs.com), add an application, and paste the generated app key and secret into the `ObserveModule.forRoot()` call in `src/app.module.ts`.
+## Payment lifecycle
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+`INITIALIZED → PENDING → VERIFIED` (or `FAILED`). Refunds move to `REFUND_PENDING` until Paystack reports a processed refund; the final webhook/settlement lifecycle should be verified against the Paystack account and enabled event configuration. Never manually set an order or learning entitlement to paid based only on a user claim or uploaded receipt.
 
-## Resources
+## Testing
 
-Check out a few resources that may come in handy when working with NestJS:
+Run:
+- `npm run build`
+- `npm test`
+- `npm run test:e2e`
+- `npm run db:validate`
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+The uploaded starter project did not include a live database or Paystack credentials, so these environment-dependent checks must be run locally before calling the implementation verified.

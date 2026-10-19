@@ -9,21 +9,22 @@ import { OAuth2Client, TokenPayload } from 'google-auth-library';
 
 @Injectable()
 export class GoogleAuthService {
-  private readonly client: OAuth2Client;
+  private readonly client: OAuth2Client | null;
 
   constructor(private readonly configService: ConfigService) {
     const clientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
 
-    if (!clientId) {
+    // Keep the API bootable when optional Google sign-in is not configured.
+    // Email/password authentication remains available in that case.
+    this.client = clientId ? new OAuth2Client(clientId) : null;
+  }
+
+  async verifyIdToken(idToken: string): Promise<TokenPayload> {
+    if (!this.client) {
       throw new InternalServerErrorException(
         'Google sign-in is not configured on the server.',
       );
     }
-
-    this.client = new OAuth2Client(clientId);
-  }
-
-  async verifyIdToken(idToken: string): Promise<TokenPayload> {
     try {
       const ticket = await this.client.verifyIdToken({
         idToken,

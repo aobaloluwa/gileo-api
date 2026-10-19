@@ -17,6 +17,76 @@ enum AuthActionType {
   PASSWORD_RESET
 }
 
+enum UserRole {
+  CUSTOMER
+  COMMUNITY_MEMBER
+  NURSE
+  ELEVATE_PARTICIPANT
+  SUPPORT
+  ADMIN
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ServiceRequestStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  DECLINED
+  AWAITING_PAYMENT
+  PAID
+  ONBOARDING_REQUIRED
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  INITIALIZED
+  PENDING
+  AWAITING_VERIFICATION
+  VERIFIED
+  REFUND_PENDING
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+enum PurchaseType {
+  SHOP_ORDER
+  SERVICE_REQUEST
+  EBOOK
+  ELEVATE_COHORT
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  FULFILMENT
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum EntitlementType {
+  EBOOK
+  ELEVATE_COHORT
+}
+
+enum SupportStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
 
 model User {
   id              String         @id @default(uuid()) @db.Uuid
@@ -24,6 +94,7 @@ model User {
   phoneNumber     String?        @unique @db.VarChar(20)
   passwordHash    String?        @db.VarChar(255)
   displayName     String?        @db.VarChar(100)
+  role            UserRole       @default(CUSTOMER)
   emailVerifiedAt DateTime?
   phoneVerifiedAt DateTime?
   createdAt       DateTime       @default(now())
@@ -32,6 +103,16 @@ model User {
   authIdentities  AuthIdentity[]
   refreshSessions RefreshSession[]
   authActionTokens AuthActionToken[]
+  serviceRequests  ServiceRequest[]
+  orders           Order[]
+  payments         Payment[]
+  purchases        LearningPurchase[]
+  entitlements     Entitlement[]
+  supportTickets   SupportTicket[]
+  communityMembership CommunityMembership?
+  cohortEnrollments CohortEnrollment[]
+  assignedServiceRequests ServiceRequest[] @relation("AssignedProvider")
+  careOnboardings CareOnboarding[]
 
   @@map("users")
 }
@@ -85,4 +166,326 @@ model AuthActionToken {
   @@index([userId, type])
   @@index([expiresAt])
   @@map("auth_action_tokens")
+}
+
+
+model Service {
+  id             String        @id @default(uuid()) @db.Uuid
+  slug           String        @unique @db.VarChar(120)
+  title          String        @db.VarChar(160)
+  description    String        @db.Text
+  audience       String?       @db.Text
+  whatIsIncluded String?       @db.Text
+  priceKobo      Int?
+  priceLabel     String?       @db.VarChar(120)
+  isIndicative   Boolean       @default(true)
+  status         ContentStatus @default(DRAFT)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  requests       ServiceRequest[]
+  @@index([status])
+  @@map("services")
+}
+
+model ServiceRequest {
+  id                String               @id @default(uuid()) @db.Uuid
+  reference         String               @unique @db.VarChar(32)
+  userId            String               @db.Uuid
+  serviceId         String               @db.Uuid
+  assignedProviderId String?              @db.Uuid
+  status            ServiceRequestStatus @default(SUBMITTED)
+  preferredDate     DateTime?
+  location          String?              @db.VarChar(255)
+  customerNote      String?              @db.VarChar(2000)
+  adminNote         String?              @db.VarChar(2000)
+  amountKobo        Int?
+  currency          String               @default("NGN") @db.VarChar(3)
+  availabilityConfirmed Boolean          @default(false)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  user              User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+  service           Service              @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  payments          Payment[]
+  assignedProvider  User?                @relation("AssignedProvider", fields: [assignedProviderId], references: [id], onDelete: SetNull)
+  onboarding        CareOnboarding?
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("service_requests")
+}
+
+model ProductCategory {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String    @unique @db.VarChar(100)
+  slug        String    @unique @db.VarChar(120)
+  description String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+  @@map("product_categories")
+}
+
+model Product {
+  id             String        @id @default(uuid()) @db.Uuid
+  categoryId     String        @db.Uuid
+  slug           String        @unique @db.VarChar(160)
+  title          String        @db.VarChar(180)
+  description    String        @db.Text
+  priceKobo      Int
+  stock          Int           @default(0)
+  currency       String        @default("NGN") @db.VarChar(3)
+  images         Json
+  isDemo         Boolean       @default(true)
+  status         ContentStatus @default(DRAFT)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  category       ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  variants       ProductVariant[]
+  orderItems     OrderItem[]
+  @@index([categoryId, status])
+  @@map("products")
+}
+
+model ProductVariant {
+  id          String   @id @default(uuid()) @db.Uuid
+  productId   String   @db.Uuid
+  sku         String   @unique @db.VarChar(100)
+  name        String   @db.VarChar(120)
+  size        String?  @db.VarChar(40)
+  colour      String?  @db.VarChar(60)
+  stock       Int      @default(0)
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems  OrderItem[]
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model Order {
+  id          String      @id @default(uuid()) @db.Uuid
+  reference   String      @unique @db.VarChar(32)
+  userId      String      @db.Uuid
+  status      OrderStatus @default(PENDING_PAYMENT)
+  subtotalKobo Int
+  deliveryKobo Int        @default(0)
+  totalKobo   Int
+  currency    String      @default("NGN") @db.VarChar(3)
+  shippingAddress Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items       OrderItem[]
+  payments    Payment[]
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id             String         @id @default(uuid()) @db.Uuid
+  orderId        String         @db.Uuid
+  productId      String         @db.Uuid
+  variantId      String?        @db.Uuid
+  titleSnapshot  String         @db.VarChar(180)
+  skuSnapshot    String?        @db.VarChar(100)
+  unitPriceKobo  Int
+  quantity       Int
+  lineTotalKobo  Int
+  order          Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product        Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
+  variant        ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model Payment {
+  id                 String        @id @default(uuid()) @db.Uuid
+  reference          String        @unique @db.VarChar(100)
+  activeKey          String?       @unique @db.VarChar(220)
+  userId             String        @db.Uuid
+  purchaseType       PurchaseType
+  orderId            String?       @db.Uuid
+  serviceRequestId   String?       @db.Uuid
+  ebookId            String?       @db.Uuid
+  cohortId           String?       @db.Uuid
+  amountKobo         Int
+  currency           String        @default("NGN") @db.VarChar(3)
+  status             PaymentStatus @default(INITIALIZED)
+  paystackAccessCode String?       @db.VarChar(255)
+  paystackTransactionId String?    @db.VarChar(100)
+  authorizationUrl   String?       @db.Text
+  paidAt             DateTime?
+  verifiedAt         DateTime?
+  gatewayResponse    Json?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  user               User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  order              Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  serviceRequest     ServiceRequest? @relation(fields: [serviceRequestId], references: [id], onDelete: Restrict)
+  ebook              Ebook?          @relation(fields: [ebookId], references: [id], onDelete: Restrict)
+  cohort             ElevateCohort?   @relation(fields: [cohortId], references: [id], onDelete: Restrict)
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("payments")
+}
+
+model Ebook {
+  id          String        @id @default(uuid()) @db.Uuid
+  slug        String        @unique @db.VarChar(160)
+  title       String        @db.VarChar(200)
+  description String        @db.Text
+  author      String        @default("Gileo Medicals") @db.VarChar(120)
+  priceKobo   Int
+  priceLabel  String?       @db.VarChar(120)
+  isIndicative Boolean      @default(true)
+  currency    String        @default("NGN") @db.VarChar(3)
+  coverImage  String?       @db.Text
+  fileKey     String?       @db.Text
+  isDemo      Boolean       @default(true)
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  purchases   LearningPurchase[]
+  entitlements Entitlement[]
+  payments    Payment[]
+  @@index([status])
+  @@map("ebooks")
+}
+
+model ElevateCohort {
+  id             String        @id @default(uuid()) @db.Uuid
+  slug           String        @unique @db.VarChar(160)
+  title          String        @db.VarChar(200)
+  overview       String        @db.Text
+  learningOutcomes Json
+  eligibility    String?       @db.Text
+  startsAt       DateTime?
+  endsAt         DateTime?
+  schedule       String?       @db.Text
+  priceKobo      Int
+  currency       String        @default("NGN") @db.VarChar(3)
+  capacity       Int?
+  enrolledCount  Int           @default(0)
+  status         ContentStatus @default(DRAFT)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  enrollments    CohortEnrollment[]
+  entitlements   Entitlement[]
+  payments       Payment[]
+  @@index([status])
+  @@map("elevate_cohorts")
+}
+
+model LearningPurchase {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  ebookId     String   @db.Uuid
+  paymentId   String?  @db.Uuid
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ebook       Ebook    @relation(fields: [ebookId], references: [id], onDelete: Restrict)
+  @@unique([userId, ebookId])
+  @@index([userId])
+  @@map("learning_purchases")
+}
+
+model CohortEnrollment {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  cohortId  String   @db.Uuid
+  paymentId String?  @db.Uuid
+  status    String   @default("PENDING") @db.VarChar(30)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cohort    ElevateCohort @relation(fields: [cohortId], references: [id], onDelete: Restrict)
+  @@unique([userId, cohortId])
+  @@index([userId])
+  @@map("cohort_enrollments")
+}
+
+model Entitlement {
+  id        String          @id @default(uuid()) @db.Uuid
+  userId    String          @db.Uuid
+  type      EntitlementType
+  ebookId   String?         @db.Uuid
+  cohortId  String?         @db.Uuid
+  grantedAt DateTime        @default(now())
+  revokedAt DateTime?
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ebook     Ebook?          @relation(fields: [ebookId], references: [id], onDelete: Cascade)
+  cohort    ElevateCohort?  @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  @@index([userId, type, revokedAt])
+  @@map("entitlements")
+}
+
+model CommunityMembership {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @unique @db.Uuid
+  joinedAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("community_memberships")
+}
+
+model CommunityResource {
+  id          String        @id @default(uuid()) @db.Uuid
+  title       String        @db.VarChar(200)
+  slug        String        @unique @db.VarChar(160)
+  description String        @db.Text
+  content     String?       @db.Text
+  resourceUrl String?       @db.Text
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  @@index([status])
+  @@map("community_resources")
+}
+
+model Announcement {
+  id          String        @id @default(uuid()) @db.Uuid
+  title       String        @db.VarChar(200)
+  slug        String        @unique @db.VarChar(160)
+  body        String        @db.Text
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  @@index([status, publishedAt])
+  @@map("announcements")
+}
+
+model SupportTicket {
+  id          String        @id @default(uuid()) @db.Uuid
+  reference   String        @unique @db.VarChar(32)
+  userId      String        @db.Uuid
+  category    String        @db.VarChar(60)
+  subject     String        @db.VarChar(180)
+  message     String        @db.VarChar(4000)
+  status      SupportStatus @default(OPEN)
+  assignedTo  String?       @db.Uuid
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("support_tickets")
+}
+
+
+model CareOnboarding {
+  id                    String   @id @default(uuid()) @db.Uuid
+  serviceRequestId       String   @unique @db.Uuid
+  userId                 String   @db.Uuid
+  patientName            String   @db.VarChar(160)
+  contactPhone           String   @db.VarChar(30)
+  emergencyContactName   String   @db.VarChar(160)
+  emergencyContactPhone  String   @db.VarChar(30)
+  careNotes              String?  @db.VarChar(3000)
+  consentToCareData      Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  serviceRequest         ServiceRequest @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+  @@map("care_onboarding")
 }
