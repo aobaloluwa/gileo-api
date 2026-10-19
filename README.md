@@ -2,6 +2,7 @@
 
 NestJS + PostgreSQL + Prisma API for the GILEO Medicals mobile platform. The existing authentication foundation is retained and extended with healthcare service requests, medical marketplace, Paystack payments, community content, Gileo Elevate cohorts, e-books, entitlements, support tickets, and staff operations.
 
+
 ## Requirements
 
 - Node.js 22.22.3+ (or Node.js 24.15.0+) as required by the locked NestJS 12 toolchain
