@@ -30,6 +30,7 @@ export const UserRole = {
   NURSE: 'NURSE',
   ELEVATE_PARTICIPANT: 'ELEVATE_PARTICIPANT',
   SUPPORT: 'SUPPORT',
+  STAFF: 'STAFF',
   ADMIN: 'ADMIN'
 } as const
 

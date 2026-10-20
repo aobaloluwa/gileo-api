@@ -23,6 +23,7 @@ enum UserRole {
   NURSE
   ELEVATE_PARTICIPANT
   SUPPORT
+  STAFF
   ADMIN
 }
 

@@ -36,11 +36,11 @@ Amounts are stored as integer kobo; for NGN, ₦1,000 is `100000` kobo. Product/
 ## Security notes
 
 - JWT-protected endpoints require `Authorization: Bearer <accessToken>`.
-- New accounts default to the `CUSTOMER` role. Do not assign staff roles to users through public registration.
+- New accounts default to the `CUSTOMER` role. Guest browsing uses public read-only endpoints and does not require an account. Do not assign staff roles to users through public registration. `CUSTOMER` is the standard registered-user role; community membership and purchased e-book/cohort access are represented separately by membership and entitlement records. Existing specialist roles (`NURSE`, `ELEVATE_PARTICIPANT`, `COMMUNITY_MEMBER`) remain available for compatibility. `STAFF` and `SUPPORT` can access staff-scoped operations; `ADMIN` retains administrator-only controls.
 - Promote the initial administrator only after verifying the account identity, for example through a controlled database operation:
   `UPDATE users SET role = 'ADMIN' WHERE email = 'your-verified-admin-email@example.com';`
   Run that statement manually using a trusted database session; do not expose it as a public endpoint.
-- Staff-only operations check the user's server-side role on each request. Admin-only operations are limited to `ADMIN`.
+- Staff-only operations check the user's server-side role on each request (`STAFF`, `SUPPORT`, or `ADMIN`). Admin-only operations are limited to `ADMIN`. Guest users can browse published services, products, e-books, cohorts, and public community resources; submitting requests, purchasing, viewing private library items, and managing a profile require authentication.
 - Sensitive care details should be collected only at the appropriate stage. This API deliberately keeps the initial service request fields limited.
 - This is a starting production architecture, not a claim that a deployment is production-certified. Add operational monitoring, backups, retention policies, privacy/legal review, and security testing before launch.
 
@@ -86,6 +86,7 @@ Products marked `isDemo: true` and draft listings should not be presented as ver
 - `POST /admin/payments/:reference/refund` (admin)
 
 ### Support and administration
+- User access model: guests browse public content; registered users use a single customer account for profile, service requests, orders, and purchases; community membership and paid cohort/e-book access are separate entitlements. Staff roles are server-enforced.
 - `POST /support/tickets`, `GET /support/tickets/mine` (authenticated)
 - Staff can list/update support tickets.
 - `GET /admin/dashboard` and `PATCH /admin/users/:id/role` (admin)

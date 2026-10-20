@@ -30,7 +30,7 @@ export class BusinessService {
   }
   private async requireStaff(userId?: string) {
     const user = await this.requireUser(userId);
-    if (user.role !== UserRole.ADMIN && user.role !== UserRole.SUPPORT) throw new ForbiddenException('Staff access required.');
+    if (!([UserRole.ADMIN, UserRole.SUPPORT, UserRole.STAFF] as UserRole[]).includes(user.role)) throw new ForbiddenException('Staff access required.');
     return user;
   }
   private async requireAdmin(userId?: string) {
