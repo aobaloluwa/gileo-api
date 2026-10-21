@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  UserPermission: 'UserPermission',
   AuthIdentity: 'AuthIdentity',
   RefreshSession: 'RefreshSession',
   AuthActionToken: 'AuthActionToken',
@@ -72,6 +73,7 @@ export const ModelName = {
   CommunityResource: 'CommunityResource',
   Announcement: 'Announcement',
   SupportTicket: 'SupportTicket',
+  SupportMessage: 'SupportMessage',
   CareOnboarding: 'CareOnboarding'
 } as const
 
@@ -105,6 +107,17 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserPermissionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  permission: 'permission',
+  grantedBy: 'grantedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type UserPermissionScalarFieldEnum = (typeof UserPermissionScalarFieldEnum)[keyof typeof UserPermissionScalarFieldEnum]
 
 
 export const AuthIdentityScalarFieldEnum = {
@@ -243,7 +256,9 @@ export const OrderScalarFieldEnum = {
   currency: 'currency',
   shippingAddress: 'shippingAddress',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  reservationExpiresAt: 'reservationExpiresAt',
+  stockReleasedAt: 'stockReleasedAt'
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -274,6 +289,7 @@ export const PaymentScalarFieldEnum = {
   serviceRequestId: 'serviceRequestId',
   ebookId: 'ebookId',
   cohortId: 'cohortId',
+  cohortSeatReserved: 'cohortSeatReserved',
   amountKobo: 'amountKobo',
   currency: 'currency',
   status: 'status',
@@ -325,6 +341,7 @@ export const ElevateCohortScalarFieldEnum = {
   currency: 'currency',
   capacity: 'capacity',
   enrolledCount: 'enrolledCount',
+  reservedCount: 'reservedCount',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -421,6 +438,18 @@ export const SupportTicketScalarFieldEnum = {
 } as const
 
 export type SupportTicketScalarFieldEnum = (typeof SupportTicketScalarFieldEnum)[keyof typeof SupportTicketScalarFieldEnum]
+
+
+export const SupportMessageScalarFieldEnum = {
+  id: 'id',
+  ticketId: 'ticketId',
+  authorId: 'authorId',
+  message: 'message',
+  internal: 'internal',
+  createdAt: 'createdAt'
+} as const
+
+export type SupportMessageScalarFieldEnum = (typeof SupportMessageScalarFieldEnum)[keyof typeof SupportMessageScalarFieldEnum]
 
 
 export const CareOnboardingScalarFieldEnum = {

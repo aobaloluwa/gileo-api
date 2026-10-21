@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Headers, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Patch, Post, Put, Query, Req, UseGuards, UseInterceptors, UploadedFile, StreamableFile, NotFoundException } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { JwtAuthGuard } from './auth/guards/jwt-auth/jwt-auth.guard';
 import { BusinessService } from './business.service';
 import {
-  AssignProviderDto, CareOnboardingDto, CreateAnnouncementDto, CreateCategoryDto, CreateCohortDto, CreateCommunityResourceDto, CreateEbookDto, CreateOrderDto,
+  AssignProviderDto, AssignSupportTicketDto, CareOnboardingDto, CreateAnnouncementDto, CreateCategoryDto, CreateCohortDto, CreateCommunityResourceDto, CreateEbookDto, CreateOrderDto, CreateSupportMessageDto, SetUserPermissionsDto,
   CreateProductDto, CreateServiceDto, CreateServiceRequestDto,
   CreateSupportTicketDto, CreateVariantDto, InitializePaymentDto, UpdateCohortDto, UpdateEbookDto, UpdateProductDto, UpdateServiceDto, UpdateStatusDto, UpdateUserRoleDto,
 } from './business.dto';
@@ -17,6 +18,12 @@ export class BusinessController {
 
   @Get('profile/me') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   myProfile(@Req() r: AuthRequest) { return this.business.myProfile(r.user.userId); }
+  @Get('admin/users') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  listUsers(@Req() r: AuthRequest, @Query('search') search?: string) { return this.business.listUsers(r.user.userId, search); }
+  @Get('admin/users/:id/permissions') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  getUserPermissions(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.getUserPermissions(r.user.userId, id); }
+  @Put('admin/users/:id/permissions') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  setUserPermissions(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: SetUserPermissionsDto) { return this.business.setUserPermissions(r.user.userId, id, dto); }
   @Patch('admin/users/:id/role') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateUserRole(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateUserRoleDto) { return this.business.updateUserRole(r.user.userId, id, dto); }
 
@@ -30,6 +37,10 @@ export class BusinessController {
   createServiceRequest(@Req() r: AuthRequest, @Body() dto: CreateServiceRequestDto) { return this.business.createServiceRequest(r.user.userId, dto); }
   @Get('service-requests/mine') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   myServiceRequests(@Req() r: AuthRequest) { return this.business.listMyServiceRequests(r.user.userId); }
+  @Get('service-requests/assigned') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  assignedServiceRequests(@Req() r: AuthRequest) { return this.business.listAssignedServiceRequests(r.user.userId); }
+  @Patch('service-requests/:id/provider-status') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  updateAssignedServiceStatus(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateStatusDto) { return this.business.updateAssignedServiceStatus(r.user.userId, id, dto); }
   @Get('service-requests') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   allServiceRequests(@Req() r: AuthRequest) { return this.business.listAllServiceRequests(r.user.userId); }
   @Patch('service-requests/:id/status') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
@@ -68,6 +79,16 @@ export class BusinessController {
   @Get('learning/ebooks') listEbooks() { return this.business.listEbooks(); }
   @Post('learning/ebooks') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createEbook(@Req() r: AuthRequest, @Body() dto: CreateEbookDto) { return this.business.createEbook(r.user.userId, dto); }
+  @Post('admin/learning/ebooks/:id/file') @UseGuards(JwtAuthGuard) @ApiBearerAuth() @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 25 * 1024 * 1024 } }))
+  async uploadEbookFile(@Req() r: AuthRequest, @Param('id') id: string, @UploadedFile() file?: { originalname: string; mimetype: string; size: number; buffer: Buffer }) {
+    if (!file) throw new NotFoundException('Upload a PDF file in the file field.');
+    return this.business.uploadEbookContent(r.user.userId, id, file);
+  }
+  @Get('learning/ebooks/:id/content') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  async ebookContent(@Req() r: AuthRequest, @Param('id') id: string) {
+    const result = await this.business.ebookContent(r.user.userId, id);
+    return new StreamableFile(result.stream, { type: 'application/pdf', disposition: `attachment; filename="${result.filename.replace(/[\"\\]/g, '_')}"` });
+  }
   @Patch('learning/ebooks/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateEbook(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateEbookDto) { return this.business.updateEbook(r.user.userId, id, dto); }
   @Get('learning/cohorts') listCohorts() { return this.business.listCohorts(); }
@@ -91,6 +112,10 @@ export class BusinessController {
   myTickets(@Req() r: AuthRequest) { return this.business.mySupportTickets(r.user.userId); }
   @Get('support/tickets') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   allTickets(@Req() r: AuthRequest) { return this.business.listSupportTickets(r.user.userId); }
+  @Post('support/tickets/:id/messages') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  addTicketMessage(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: CreateSupportMessageDto) { return this.business.addSupportMessage(r.user.userId, id, dto.message); }
+  @Patch('admin/support/tickets/:id/assignment') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  assignTicket(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: AssignSupportTicketDto) { return this.business.assignSupportTicket(r.user.userId, id, dto.assignedTo); }
   @Patch('support/tickets/:id/status') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateTicket(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateStatusDto) { return this.business.updateSupportTicket(r.user.userId, id, dto); }
 
@@ -99,8 +124,12 @@ export class BusinessController {
   @Get('admin/payments') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   listPayments(@Req() r: AuthRequest) { return this.business.listPayments(r.user.userId); }
 
+  @Post('admin/payments/:reference/reconcile-cancelled') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  reconcileCancelledPayment(@Req() r: AuthRequest, @Param('reference') reference: string) { return this.business.reconcileCancelledPayment(r.user.userId, reference); }
   @Post('admin/payments/:reference/refund') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   refundPayment(@Req() r: AuthRequest, @Param('reference') reference: string, @Body('reason') reason?: string) { return this.business.refundPayment(r.user.userId, reference, reason); }
+  @Post('admin/payments/:reference/refund/reconcile') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  reconcileRefund(@Req() r: AuthRequest, @Param('reference') reference: string) { return this.business.reconcileRefund(r.user.userId, reference); }
 
   @Post('payments/initialize') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   @ApiOperation({ summary: 'Initialize a Paystack transaction for an eligible purchase' })

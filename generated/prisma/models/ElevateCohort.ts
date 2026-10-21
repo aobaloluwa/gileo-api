@@ -30,12 +30,14 @@ export type ElevateCohortAvgAggregateOutputType = {
   priceKobo: number | null
   capacity: number | null
   enrolledCount: number | null
+  reservedCount: number | null
 }
 
 export type ElevateCohortSumAggregateOutputType = {
   priceKobo: number | null
   capacity: number | null
   enrolledCount: number | null
+  reservedCount: number | null
 }
 
 export type ElevateCohortMinAggregateOutputType = {
@@ -51,6 +53,7 @@ export type ElevateCohortMinAggregateOutputType = {
   currency: string | null
   capacity: number | null
   enrolledCount: number | null
+  reservedCount: number | null
   status: $Enums.ContentStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -69,6 +72,7 @@ export type ElevateCohortMaxAggregateOutputType = {
   currency: string | null
   capacity: number | null
   enrolledCount: number | null
+  reservedCount: number | null
   status: $Enums.ContentStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -88,6 +92,7 @@ export type ElevateCohortCountAggregateOutputType = {
   currency: number
   capacity: number
   enrolledCount: number
+  reservedCount: number
   status: number
   createdAt: number
   updatedAt: number
@@ -99,12 +104,14 @@ export type ElevateCohortAvgAggregateInputType = {
   priceKobo?: true
   capacity?: true
   enrolledCount?: true
+  reservedCount?: true
 }
 
 export type ElevateCohortSumAggregateInputType = {
   priceKobo?: true
   capacity?: true
   enrolledCount?: true
+  reservedCount?: true
 }
 
 export type ElevateCohortMinAggregateInputType = {
@@ -120,6 +127,7 @@ export type ElevateCohortMinAggregateInputType = {
   currency?: true
   capacity?: true
   enrolledCount?: true
+  reservedCount?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -138,6 +146,7 @@ export type ElevateCohortMaxAggregateInputType = {
   currency?: true
   capacity?: true
   enrolledCount?: true
+  reservedCount?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -157,6 +166,7 @@ export type ElevateCohortCountAggregateInputType = {
   currency?: true
   capacity?: true
   enrolledCount?: true
+  reservedCount?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -263,6 +273,7 @@ export type ElevateCohortGroupByOutputType = {
   currency: string
   capacity: number | null
   enrolledCount: number
+  reservedCount: number
   status: $Enums.ContentStatus
   createdAt: Date
   updatedAt: Date
@@ -305,6 +316,7 @@ export type ElevateCohortWhereInput = {
   currency?: Prisma.StringFilter<"ElevateCohort"> | string
   capacity?: Prisma.IntNullableFilter<"ElevateCohort"> | number | null
   enrolledCount?: Prisma.IntFilter<"ElevateCohort"> | number
+  reservedCount?: Prisma.IntFilter<"ElevateCohort"> | number
   status?: Prisma.EnumContentStatusFilter<"ElevateCohort"> | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFilter<"ElevateCohort"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ElevateCohort"> | Date | string
@@ -327,6 +339,7 @@ export type ElevateCohortOrderByWithRelationInput = {
   currency?: Prisma.SortOrder
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
   enrolledCount?: Prisma.SortOrder
+  reservedCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -352,6 +365,7 @@ export type ElevateCohortWhereUniqueInput = Prisma.AtLeast<{
   currency?: Prisma.StringFilter<"ElevateCohort"> | string
   capacity?: Prisma.IntNullableFilter<"ElevateCohort"> | number | null
   enrolledCount?: Prisma.IntFilter<"ElevateCohort"> | number
+  reservedCount?: Prisma.IntFilter<"ElevateCohort"> | number
   status?: Prisma.EnumContentStatusFilter<"ElevateCohort"> | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFilter<"ElevateCohort"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ElevateCohort"> | Date | string
@@ -374,6 +388,7 @@ export type ElevateCohortOrderByWithAggregationInput = {
   currency?: Prisma.SortOrder
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
   enrolledCount?: Prisma.SortOrder
+  reservedCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -401,6 +416,7 @@ export type ElevateCohortScalarWhereWithAggregatesInput = {
   currency?: Prisma.StringWithAggregatesFilter<"ElevateCohort"> | string
   capacity?: Prisma.IntNullableWithAggregatesFilter<"ElevateCohort"> | number | null
   enrolledCount?: Prisma.IntWithAggregatesFilter<"ElevateCohort"> | number
+  reservedCount?: Prisma.IntWithAggregatesFilter<"ElevateCohort"> | number
   status?: Prisma.EnumContentStatusWithAggregatesFilter<"ElevateCohort"> | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ElevateCohort"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ElevateCohort"> | Date | string
@@ -420,6 +436,7 @@ export type ElevateCohortCreateInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -442,6 +459,7 @@ export type ElevateCohortUncheckedCreateInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -464,6 +482,7 @@ export type ElevateCohortUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -486,6 +505,7 @@ export type ElevateCohortUncheckedUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -508,6 +528,7 @@ export type ElevateCohortCreateManyInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -527,6 +548,7 @@ export type ElevateCohortUpdateManyMutationInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -546,6 +568,7 @@ export type ElevateCohortUncheckedUpdateManyInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -570,6 +593,7 @@ export type ElevateCohortCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
   enrolledCount?: Prisma.SortOrder
+  reservedCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -579,6 +603,7 @@ export type ElevateCohortAvgOrderByAggregateInput = {
   priceKobo?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
   enrolledCount?: Prisma.SortOrder
+  reservedCount?: Prisma.SortOrder
 }
 
 export type ElevateCohortMaxOrderByAggregateInput = {
@@ -594,6 +619,7 @@ export type ElevateCohortMaxOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
   enrolledCount?: Prisma.SortOrder
+  reservedCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -612,6 +638,7 @@ export type ElevateCohortMinOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
   enrolledCount?: Prisma.SortOrder
+  reservedCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -621,6 +648,7 @@ export type ElevateCohortSumOrderByAggregateInput = {
   priceKobo?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
   enrolledCount?: Prisma.SortOrder
+  reservedCount?: Prisma.SortOrder
 }
 
 export type ElevateCohortScalarRelationFilter = {
@@ -688,6 +716,7 @@ export type ElevateCohortCreateWithoutPaymentsInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -709,6 +738,7 @@ export type ElevateCohortUncheckedCreateWithoutPaymentsInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -746,6 +776,7 @@ export type ElevateCohortUpdateWithoutPaymentsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -767,6 +798,7 @@ export type ElevateCohortUncheckedUpdateWithoutPaymentsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -788,6 +820,7 @@ export type ElevateCohortCreateWithoutEnrollmentsInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -809,6 +842,7 @@ export type ElevateCohortUncheckedCreateWithoutEnrollmentsInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -846,6 +880,7 @@ export type ElevateCohortUpdateWithoutEnrollmentsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -867,6 +902,7 @@ export type ElevateCohortUncheckedUpdateWithoutEnrollmentsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -888,6 +924,7 @@ export type ElevateCohortCreateWithoutEntitlementsInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -909,6 +946,7 @@ export type ElevateCohortUncheckedCreateWithoutEntitlementsInput = {
   currency?: string
   capacity?: number | null
   enrolledCount?: number
+  reservedCount?: number
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -946,6 +984,7 @@ export type ElevateCohortUpdateWithoutEntitlementsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -967,6 +1006,7 @@ export type ElevateCohortUncheckedUpdateWithoutEntitlementsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   enrolledCount?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1037,6 +1077,7 @@ export type ElevateCohortSelect<ExtArgs extends runtime.Types.Extensions.Interna
   currency?: boolean
   capacity?: boolean
   enrolledCount?: boolean
+  reservedCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1060,6 +1101,7 @@ export type ElevateCohortSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   currency?: boolean
   capacity?: boolean
   enrolledCount?: boolean
+  reservedCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1079,6 +1121,7 @@ export type ElevateCohortSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   currency?: boolean
   capacity?: boolean
   enrolledCount?: boolean
+  reservedCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1098,12 +1141,13 @@ export type ElevateCohortSelectScalar = {
   currency?: boolean
   capacity?: boolean
   enrolledCount?: boolean
+  reservedCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ElevateCohortOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "overview" | "learningOutcomes" | "eligibility" | "startsAt" | "endsAt" | "schedule" | "priceKobo" | "currency" | "capacity" | "enrolledCount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["elevateCohort"]>
+export type ElevateCohortOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "overview" | "learningOutcomes" | "eligibility" | "startsAt" | "endsAt" | "schedule" | "priceKobo" | "currency" | "capacity" | "enrolledCount" | "reservedCount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["elevateCohort"]>
 export type ElevateCohortInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   enrollments?: boolean | Prisma.ElevateCohort$enrollmentsArgs<ExtArgs>
   entitlements?: boolean | Prisma.ElevateCohort$entitlementsArgs<ExtArgs>
@@ -1134,6 +1178,7 @@ export type $ElevateCohortPayload<ExtArgs extends runtime.Types.Extensions.Inter
     currency: string
     capacity: number | null
     enrolledCount: number
+    reservedCount: number
     status: $Enums.ContentStatus
     createdAt: Date
     updatedAt: Date
@@ -1576,6 +1621,7 @@ export interface ElevateCohortFieldRefs {
   readonly currency: Prisma.FieldRef<"ElevateCohort", 'String'>
   readonly capacity: Prisma.FieldRef<"ElevateCohort", 'Int'>
   readonly enrolledCount: Prisma.FieldRef<"ElevateCohort", 'Int'>
+  readonly reservedCount: Prisma.FieldRef<"ElevateCohort", 'Int'>
   readonly status: Prisma.FieldRef<"ElevateCohort", 'ContentStatus'>
   readonly createdAt: Prisma.FieldRef<"ElevateCohort", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ElevateCohort", 'DateTime'>

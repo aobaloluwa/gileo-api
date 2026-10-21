@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsObject, IsOptional, IsString, IsUUID, Max, MaxLength, Min, MinLength, ValidateNested } from 'class-validator';
+import { ArrayUnique, IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsObject, IsOptional, IsString, IsUUID, Max, MaxLength, Min, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateServiceDto {
@@ -108,7 +108,7 @@ export class CreateAnnouncementDto {
 }
 
 export class UpdateUserRoleDto {
-  @IsIn(['CUSTOMER','COMMUNITY_MEMBER','ELEVATE_PARTICIPANT','SUPPORT','ADMIN']) role!: 'CUSTOMER'|'COMMUNITY_MEMBER'|'ELEVATE_PARTICIPANT'|'SUPPORT'|'ADMIN';
+  @IsIn(['CUSTOMER','ADMIN']) role!: 'CUSTOMER'|'ADMIN';
 }
 
 export class UpdateProductDto {
@@ -172,4 +172,20 @@ export class CareOnboardingDto {
 }
 export class AssignProviderDto {
   @IsUUID() providerId!: string;
+}
+
+export class CreateSupportMessageDto {
+  @IsString() @MinLength(1) @MaxLength(4000) message!: string;
+}
+export class AssignSupportTicketDto {
+  @IsOptional() @IsUUID() assignedTo?: string | null;
+}
+
+export const GILEO_USER_PERMISSIONS = [
+  'DASHBOARD_READ', 'SERVICE_CATALOG_MANAGE', 'SERVICE_REQUESTS_READ', 'SERVICE_REQUESTS_MANAGE',
+  'SERVICE_PROVIDER_ASSIGN', 'INVENTORY_MANAGE', 'ORDERS_READ', 'ORDERS_MANAGE', 'PAYMENTS_READ',
+  'SUPPORT_MANAGE', 'LEARNING_MANAGE', 'COMMUNITY_MANAGE',
+] as const;
+export class SetUserPermissionsDto {
+  @IsArray() @ArrayUnique() @IsIn([...GILEO_USER_PERMISSIONS], { each: true }) permissions!: Array<typeof GILEO_USER_PERMISSIONS[number]>;
 }

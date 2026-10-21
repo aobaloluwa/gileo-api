@@ -44,6 +44,7 @@ export type PaymentMinAggregateOutputType = {
   serviceRequestId: string | null
   ebookId: string | null
   cohortId: string | null
+  cohortSeatReserved: boolean | null
   amountKobo: number | null
   currency: string | null
   status: $Enums.PaymentStatus | null
@@ -66,6 +67,7 @@ export type PaymentMaxAggregateOutputType = {
   serviceRequestId: string | null
   ebookId: string | null
   cohortId: string | null
+  cohortSeatReserved: boolean | null
   amountKobo: number | null
   currency: string | null
   status: $Enums.PaymentStatus | null
@@ -88,6 +90,7 @@ export type PaymentCountAggregateOutputType = {
   serviceRequestId: number
   ebookId: number
   cohortId: number
+  cohortSeatReserved: number
   amountKobo: number
   currency: number
   status: number
@@ -121,6 +124,7 @@ export type PaymentMinAggregateInputType = {
   serviceRequestId?: true
   ebookId?: true
   cohortId?: true
+  cohortSeatReserved?: true
   amountKobo?: true
   currency?: true
   status?: true
@@ -143,6 +147,7 @@ export type PaymentMaxAggregateInputType = {
   serviceRequestId?: true
   ebookId?: true
   cohortId?: true
+  cohortSeatReserved?: true
   amountKobo?: true
   currency?: true
   status?: true
@@ -165,6 +170,7 @@ export type PaymentCountAggregateInputType = {
   serviceRequestId?: true
   ebookId?: true
   cohortId?: true
+  cohortSeatReserved?: true
   amountKobo?: true
   currency?: true
   status?: true
@@ -275,6 +281,7 @@ export type PaymentGroupByOutputType = {
   serviceRequestId: string | null
   ebookId: string | null
   cohortId: string | null
+  cohortSeatReserved: boolean
   amountKobo: number
   currency: string
   status: $Enums.PaymentStatus
@@ -321,6 +328,7 @@ export type PaymentWhereInput = {
   serviceRequestId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   ebookId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   cohortId?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  cohortSeatReserved?: Prisma.BoolFilter<"Payment"> | boolean
   amountKobo?: Prisma.IntFilter<"Payment"> | number
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
@@ -349,6 +357,7 @@ export type PaymentOrderByWithRelationInput = {
   serviceRequestId?: Prisma.SortOrderInput | Prisma.SortOrder
   ebookId?: Prisma.SortOrderInput | Prisma.SortOrder
   cohortId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cohortSeatReserved?: Prisma.SortOrder
   amountKobo?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -380,6 +389,7 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   serviceRequestId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   ebookId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   cohortId?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  cohortSeatReserved?: Prisma.BoolFilter<"Payment"> | boolean
   amountKobo?: Prisma.IntFilter<"Payment"> | number
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
@@ -408,6 +418,7 @@ export type PaymentOrderByWithAggregationInput = {
   serviceRequestId?: Prisma.SortOrderInput | Prisma.SortOrder
   ebookId?: Prisma.SortOrderInput | Prisma.SortOrder
   cohortId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cohortSeatReserved?: Prisma.SortOrder
   amountKobo?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -439,6 +450,7 @@ export type PaymentScalarWhereWithAggregatesInput = {
   serviceRequestId?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
   ebookId?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
   cohortId?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
+  cohortSeatReserved?: Prisma.BoolWithAggregatesFilter<"Payment"> | boolean
   amountKobo?: Prisma.IntWithAggregatesFilter<"Payment"> | number
   currency?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus
@@ -457,6 +469,7 @@ export type PaymentCreateInput = {
   reference: string
   activeKey?: string | null
   purchaseType: $Enums.PurchaseType
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -485,6 +498,7 @@ export type PaymentUncheckedCreateInput = {
   serviceRequestId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -503,6 +517,7 @@ export type PaymentUpdateInput = {
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   activeKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseType?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -531,6 +546,7 @@ export type PaymentUncheckedUpdateInput = {
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -554,6 +570,7 @@ export type PaymentCreateManyInput = {
   serviceRequestId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -572,6 +589,7 @@ export type PaymentUpdateManyMutationInput = {
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   activeKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseType?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -595,6 +613,7 @@ export type PaymentUncheckedUpdateManyInput = {
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -628,6 +647,7 @@ export type PaymentCountOrderByAggregateInput = {
   serviceRequestId?: Prisma.SortOrder
   ebookId?: Prisma.SortOrder
   cohortId?: Prisma.SortOrder
+  cohortSeatReserved?: Prisma.SortOrder
   amountKobo?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -655,6 +675,7 @@ export type PaymentMaxOrderByAggregateInput = {
   serviceRequestId?: Prisma.SortOrder
   ebookId?: Prisma.SortOrder
   cohortId?: Prisma.SortOrder
+  cohortSeatReserved?: Prisma.SortOrder
   amountKobo?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -677,6 +698,7 @@ export type PaymentMinOrderByAggregateInput = {
   serviceRequestId?: Prisma.SortOrder
   ebookId?: Prisma.SortOrder
   cohortId?: Prisma.SortOrder
+  cohortSeatReserved?: Prisma.SortOrder
   amountKobo?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -916,6 +938,7 @@ export type PaymentCreateWithoutUserInput = {
   reference: string
   activeKey?: string | null
   purchaseType: $Enums.PurchaseType
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -942,6 +965,7 @@ export type PaymentUncheckedCreateWithoutUserInput = {
   serviceRequestId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -994,6 +1018,7 @@ export type PaymentScalarWhereInput = {
   serviceRequestId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   ebookId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   cohortId?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  cohortSeatReserved?: Prisma.BoolFilter<"Payment"> | boolean
   amountKobo?: Prisma.IntFilter<"Payment"> | number
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
@@ -1012,6 +1037,7 @@ export type PaymentCreateWithoutServiceRequestInput = {
   reference: string
   activeKey?: string | null
   purchaseType: $Enums.PurchaseType
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1038,6 +1064,7 @@ export type PaymentUncheckedCreateWithoutServiceRequestInput = {
   orderId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1082,6 +1109,7 @@ export type PaymentCreateWithoutOrderInput = {
   reference: string
   activeKey?: string | null
   purchaseType: $Enums.PurchaseType
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1108,6 +1136,7 @@ export type PaymentUncheckedCreateWithoutOrderInput = {
   serviceRequestId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1152,6 +1181,7 @@ export type PaymentCreateWithoutEbookInput = {
   reference: string
   activeKey?: string | null
   purchaseType: $Enums.PurchaseType
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1178,6 +1208,7 @@ export type PaymentUncheckedCreateWithoutEbookInput = {
   orderId?: string | null
   serviceRequestId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1222,6 +1253,7 @@ export type PaymentCreateWithoutCohortInput = {
   reference: string
   activeKey?: string | null
   purchaseType: $Enums.PurchaseType
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1248,6 +1280,7 @@ export type PaymentUncheckedCreateWithoutCohortInput = {
   orderId?: string | null
   serviceRequestId?: string | null
   ebookId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1296,6 +1329,7 @@ export type PaymentCreateManyUserInput = {
   serviceRequestId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1314,6 +1348,7 @@ export type PaymentUpdateWithoutUserInput = {
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   activeKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseType?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1340,6 +1375,7 @@ export type PaymentUncheckedUpdateWithoutUserInput = {
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1362,6 +1398,7 @@ export type PaymentUncheckedUpdateManyWithoutUserInput = {
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1384,6 +1421,7 @@ export type PaymentCreateManyServiceRequestInput = {
   orderId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1402,6 +1440,7 @@ export type PaymentUpdateWithoutServiceRequestInput = {
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   activeKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseType?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1428,6 +1467,7 @@ export type PaymentUncheckedUpdateWithoutServiceRequestInput = {
   orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1450,6 +1490,7 @@ export type PaymentUncheckedUpdateManyWithoutServiceRequestInput = {
   orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1472,6 +1513,7 @@ export type PaymentCreateManyOrderInput = {
   serviceRequestId?: string | null
   ebookId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1490,6 +1532,7 @@ export type PaymentUpdateWithoutOrderInput = {
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   activeKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseType?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1516,6 +1559,7 @@ export type PaymentUncheckedUpdateWithoutOrderInput = {
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1538,6 +1582,7 @@ export type PaymentUncheckedUpdateManyWithoutOrderInput = {
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1560,6 +1605,7 @@ export type PaymentCreateManyEbookInput = {
   orderId?: string | null
   serviceRequestId?: string | null
   cohortId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1578,6 +1624,7 @@ export type PaymentUpdateWithoutEbookInput = {
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   activeKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseType?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1604,6 +1651,7 @@ export type PaymentUncheckedUpdateWithoutEbookInput = {
   orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1626,6 +1674,7 @@ export type PaymentUncheckedUpdateManyWithoutEbookInput = {
   orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cohortId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1648,6 +1697,7 @@ export type PaymentCreateManyCohortInput = {
   orderId?: string | null
   serviceRequestId?: string | null
   ebookId?: string | null
+  cohortSeatReserved?: boolean
   amountKobo: number
   currency?: string
   status?: $Enums.PaymentStatus
@@ -1666,6 +1716,7 @@ export type PaymentUpdateWithoutCohortInput = {
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   activeKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseType?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1692,6 +1743,7 @@ export type PaymentUncheckedUpdateWithoutCohortInput = {
   orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1714,6 +1766,7 @@ export type PaymentUncheckedUpdateManyWithoutCohortInput = {
   orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cohortSeatReserved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   amountKobo?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -1739,6 +1792,7 @@ export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   serviceRequestId?: boolean
   ebookId?: boolean
   cohortId?: boolean
+  cohortSeatReserved?: boolean
   amountKobo?: boolean
   currency?: boolean
   status?: boolean
@@ -1767,6 +1821,7 @@ export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   serviceRequestId?: boolean
   ebookId?: boolean
   cohortId?: boolean
+  cohortSeatReserved?: boolean
   amountKobo?: boolean
   currency?: boolean
   status?: boolean
@@ -1795,6 +1850,7 @@ export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   serviceRequestId?: boolean
   ebookId?: boolean
   cohortId?: boolean
+  cohortSeatReserved?: boolean
   amountKobo?: boolean
   currency?: boolean
   status?: boolean
@@ -1823,6 +1879,7 @@ export type PaymentSelectScalar = {
   serviceRequestId?: boolean
   ebookId?: boolean
   cohortId?: boolean
+  cohortSeatReserved?: boolean
   amountKobo?: boolean
   currency?: boolean
   status?: boolean
@@ -1836,7 +1893,7 @@ export type PaymentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reference" | "activeKey" | "userId" | "purchaseType" | "orderId" | "serviceRequestId" | "ebookId" | "cohortId" | "amountKobo" | "currency" | "status" | "paystackAccessCode" | "paystackTransactionId" | "authorizationUrl" | "paidAt" | "verifiedAt" | "gatewayResponse" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reference" | "activeKey" | "userId" | "purchaseType" | "orderId" | "serviceRequestId" | "ebookId" | "cohortId" | "cohortSeatReserved" | "amountKobo" | "currency" | "status" | "paystackAccessCode" | "paystackTransactionId" | "authorizationUrl" | "paidAt" | "verifiedAt" | "gatewayResponse" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
 export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   order?: boolean | Prisma.Payment$orderArgs<ExtArgs>
@@ -1878,6 +1935,7 @@ export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     serviceRequestId: string | null
     ebookId: string | null
     cohortId: string | null
+    cohortSeatReserved: boolean
     amountKobo: number
     currency: string
     status: $Enums.PaymentStatus
@@ -2326,6 +2384,7 @@ export interface PaymentFieldRefs {
   readonly serviceRequestId: Prisma.FieldRef<"Payment", 'String'>
   readonly ebookId: Prisma.FieldRef<"Payment", 'String'>
   readonly cohortId: Prisma.FieldRef<"Payment", 'String'>
+  readonly cohortSeatReserved: Prisma.FieldRef<"Payment", 'Boolean'>
   readonly amountKobo: Prisma.FieldRef<"Payment", 'Int'>
   readonly currency: Prisma.FieldRef<"Payment", 'String'>
   readonly status: Prisma.FieldRef<"Payment", 'PaymentStatus'>

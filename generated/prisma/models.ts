@@ -9,6 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.js'
+export type * from './models/UserPermission.js'
 export type * from './models/AuthIdentity.js'
 export type * from './models/RefreshSession.js'
 export type * from './models/AuthActionToken.js'
@@ -29,5 +30,6 @@ export type * from './models/CommunityMembership.js'
 export type * from './models/CommunityResource.js'
 export type * from './models/Announcement.js'
 export type * from './models/SupportTicket.js'
+export type * from './models/SupportMessage.js'
 export type * from './models/CareOnboarding.js'
 export type * from './commonInputTypes.js'

@@ -36,11 +36,12 @@ Amounts are stored as integer kobo; for NGN, ₦1,000 is `100000` kobo. Product/
 ## Security notes
 
 - JWT-protected endpoints require `Authorization: Bearer <accessToken>`.
-- New accounts default to the `CUSTOMER` role. Guest browsing uses public read-only endpoints and does not require an account. Do not assign staff roles to users through public registration. `CUSTOMER` is the standard registered-user role; community membership and purchased e-book/cohort access are represented separately by membership and entitlement records. Existing specialist roles (`NURSE`, `ELEVATE_PARTICIPANT`, `COMMUNITY_MEMBER`) remain available for compatibility. `STAFF` and `SUPPORT` can access staff-scoped operations; `ADMIN` retains administrator-only controls.
+- Account roles are `CUSTOMER` and `ADMIN` only. Community membership and purchased e-book/cohort access are represented by membership and entitlement records, not account roles. Ordinary registered users may be assigned as care providers for a specific request and can receive allow-listed operational permissions separately. Permission grants cannot give a user the ability to manage users/roles or issue refunds.
+- Operational permissions are managed through `GET/PUT /admin/users/:id/permissions` and can be assigned only by an administrator. The permission list is allow-listed in `src/business.dto.ts`; do not add user-management, role-management, or refund privileges to that list.
 - Promote the initial administrator only after verifying the account identity, for example through a controlled database operation:
   `UPDATE users SET role = 'ADMIN' WHERE email = 'your-verified-admin-email@example.com';`
   Run that statement manually using a trusted database session; do not expose it as a public endpoint.
-- Staff-only operations check the user's server-side role on each request (`STAFF`, `SUPPORT`, or `ADMIN`). Admin-only operations are limited to `ADMIN`. Guest users can browse published services, products, e-books, cohorts, and public community resources; submitting requests, purchasing, viewing private library items, and managing a profile require authentication.
+- All administrative management endpoints require the server-side `ADMIN` role. Assigned care providers can see only requests assigned to their own account and can update only the limited provider workflow statuses. Guest users can browse published services, products, e-books, cohorts, and public community resources; submitting requests, purchasing, viewing private library items, and managing a profile require authentication.
 - Sensitive care details should be collected only at the appropriate stage. This API deliberately keeps the initial service request fields limited.
 - This is a starting production architecture, not a claim that a deployment is production-certified. Add operational monitoring, backups, retention policies, privacy/legal review, and security testing before launch.
 
@@ -58,19 +59,20 @@ All routes use `/api/v1`.
 - `GET /services`
 - `POST /service-requests` (authenticated)
 - `POST /service-requests/onboarding` (authenticated; only after verified payment)
-- `GET /service-requests/:id/onboarding` (assigned nurse or admin only)
-- `POST /service-requests/:id/assign-provider` (admin; provider must have the `NURSE` role)
-- `GET /service-requests/mine` (authenticated)
-- `GET /service-requests` and `PATCH /service-requests/:id/status` (staff/admin)
+- `GET /service-requests/:id/onboarding` (assigned provider or admin only)
+- `POST /service-requests/:id/assign-provider` (admin; provider must be a registered non-admin user)
+- `GET /service-requests/mine` and `GET /service-requests/assigned` (authenticated; assigned list is record-scoped)
+- `PATCH /service-requests/:id/provider-status` (assigned provider; limited transitions only)
+- `GET /service-requests` and `PATCH /service-requests/:id/status` (admin only)
 
-A request is not a confirmed booking. Staff must review it and explicitly accept/confirm availability before the API permits payment initialization.
+A request is not a confirmed booking. An administrator must review it and explicitly accept/confirm availability before the API permits payment initialization.
 
 ### Marketplace
 - `GET /shop/categories`, `GET /shop/products`
 - `POST /shop/orders`, `GET /shop/orders/mine` (authenticated)
 - Admin operations: create categories/products/variants, edit product details, update product/variant stock, list orders, and update fulfilment status.
 
-Products marked `isDemo: true` and draft listings should not be presented as verified inventory. Variant stock is reserved during order creation and returned if staff cancel the order.
+Products marked `isDemo: true` and draft listings should not be presented as verified inventory. Variant and non-variant stock is reserved during order creation and returned exactly once if an unpaid order is cancelled or its 30-minute reservation expires. Paid orders cannot be cancelled directly; refunds must use the payment workflow.
 
 ### Learning and community
 - `GET /learning/ebooks`, `GET /learning/cohorts`, `GET /community/resources`
@@ -104,3 +106,14 @@ Run:
 - `npm run db:validate`
 
 The uploaded starter project did not include a live database or Paystack credentials, so these environment-dependent checks must be run locally before calling the implementation verified.
+
+### Administration, private learning content and support
+- `GET /admin/users?search=` (admin-only user directory)
+- `POST /admin/learning/ebooks/:id/file` (admin-only valid PDF upload, max 25 MB; private storage)
+- `GET /learning/ebooks/:id/content` (authenticated; requires an active e-book entitlement)
+- `POST /support/tickets/:id/messages` (ticket owner or admin)
+- `PATCH /admin/support/tickets/:id/assignment` (admin-only; currently assignable to an admin account)
+- `POST /admin/payments/:reference/refund` and `/refund/reconcile` (admin-only)
+- `POST /admin/payments/:reference/reconcile-cancelled` verifies late charges without granting fulfilment; the admin must decide whether to refund.
+
+Migration `20261021170000_harden_business_workflows` simplifies the account role enum to `CUSTOMER` and `ADMIN`, adds operational permission grants, and converts existing non-admin role values to `CUSTOMER`; provider assignments remain attached to individual service requests. Back up the database and review the migration before applying it.

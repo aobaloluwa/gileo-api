@@ -45,6 +45,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserPermission
+ * 
+ */
+export type UserPermission = Prisma.UserPermissionModel
+/**
  * Model AuthIdentity
  * 
  */
@@ -144,6 +149,11 @@ export type Announcement = Prisma.AnnouncementModel
  * 
  */
 export type SupportTicket = Prisma.SupportTicketModel
+/**
+ * Model SupportMessage
+ * 
+ */
+export type SupportMessage = Prisma.SupportMessageModel
 /**
  * Model CareOnboarding
  * 

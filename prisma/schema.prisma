@@ -19,11 +19,6 @@ enum AuthActionType {
 
 enum UserRole {
   CUSTOMER
-  COMMUNITY_MEMBER
-  NURSE
-  ELEVATE_PARTICIPANT
-  SUPPORT
-  STAFF
   ADMIN
 }
 
@@ -110,12 +105,30 @@ model User {
   purchases        LearningPurchase[]
   entitlements     Entitlement[]
   supportTickets   SupportTicket[]
+  supportMessages  SupportMessage[]
+  userPermissions  UserPermission[] @relation("UserPermissions")
+  permissionsGranted UserPermission[] @relation("PermissionGrantedBy")
   communityMembership CommunityMembership?
   cohortEnrollments CohortEnrollment[]
   assignedServiceRequests ServiceRequest[] @relation("AssignedProvider")
   careOnboardings CareOnboarding[]
 
   @@map("users")
+}
+
+
+model UserPermission {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  permission String  @db.VarChar(60)
+  grantedBy String?  @db.Uuid
+  createdAt DateTime @default(now())
+  user      User     @relation("UserPermissions", fields: [userId], references: [id], onDelete: Cascade)
+  grantedByUser User? @relation("PermissionGrantedBy", fields: [grantedBy], references: [id], onDelete: SetNull)
+  @@unique([userId, permission])
+  @@index([permission])
+  @@index([grantedBy])
+  @@map("user_permissions")
 }
 
 model AuthIdentity {
@@ -275,6 +288,8 @@ model Order {
   shippingAddress Json?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+  reservationExpiresAt DateTime?
+  stockReleasedAt DateTime?
   user        User        @relation(fields: [userId], references: [id], onDelete: Restrict)
   items       OrderItem[]
   payments    Payment[]
@@ -310,6 +325,7 @@ model Payment {
   serviceRequestId   String?       @db.Uuid
   ebookId            String?       @db.Uuid
   cohortId           String?       @db.Uuid
+  cohortSeatReserved Boolean       @default(false)
   amountKobo         Int
   currency           String        @default("NGN") @db.VarChar(3)
   status             PaymentStatus @default(INITIALIZED)
@@ -368,6 +384,7 @@ model ElevateCohort {
   currency       String        @default("NGN") @db.VarChar(3)
   capacity       Int?
   enrolledCount  Int           @default(0)
+  reservedCount  Int           @default(0)
   status         ContentStatus @default(DRAFT)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -467,9 +484,25 @@ model SupportTicket {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   user        User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  messages    SupportMessage[]
   @@index([userId, createdAt])
   @@index([status])
+  @@index([assignedTo])
   @@map("support_tickets")
+}
+
+model SupportMessage {
+  id        String   @id @default(uuid()) @db.Uuid
+  ticketId  String   @db.Uuid
+  authorId  String   @db.Uuid
+  message   String   @db.VarChar(4000)
+  internal  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author    User @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  @@index([ticketId, createdAt])
+  @@index([authorId])
+  @@map("support_messages")
 }
 
 

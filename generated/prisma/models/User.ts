@@ -231,6 +231,9 @@ export type UserWhereInput = {
   purchases?: Prisma.LearningPurchaseListRelationFilter
   entitlements?: Prisma.EntitlementListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
+  supportMessages?: Prisma.SupportMessageListRelationFilter
+  userPermissions?: Prisma.UserPermissionListRelationFilter
+  permissionsGranted?: Prisma.UserPermissionListRelationFilter
   communityMembership?: Prisma.XOR<Prisma.CommunityMembershipNullableScalarRelationFilter, Prisma.CommunityMembershipWhereInput> | null
   cohortEnrollments?: Prisma.CohortEnrollmentListRelationFilter
   assignedServiceRequests?: Prisma.ServiceRequestListRelationFilter
@@ -257,6 +260,9 @@ export type UserOrderByWithRelationInput = {
   purchases?: Prisma.LearningPurchaseOrderByRelationAggregateInput
   entitlements?: Prisma.EntitlementOrderByRelationAggregateInput
   supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
+  supportMessages?: Prisma.SupportMessageOrderByRelationAggregateInput
+  userPermissions?: Prisma.UserPermissionOrderByRelationAggregateInput
+  permissionsGranted?: Prisma.UserPermissionOrderByRelationAggregateInput
   communityMembership?: Prisma.CommunityMembershipOrderByWithRelationInput
   cohortEnrollments?: Prisma.CohortEnrollmentOrderByRelationAggregateInput
   assignedServiceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput
@@ -286,6 +292,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   purchases?: Prisma.LearningPurchaseListRelationFilter
   entitlements?: Prisma.EntitlementListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
+  supportMessages?: Prisma.SupportMessageListRelationFilter
+  userPermissions?: Prisma.UserPermissionListRelationFilter
+  permissionsGranted?: Prisma.UserPermissionListRelationFilter
   communityMembership?: Prisma.XOR<Prisma.CommunityMembershipNullableScalarRelationFilter, Prisma.CommunityMembershipWhereInput> | null
   cohortEnrollments?: Prisma.CohortEnrollmentListRelationFilter
   assignedServiceRequests?: Prisma.ServiceRequestListRelationFilter
@@ -344,6 +353,9 @@ export type UserCreateInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -370,6 +382,9 @@ export type UserUncheckedCreateInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -396,6 +411,9 @@ export type UserUpdateInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -422,6 +440,9 @@ export type UserUncheckedUpdateInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -534,6 +555,36 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutUserPermissionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserPermissionsInput, Prisma.UserUncheckedCreateWithoutUserPermissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserPermissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPermissionsGrantedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPermissionsGrantedInput, Prisma.UserUncheckedCreateWithoutPermissionsGrantedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPermissionsGrantedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserPermissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserPermissionsInput, Prisma.UserUncheckedCreateWithoutUserPermissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserPermissionsInput
+  upsert?: Prisma.UserUpsertWithoutUserPermissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserPermissionsInput, Prisma.UserUpdateWithoutUserPermissionsInput>, Prisma.UserUncheckedUpdateWithoutUserPermissionsInput>
+}
+
+export type UserUpdateOneWithoutPermissionsGrantedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPermissionsGrantedInput, Prisma.UserUncheckedCreateWithoutPermissionsGrantedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPermissionsGrantedInput
+  upsert?: Prisma.UserUpsertWithoutPermissionsGrantedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPermissionsGrantedInput, Prisma.UserUpdateWithoutPermissionsGrantedInput>, Prisma.UserUncheckedUpdateWithoutPermissionsGrantedInput>
 }
 
 export type UserCreateNestedOneWithoutAuthIdentitiesInput = {
@@ -706,6 +757,20 @@ export type UserUpdateOneRequiredWithoutSupportTicketsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSupportTicketsInput, Prisma.UserUpdateWithoutSupportTicketsInput>, Prisma.UserUncheckedUpdateWithoutSupportTicketsInput>
 }
 
+export type UserCreateNestedOneWithoutSupportMessagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportMessagesInput, Prisma.UserUncheckedCreateWithoutSupportMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSupportMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportMessagesInput, Prisma.UserUncheckedCreateWithoutSupportMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportMessagesInput
+  upsert?: Prisma.UserUpsertWithoutSupportMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSupportMessagesInput, Prisma.UserUpdateWithoutSupportMessagesInput>, Prisma.UserUncheckedUpdateWithoutSupportMessagesInput>
+}
+
 export type UserCreateNestedOneWithoutCareOnboardingsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCareOnboardingsInput, Prisma.UserUncheckedCreateWithoutCareOnboardingsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCareOnboardingsInput
@@ -718,6 +783,262 @@ export type UserUpdateOneRequiredWithoutCareOnboardingsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutCareOnboardingsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCareOnboardingsInput, Prisma.UserUpdateWithoutCareOnboardingsInput>, Prisma.UserUncheckedUpdateWithoutCareOnboardingsInput>
+}
+
+export type UserCreateWithoutUserPermissionsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserPermissionsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserPermissionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserPermissionsInput, Prisma.UserUncheckedCreateWithoutUserPermissionsInput>
+}
+
+export type UserCreateWithoutPermissionsGrantedInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPermissionsGrantedInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPermissionsGrantedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPermissionsGrantedInput, Prisma.UserUncheckedCreateWithoutPermissionsGrantedInput>
+}
+
+export type UserUpsertWithoutUserPermissionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserPermissionsInput, Prisma.UserUncheckedUpdateWithoutUserPermissionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserPermissionsInput, Prisma.UserUncheckedCreateWithoutUserPermissionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserPermissionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserPermissionsInput, Prisma.UserUncheckedUpdateWithoutUserPermissionsInput>
+}
+
+export type UserUpdateWithoutUserPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutPermissionsGrantedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPermissionsGrantedInput, Prisma.UserUncheckedUpdateWithoutPermissionsGrantedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPermissionsGrantedInput, Prisma.UserUncheckedCreateWithoutPermissionsGrantedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPermissionsGrantedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPermissionsGrantedInput, Prisma.UserUncheckedUpdateWithoutPermissionsGrantedInput>
+}
+
+export type UserUpdateWithoutPermissionsGrantedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPermissionsGrantedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuthIdentitiesInput = {
@@ -739,6 +1060,9 @@ export type UserCreateWithoutAuthIdentitiesInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -764,6 +1088,9 @@ export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -805,6 +1132,9 @@ export type UserUpdateWithoutAuthIdentitiesInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -830,6 +1160,9 @@ export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -855,6 +1188,9 @@ export type UserCreateWithoutRefreshSessionsInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -880,6 +1216,9 @@ export type UserUncheckedCreateWithoutRefreshSessionsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -921,6 +1260,9 @@ export type UserUpdateWithoutRefreshSessionsInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -946,6 +1288,9 @@ export type UserUncheckedUpdateWithoutRefreshSessionsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -971,6 +1316,9 @@ export type UserCreateWithoutAuthActionTokensInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -996,6 +1344,9 @@ export type UserUncheckedCreateWithoutAuthActionTokensInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -1037,6 +1388,9 @@ export type UserUpdateWithoutAuthActionTokensInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -1062,6 +1416,9 @@ export type UserUncheckedUpdateWithoutAuthActionTokensInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -1087,6 +1444,9 @@ export type UserCreateWithoutServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -1112,6 +1472,9 @@ export type UserUncheckedCreateWithoutServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -1143,6 +1506,9 @@ export type UserCreateWithoutAssignedServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
@@ -1168,6 +1534,9 @@ export type UserUncheckedCreateWithoutAssignedServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
@@ -1208,6 +1577,9 @@ export type UserUpdateWithoutServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -1233,6 +1605,9 @@ export type UserUncheckedUpdateWithoutServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -1270,6 +1645,9 @@ export type UserUpdateWithoutAssignedServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
@@ -1295,6 +1673,9 @@ export type UserUncheckedUpdateWithoutAssignedServiceRequestsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
@@ -1319,6 +1700,9 @@ export type UserCreateWithoutOrdersInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -1344,6 +1728,9 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -1385,6 +1772,9 @@ export type UserUpdateWithoutOrdersInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -1410,6 +1800,9 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -1435,6 +1828,9 @@ export type UserCreateWithoutPaymentsInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -1460,6 +1856,9 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -1501,6 +1900,9 @@ export type UserUpdateWithoutPaymentsInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -1526,6 +1928,9 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -1551,6 +1956,9 @@ export type UserCreateWithoutPurchasesInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -1576,6 +1984,9 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -1617,6 +2028,9 @@ export type UserUpdateWithoutPurchasesInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -1642,6 +2056,9 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -1668,6 +2085,9 @@ export type UserCreateWithoutCohortEnrollmentsInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
@@ -1693,6 +2113,9 @@ export type UserUncheckedCreateWithoutCohortEnrollmentsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
@@ -1734,6 +2157,9 @@ export type UserUpdateWithoutCohortEnrollmentsInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
@@ -1759,6 +2185,9 @@ export type UserUncheckedUpdateWithoutCohortEnrollmentsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
@@ -1783,6 +2212,9 @@ export type UserCreateWithoutEntitlementsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -1808,6 +2240,9 @@ export type UserUncheckedCreateWithoutEntitlementsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -1849,6 +2284,9 @@ export type UserUpdateWithoutEntitlementsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -1874,6 +2312,9 @@ export type UserUncheckedUpdateWithoutEntitlementsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -1900,6 +2341,9 @@ export type UserCreateWithoutCommunityMembershipInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
@@ -1925,6 +2369,9 @@ export type UserUncheckedCreateWithoutCommunityMembershipInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
@@ -1966,6 +2413,9 @@ export type UserUpdateWithoutCommunityMembershipInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
@@ -1991,6 +2441,9 @@ export type UserUncheckedUpdateWithoutCommunityMembershipInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
@@ -2015,6 +2468,9 @@ export type UserCreateWithoutSupportTicketsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -2040,6 +2496,9 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -2081,6 +2540,9 @@ export type UserUpdateWithoutSupportTicketsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -2106,6 +2568,137 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSupportMessagesInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSupportMessagesInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSupportMessagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportMessagesInput, Prisma.UserUncheckedCreateWithoutSupportMessagesInput>
+}
+
+export type UserUpsertWithoutSupportMessagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSupportMessagesInput, Prisma.UserUncheckedUpdateWithoutSupportMessagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportMessagesInput, Prisma.UserUncheckedCreateWithoutSupportMessagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSupportMessagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSupportMessagesInput, Prisma.UserUncheckedUpdateWithoutSupportMessagesInput>
+}
+
+export type UserUpdateWithoutSupportMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSupportMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -2132,6 +2725,9 @@ export type UserCreateWithoutCareOnboardingsInput = {
   purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
@@ -2157,6 +2753,9 @@ export type UserUncheckedCreateWithoutCareOnboardingsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
   entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
@@ -2198,6 +2797,9 @@ export type UserUpdateWithoutCareOnboardingsInput = {
   purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
@@ -2223,6 +2825,9 @@ export type UserUncheckedUpdateWithoutCareOnboardingsInput = {
   purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
   entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
@@ -2243,6 +2848,9 @@ export type UserCountOutputType = {
   purchases: number
   entitlements: number
   supportTickets: number
+  supportMessages: number
+  userPermissions: number
+  permissionsGranted: number
   cohortEnrollments: number
   assignedServiceRequests: number
   careOnboardings: number
@@ -2258,6 +2866,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   purchases?: boolean | UserCountOutputTypeCountPurchasesArgs
   entitlements?: boolean | UserCountOutputTypeCountEntitlementsArgs
   supportTickets?: boolean | UserCountOutputTypeCountSupportTicketsArgs
+  supportMessages?: boolean | UserCountOutputTypeCountSupportMessagesArgs
+  userPermissions?: boolean | UserCountOutputTypeCountUserPermissionsArgs
+  permissionsGranted?: boolean | UserCountOutputTypeCountPermissionsGrantedArgs
   cohortEnrollments?: boolean | UserCountOutputTypeCountCohortEnrollmentsArgs
   assignedServiceRequests?: boolean | UserCountOutputTypeCountAssignedServiceRequestsArgs
   careOnboardings?: boolean | UserCountOutputTypeCountCareOnboardingsArgs
@@ -2339,6 +2950,27 @@ export type UserCountOutputTypeCountSupportTicketsArgs<ExtArgs extends runtime.T
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountSupportMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SupportMessageWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUserPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPermissionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPermissionsGrantedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPermissionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountCohortEnrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CohortEnrollmentWhereInput
 }
@@ -2378,6 +3010,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>
   entitlements?: boolean | Prisma.User$entitlementsArgs<ExtArgs>
   supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
+  supportMessages?: boolean | Prisma.User$supportMessagesArgs<ExtArgs>
+  userPermissions?: boolean | Prisma.User$userPermissionsArgs<ExtArgs>
+  permissionsGranted?: boolean | Prisma.User$permissionsGrantedArgs<ExtArgs>
   communityMembership?: boolean | Prisma.User$communityMembershipArgs<ExtArgs>
   cohortEnrollments?: boolean | Prisma.User$cohortEnrollmentsArgs<ExtArgs>
   assignedServiceRequests?: boolean | Prisma.User$assignedServiceRequestsArgs<ExtArgs>
@@ -2435,6 +3070,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>
   entitlements?: boolean | Prisma.User$entitlementsArgs<ExtArgs>
   supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
+  supportMessages?: boolean | Prisma.User$supportMessagesArgs<ExtArgs>
+  userPermissions?: boolean | Prisma.User$userPermissionsArgs<ExtArgs>
+  permissionsGranted?: boolean | Prisma.User$permissionsGrantedArgs<ExtArgs>
   communityMembership?: boolean | Prisma.User$communityMembershipArgs<ExtArgs>
   cohortEnrollments?: boolean | Prisma.User$cohortEnrollmentsArgs<ExtArgs>
   assignedServiceRequests?: boolean | Prisma.User$assignedServiceRequestsArgs<ExtArgs>
@@ -2456,6 +3094,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     purchases: Prisma.$LearningPurchasePayload<ExtArgs>[]
     entitlements: Prisma.$EntitlementPayload<ExtArgs>[]
     supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
+    supportMessages: Prisma.$SupportMessagePayload<ExtArgs>[]
+    userPermissions: Prisma.$UserPermissionPayload<ExtArgs>[]
+    permissionsGranted: Prisma.$UserPermissionPayload<ExtArgs>[]
     communityMembership: Prisma.$CommunityMembershipPayload<ExtArgs> | null
     cohortEnrollments: Prisma.$CohortEnrollmentPayload<ExtArgs>[]
     assignedServiceRequests: Prisma.$ServiceRequestPayload<ExtArgs>[]
@@ -2875,6 +3516,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   purchases<T extends Prisma.User$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LearningPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   entitlements<T extends Prisma.User$entitlementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$entitlementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntitlementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   supportTickets<T extends Prisma.User$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  supportMessages<T extends Prisma.User$supportMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userPermissions<T extends Prisma.User$userPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  permissionsGranted<T extends Prisma.User$permissionsGrantedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$permissionsGrantedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   communityMembership<T extends Prisma.User$communityMembershipArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$communityMembershipArgs<ExtArgs>>): Prisma.Prisma__CommunityMembershipClient<runtime.Types.Result.GetResult<Prisma.$CommunityMembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   cohortEnrollments<T extends Prisma.User$cohortEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cohortEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CohortEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedServiceRequests<T extends Prisma.User$assignedServiceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedServiceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3524,6 +4168,78 @@ export type User$supportTicketsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.SupportTicketScalarFieldEnum | Prisma.SupportTicketScalarFieldEnum[]
+}
+
+/**
+ * User.supportMessages
+ */
+export type User$supportMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SupportMessage
+   */
+  select?: Prisma.SupportMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SupportMessage
+   */
+  omit?: Prisma.SupportMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupportMessageInclude<ExtArgs> | null
+  where?: Prisma.SupportMessageWhereInput
+  orderBy?: Prisma.SupportMessageOrderByWithRelationInput | Prisma.SupportMessageOrderByWithRelationInput[]
+  cursor?: Prisma.SupportMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SupportMessageScalarFieldEnum | Prisma.SupportMessageScalarFieldEnum[]
+}
+
+/**
+ * User.userPermissions
+ */
+export type User$userPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPermission
+   */
+  select?: Prisma.UserPermissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPermission
+   */
+  omit?: Prisma.UserPermissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPermissionInclude<ExtArgs> | null
+  where?: Prisma.UserPermissionWhereInput
+  orderBy?: Prisma.UserPermissionOrderByWithRelationInput | Prisma.UserPermissionOrderByWithRelationInput[]
+  cursor?: Prisma.UserPermissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPermissionScalarFieldEnum | Prisma.UserPermissionScalarFieldEnum[]
+}
+
+/**
+ * User.permissionsGranted
+ */
+export type User$permissionsGrantedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPermission
+   */
+  select?: Prisma.UserPermissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPermission
+   */
+  omit?: Prisma.UserPermissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPermissionInclude<ExtArgs> | null
+  where?: Prisma.UserPermissionWhereInput
+  orderBy?: Prisma.UserPermissionOrderByWithRelationInput | Prisma.UserPermissionOrderByWithRelationInput[]
+  cursor?: Prisma.UserPermissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPermissionScalarFieldEnum | Prisma.UserPermissionScalarFieldEnum[]
 }
 
 /**

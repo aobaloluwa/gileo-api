@@ -26,11 +26,6 @@ export type AuthActionType = (typeof AuthActionType)[keyof typeof AuthActionType
 
 export const UserRole = {
   CUSTOMER: 'CUSTOMER',
-  COMMUNITY_MEMBER: 'COMMUNITY_MEMBER',
-  NURSE: 'NURSE',
-  ELEVATE_PARTICIPANT: 'ELEVATE_PARTICIPANT',
-  SUPPORT: 'SUPPORT',
-  STAFF: 'STAFF',
   ADMIN: 'ADMIN'
 } as const
 
