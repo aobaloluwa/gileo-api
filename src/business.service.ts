@@ -227,7 +227,82 @@ export class BusinessService {
     await this.requirePermission(userId, 'INVENTORY_MANAGE');
     return this.prisma.productCategory.create({ data: dto });
   }
+  async seedDemoProductsIfNeeded() {
+    try {
+      let category = await this.prisma.productCategory.findFirst({ where: { slug: 'gileo-scrubs' } });
+      if (!category) {
+        category = await this.prisma.productCategory.create({
+          data: {
+            name: 'Gileo Scrubs',
+            slug: 'gileo-scrubs',
+            description: 'Authentic Gileo Scrubs Collection',
+          },
+        });
+      }
+
+      const count = await this.prisma.product.count({ where: { status: ContentStatus.PUBLISHED } });
+      if (count === 0) {
+        await this.prisma.product.createMany({
+          skipDuplicates: true,
+          data: [
+            {
+              id: '9b1deb4d-3b7d-4149-9cd1-e633d3170001',
+              categoryId: category.id,
+              slug: 'gileo-dri-fit-scrubs-set',
+              title: 'Gileo Dri-FIT Premium Scrubs Set',
+              description: 'Engineered with fluid-resistant, 4-way stretch fabric designed to help healthcare professionals stay comfortable during demanding shifts.',
+              priceKobo: 2850000,
+              stock: 100,
+              status: ContentStatus.PUBLISHED,
+              isDemo: true,
+              images: [],
+            },
+            {
+              id: '9b1deb4d-3b7d-4149-9cd1-e633d3170002',
+              categoryId: category.id,
+              slug: 'clinical-stethoscope-pro',
+              title: 'Clinical Dual-Head Stethoscope',
+              description: 'Precision acoustic sensitivity for cardiac and pulmonary assessment with soft-sealing eartips.',
+              priceKobo: 3500000,
+              stock: 50,
+              status: ContentStatus.PUBLISHED,
+              isDemo: true,
+              images: [],
+            },
+            {
+              id: '9b1deb4d-3b7d-4149-9cd1-e633d3170003',
+              categoryId: category.id,
+              slug: 'digital-bp-monitor',
+              title: 'Digital Automatic BP Monitor',
+              description: 'Clinical-grade digital blood pressure monitor with automatic pulse readout and memory logs.',
+              priceKobo: 2200000,
+              stock: 50,
+              status: ContentStatus.PUBLISHED,
+              isDemo: true,
+              images: [],
+            },
+            {
+              id: '9b1deb4d-3b7d-4149-9cd1-e633d3170004',
+              categoryId: category.id,
+              slug: 'nurse-carry-backpack',
+              title: 'Nurse Organizer Carry Backpack',
+              description: 'Waterproof multi-compartment organizer backpack designed for clinical equipment and personal essentials.',
+              priceKobo: 1800000,
+              stock: 50,
+              status: ContentStatus.PUBLISHED,
+              isDemo: true,
+              images: [],
+            },
+          ],
+        });
+      }
+    } catch (err) {
+      console.error('Demo product seed failed:', err);
+    }
+  }
+
   async listProducts(categoryId?: string) {
+    await this.seedDemoProductsIfNeeded();
     return this.prisma.product.findMany({
       where: { status: ContentStatus.PUBLISHED, ...(categoryId ? { categoryId } : {}) },
       include: { category: true, variants: { where: { isAvailable: true }, select: { id: true, name: true, size: true, colour: true, stock: true, sku: true } } },
@@ -263,6 +338,7 @@ export class BusinessService {
   }
   async createOrder(userId: string, dto: CreateOrderDto) {
     await this.requireUser(userId);
+    await this.seedDemoProductsIfNeeded();
     await this.releaseExpiredOrders();
     if (!dto.items?.length || dto.items.length > 50) throw new BadRequestException('An order must contain 1–50 line items.');
     const orderId = await this.prisma.$transaction(async tx => {
