@@ -80,6 +80,18 @@ export class BusinessService {
     const user = await this.requireUser(userId);
     return { ...user, phoneNumber: (await this.prisma.user.findUnique({ where: { id: userId }, select: { phoneNumber: true } }))?.phoneNumber };
   }
+  async updateMyProfile(userId: string, dto: { displayName?: string; phoneNumber?: string }) {
+    await this.requireUser(userId);
+    const updated = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        ...(dto.displayName !== undefined ? { displayName: dto.displayName.trim() } : {}),
+        ...(dto.phoneNumber !== undefined ? { phoneNumber: dto.phoneNumber.trim() } : {}),
+      },
+      select: { id: true, email: true, phoneNumber: true, displayName: true, role: true },
+    });
+    return updated;
+  }
   async listUsers(adminId: string, search?: string) {
     await this.requireAdmin(adminId);
     const q = search?.trim();
@@ -427,7 +439,85 @@ export class BusinessService {
     if (!(await this.prisma.ebook.findUnique({ where: { id } }))) throw new NotFoundException('E-book not found.');
     return this.prisma.ebook.update({ where: { id }, data: dto });
   }
-  async listCohorts() { return this.prisma.elevateCohort.findMany({ where: { status: ContentStatus.PUBLISHED }, orderBy: { startsAt: 'asc' } }); }
+  async seedDemoCohortsAndCommunityIfNeeded() {
+    try {
+      const cohortCount = await this.prisma.elevateCohort.count({ where: { status: ContentStatus.PUBLISHED } });
+      if (cohortCount === 0) {
+        await this.prisma.elevateCohort.createMany({
+          skipDuplicates: true,
+          data: [
+            {
+              id: '8f2d3a1b-4c5e-6f7a-8b9c-0d1e2f3a4b5c',
+              slug: 'nurse-concierge-leadership-2026',
+              title: 'Nurse Concierge & Executive Leadership Cohort',
+              overview: 'A 6-week intensive cohort for nurses seeking independent practice, concierge healthcare consulting, and international leadership opportunities.',
+              learningOutcomes: [
+                'Nurse Concierge Business Model & Operations',
+                'International Career Registration & Pathways',
+                'Executive Nursing Portfolio Development',
+                'Clinical Quality & Contract Management',
+              ] as any,
+              startsAt: new Date('2026-11-15T09:00:00.000Z'),
+              endsAt: new Date('2026-12-20T17:00:00.000Z'),
+              priceKobo: 15000000,
+              capacity: 30,
+              enrolledCount: 14,
+              reservedCount: 0,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              id: '8f2d3a1b-4c5e-6f7a-8b9c-0d1e2f3a4b5d',
+              slug: 'global-nursing-career-pathways-2026',
+              title: 'Global Nursing Career & Migration Pathways',
+              overview: 'A 4-week cohort focused on international nursing licensure (UK, US, Canada, Australia), documentation, and visa sponsorship strategies.',
+              learningOutcomes: [
+                'NCLEX, NMC & AHPRA Registration Roadmap',
+                'Sponsorship Interview Preparation',
+                'Global Nursing Resume & Portfolio Optimization',
+              ] as any,
+              startsAt: new Date('2026-12-01T09:00:00.000Z'),
+              endsAt: new Date('2026-12-28T17:00:00.000Z'),
+              priceKobo: 12000000,
+              capacity: 40,
+              enrolledCount: 22,
+              reservedCount: 0,
+              status: ContentStatus.PUBLISHED,
+            },
+          ],
+        });
+      }
+
+      const resourceCount = await this.prisma.communityResource.count({ where: { status: ContentStatus.PUBLISHED } });
+      if (resourceCount === 0) {
+        await this.prisma.communityResource.createMany({
+          skipDuplicates: true,
+          data: [
+            {
+              title: 'Exploring Non-Traditional Nursing Pathways',
+              slug: 'exploring-non-traditional-nursing-pathways',
+              description: 'Learn about nurse concierge roles, corporate healthcare coordination, and independent practice models.',
+              content: 'Traditional bedside nursing is only one aspect of a rewarding healthcare career. Learn how nurses build independent practices, coordinate corporate health programs, and manage clinical concierge services.',
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              title: 'Building a Strong Professional Nursing Portfolio',
+              slug: 'building-a-strong-professional-nursing-portfolio',
+              description: 'Key components of a standout nursing portfolio for global healthcare opportunities.',
+              content: 'A professional nursing portfolio highlights your clinical competencies, certifications, leadership experience, and continuous professional development.',
+              status: ContentStatus.PUBLISHED,
+            },
+          ],
+        });
+      }
+    } catch (err) {
+      console.error('Cohort & Community seed failed:', err);
+    }
+  }
+
+  async listCohorts() {
+    await this.seedDemoCohortsAndCommunityIfNeeded();
+    return this.prisma.elevateCohort.findMany({ where: { status: ContentStatus.PUBLISHED }, orderBy: { startsAt: 'asc' } });
+  }
   async createCohort(userId: string, dto: CreateCohortDto) {
     await this.requirePermission(userId, 'LEARNING_MANAGE');
     if (dto.capacity && dto.capacity < 1) throw new BadRequestException('Capacity must be positive.');
@@ -480,11 +570,116 @@ export class BusinessService {
     ]);
     return { ebooks: ebooks.map(x => x.ebook).filter(Boolean), cohorts: cohorts.map(x => x.cohort).filter(Boolean) };
   }
+  async communityMembers() {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        displayName: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+  }
+
+  private postLikesMap = new Map<string, Set<string>>();
+  private postCommentsMap = new Map<string, Array<{ id: string; authorName: string; text: string; createdAt: number }>>();
+
+  async getCommunityPosts() {
+    await this.seedDemoCohortsAndCommunityIfNeeded();
+    const posts = await this.prisma.communityResource.findMany({
+      where: { status: ContentStatus.PUBLISHED },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return posts.map((p) => {
+      const likesSet = this.postLikesMap.get(p.id) || new Set();
+      const commentsList = this.postCommentsMap.get(p.id) || [];
+      const authorName = p.title.startsWith('Update by ') ? p.title.replace('Update by ', '') : 'Gileo Nurse';
+
+      return {
+        id: p.id,
+        title: p.title,
+        authorName,
+        authorRole: p.resourceUrl || 'Community Member',
+        content: p.content || p.description,
+        createdAt: p.createdAt.getTime(),
+        likesCount: likesSet.size,
+        commentsCount: commentsList.length,
+        commentsList,
+        category: p.resourceUrl || 'Community Share',
+      };
+    });
+  }
+
+  async likeCommunityPost(userId: string, postId: string) {
+    await this.requireUser(userId);
+    let likesSet = this.postLikesMap.get(postId);
+    if (!likesSet) {
+      likesSet = new Set<string>();
+      this.postLikesMap.set(postId, likesSet);
+    }
+
+    let isLiked = false;
+    if (likesSet.has(userId)) {
+      likesSet.delete(userId);
+      isLiked = false;
+    } else {
+      likesSet.add(userId);
+      isLiked = true;
+    }
+
+    return { postId, likesCount: likesSet.size, isLiked };
+  }
+
+  async commentCommunityPost(userId: string, postId: string, dto: { text: string }) {
+    await this.requireUser(userId);
+    const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { displayName: true, email: true } });
+    const authorName = user?.displayName || user?.email?.split('@')[0] || 'Gileo Nurse';
+
+    let comments = this.postCommentsMap.get(postId);
+    if (!comments) {
+      comments = [];
+      this.postCommentsMap.set(postId, comments);
+    }
+
+    const commentObj = {
+      id: `c-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      authorName,
+      text: dto.text,
+      createdAt: Date.now(),
+    };
+
+    comments.push(commentObj);
+    return { postId, comment: commentObj, commentsCount: comments.length, commentsList: comments };
+  }
+
+  async createCommunityPost(userId: string, dto: { title?: string; content: string; category?: string }) {
+    await this.requireUser(userId);
+    const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { displayName: true, email: true } });
+    const authorName = user?.displayName || user?.email?.split('@')[0] || 'Gileo Nurse';
+
+    const resource = await this.prisma.communityResource.create({
+      data: {
+        title: dto.title || `Update by ${authorName}`,
+        slug: `post-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+        description: dto.content,
+        content: dto.content,
+        resourceUrl: dto.category || 'Community Share',
+        status: ContentStatus.PUBLISHED,
+      },
+    });
+    return resource;
+  }
+
   async joinCommunity(userId: string) {
     await this.requireUser(userId);
     return this.prisma.communityMembership.upsert({ where: { userId }, create: { userId }, update: {} });
   }
   async communityResources() {
+    await this.seedDemoCohortsAndCommunityIfNeeded();
     const [resources, announcements] = await Promise.all([
       this.prisma.communityResource.findMany({ where: { status: ContentStatus.PUBLISHED }, orderBy: { createdAt: 'desc' } }),
       this.prisma.announcement.findMany({ where: { status: ContentStatus.PUBLISHED }, orderBy: { publishedAt: 'desc' } }),

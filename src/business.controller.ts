@@ -18,6 +18,8 @@ export class BusinessController {
 
   @Get('profile/me') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   myProfile(@Req() r: AuthRequest) { return this.business.myProfile(r.user.userId); }
+  @Patch('profile/me') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  updateMyProfile(@Req() r: AuthRequest, @Body() dto: { displayName?: string; phoneNumber?: string }) { return this.business.updateMyProfile(r.user.userId, dto); }
   @Get('admin/users') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   listUsers(@Req() r: AuthRequest, @Query('search') search?: string) { return this.business.listUsers(r.user.userId, search); }
   @Get('admin/users/:id/permissions') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
@@ -105,6 +107,20 @@ export class BusinessController {
   @Post('community/join') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   joinCommunity(@Req() r: AuthRequest) { return this.business.joinCommunity(r.user.userId); }
   @Get('community/resources') communityResources() { return this.business.communityResources(); }
+  @Get('community/members') communityMembers() { return this.business.communityMembers(); }
+  @Get('community/posts') getCommunityPosts() { return this.business.getCommunityPosts(); }
+  @Post('community/posts') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  createCommunityPost(@Req() r: AuthRequest, @Body() dto: { title?: string; content: string; category?: string }) {
+    return this.business.createCommunityPost(r.user.userId, dto);
+  }
+  @Post('community/posts/:id/like') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  likeCommunityPost(@Req() r: AuthRequest, @Param('id') postId: string) {
+    return this.business.likeCommunityPost(r.user.userId, postId);
+  }
+  @Post('community/posts/:id/comments') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  commentCommunityPost(@Req() r: AuthRequest, @Param('id') postId: string, @Body() dto: { text: string }) {
+    return this.business.commentCommunityPost(r.user.userId, postId, dto);
+  }
 
   @Post('support/tickets') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createSupportTicket(@Req() r: AuthRequest, @Body() dto: CreateSupportTicketDto) { return this.business.createSupportTicket(r.user.userId, dto); }
