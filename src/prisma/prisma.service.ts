@@ -38,6 +38,18 @@ export class PrismaService
 
   async onModuleInit() {
     await this.$connect();
+    try {
+      await this.$queryRaw`SELECT 1 FROM users LIMIT 1`;
+    } catch {
+      console.log('Database tables missing. Running prisma db push on cloud database...');
+      try {
+        const { execSync } = await import('node:child_process');
+        execSync('npx prisma db push --accept-data-loss', { stdio: 'inherit' });
+        console.log('Database schema pushed successfully!');
+      } catch (pushErr) {
+        console.error('Failed to auto-push Prisma schema:', pushErr);
+      }
+    }
   }
 
   async onModuleDestroy() {
