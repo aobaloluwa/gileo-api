@@ -111,12 +111,13 @@ export class AuthService {
         },
       });
 
-      await this.sendVerificationCode(user.id, email);
+      const verificationCode = await this.sendVerificationCode(user.id, email);
 
       return {
         message: 'Account created successfully. Please enter your 6-digit email verification code to proceed.',
         user,
         requiresEmailVerification: true,
+        verificationCode,
       };
     } catch (error) {
       if (
@@ -124,7 +125,7 @@ export class AuthService {
         error.code === 'P2002'
       ) {
         throw new ConflictException(
-          'An account with these details already exists.',
+          'An account with this email address already exists. Please log in instead.',
         );
       }
 
@@ -691,7 +692,7 @@ export class AuthService {
   private async sendVerificationCode(
     userId: string,
     email: string,
-  ): Promise<void> {
+  ): Promise<string> {
     const now = new Date();
     const code = randomInt(100000, 1000000).toString();
     const tokenHash = this.hashCode(code);
@@ -749,6 +750,8 @@ export class AuthService {
         mailErr,
       );
     }
+
+    return code;
   }
 
   private async sendPasswordResetCode(
