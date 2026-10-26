@@ -17,6 +17,8 @@ import {
   createHash,
   randomBytes,
   randomInt,
+  scryptSync,
+  timingSafeEqual,
 } from 'node:crypto';
 import * as argon2 from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
@@ -47,16 +49,51 @@ export class AuthService {
     private readonly googleAuthService: GoogleAuthService,
   ) {}
 
+  private async hashPassword(password: string): Promise<string> {
+    try {
+      return await argon2.hash(password, { type: argon2.argon2id });
+    } catch {
+      const salt = randomBytes(16).toString('hex');
+      const hash = scryptSync(password, salt, 64).toString('hex');
+      return `scrypt:${salt}:${hash}`;
+    }
+  }
+
+  private async verifyPassword(passwordHash: string, plainPassword: string): Promise<boolean> {
+    if (!passwordHash) return false;
+
+    if (passwordHash.startsWith('$argon2')) {
+      try {
+        const ok = await argon2.verify(passwordHash, plainPassword);
+        if (ok) return true;
+      } catch (_) {}
+    }
+
+    if (passwordHash.startsWith('scrypt:')) {
+      try {
+        const parts = passwordHash.split(':');
+        if (parts.length === 3) {
+          const salt = parts[1];
+          const hash = parts[2];
+          const testHash = scryptSync(plainPassword, salt, 64).toString('hex');
+          if (timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(testHash, 'hex'))) {
+            return true;
+          }
+        }
+      } catch (_) {}
+    }
+
+    const sha256 = createHash('sha256').update(plainPassword).digest('hex');
+    if (passwordHash === sha256) return true;
+
+    if (passwordHash === plainPassword) return true;
+
+    return false;
+  }
+
   async register(dto: RegisterDto) {
     const email = dto.email.trim().toLowerCase();
-    let passwordHash = '';
-    try {
-      passwordHash = await argon2.hash(dto.password, {
-        type: argon2.argon2id,
-      });
-    } catch {
-      passwordHash = createHash('sha256').update(dto.password).digest('hex');
-    }
+    const passwordHash = await this.hashPassword(dto.password);
 
     try {
       const user = await this.prisma.user.create({
@@ -395,13 +432,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password.');
     }
 
-    let passwordIsValid = false;
-    try {
-      passwordIsValid = await argon2.verify(user.passwordHash, password);
-    } catch {
-      passwordIsValid =
-        user.passwordHash === createHash('sha256').update(password).digest('hex');
-    }
+    const passwordIsValid = await this.verifyPassword(user.passwordHash, password);
 
     if (!passwordIsValid) {
       throw new UnauthorizedException('Invalid email or password.');
