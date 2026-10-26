@@ -12,7 +12,7 @@ import {
   Prisma,
   AuthActionType,
   AuthProvider,
-} from '../../generated/prisma/client';
+} from '@prisma/client';
 import {
   createHash,
   randomBytes,

@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.js'
-export type * from './prismaNamespace.js'
+export type * from '../models'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 
@@ -74,7 +74,12 @@ export const ModelName = {
   Announcement: 'Announcement',
   SupportTicket: 'SupportTicket',
   SupportMessage: 'SupportMessage',
-  CareOnboarding: 'CareOnboarding'
+  CareOnboarding: 'CareOnboarding',
+  CommunityPost: 'CommunityPost',
+  CommunityPostLike: 'CommunityPostLike',
+  CommunityPostComment: 'CommunityPostComment',
+  SavedPost: 'SavedPost',
+  UserConnection: 'UserConnection'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -467,6 +472,63 @@ export const CareOnboardingScalarFieldEnum = {
 } as const
 
 export type CareOnboardingScalarFieldEnum = (typeof CareOnboardingScalarFieldEnum)[keyof typeof CareOnboardingScalarFieldEnum]
+
+
+export const CommunityPostScalarFieldEnum = {
+  id: 'id',
+  authorId: 'authorId',
+  authorName: 'authorName',
+  authorRole: 'authorRole',
+  title: 'title',
+  content: 'content',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CommunityPostScalarFieldEnum = (typeof CommunityPostScalarFieldEnum)[keyof typeof CommunityPostScalarFieldEnum]
+
+
+export const CommunityPostLikeScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommunityPostLikeScalarFieldEnum = (typeof CommunityPostLikeScalarFieldEnum)[keyof typeof CommunityPostLikeScalarFieldEnum]
+
+
+export const CommunityPostCommentScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  authorId: 'authorId',
+  authorName: 'authorName',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type CommunityPostCommentScalarFieldEnum = (typeof CommunityPostCommentScalarFieldEnum)[keyof typeof CommunityPostCommentScalarFieldEnum]
+
+
+export const SavedPostScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  postId: 'postId',
+  createdAt: 'createdAt'
+} as const
+
+export type SavedPostScalarFieldEnum = (typeof SavedPostScalarFieldEnum)[keyof typeof SavedPostScalarFieldEnum]
+
+
+export const UserConnectionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetUserId: 'targetUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserConnectionScalarFieldEnum = (typeof UserConnectionScalarFieldEnum)[keyof typeof UserConnectionScalarFieldEnum]
 
 
 export const SortOrder = {

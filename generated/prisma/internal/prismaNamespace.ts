@@ -16,10 +16,10 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "../models.js"
-import { type PrismaClient } from "./class.js"
+import type * as Prisma from "../models"
+import { type PrismaClient } from "./class"
 
-export type * from '../models.js'
+export type * from '../models'
 
 export type DMMF = typeof runtime.DMMF
 
@@ -420,7 +420,12 @@ export const ModelName = {
   Announcement: 'Announcement',
   SupportTicket: 'SupportTicket',
   SupportMessage: 'SupportMessage',
-  CareOnboarding: 'CareOnboarding'
+  CareOnboarding: 'CareOnboarding',
+  CommunityPost: 'CommunityPost',
+  CommunityPostLike: 'CommunityPostLike',
+  CommunityPostComment: 'CommunityPostComment',
+  SavedPost: 'SavedPost',
+  UserConnection: 'UserConnection'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -436,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userPermission" | "authIdentity" | "refreshSession" | "authActionToken" | "service" | "serviceRequest" | "productCategory" | "product" | "productVariant" | "order" | "orderItem" | "payment" | "ebook" | "elevateCohort" | "learningPurchase" | "cohortEnrollment" | "entitlement" | "communityMembership" | "communityResource" | "announcement" | "supportTicket" | "supportMessage" | "careOnboarding"
+    modelProps: "user" | "userPermission" | "authIdentity" | "refreshSession" | "authActionToken" | "service" | "serviceRequest" | "productCategory" | "product" | "productVariant" | "order" | "orderItem" | "payment" | "ebook" | "elevateCohort" | "learningPurchase" | "cohortEnrollment" | "entitlement" | "communityMembership" | "communityResource" | "announcement" | "supportTicket" | "supportMessage" | "careOnboarding" | "communityPost" | "communityPostLike" | "communityPostComment" | "savedPost" | "userConnection"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2216,6 +2221,376 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CommunityPost: {
+      payload: Prisma.$CommunityPostPayload<ExtArgs>
+      fields: Prisma.CommunityPostFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommunityPostFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommunityPostFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>
+        }
+        findFirst: {
+          args: Prisma.CommunityPostFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommunityPostFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>
+        }
+        findMany: {
+          args: Prisma.CommunityPostFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>[]
+        }
+        create: {
+          args: Prisma.CommunityPostCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>
+        }
+        createMany: {
+          args: Prisma.CommunityPostCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommunityPostCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>[]
+        }
+        delete: {
+          args: Prisma.CommunityPostDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>
+        }
+        update: {
+          args: Prisma.CommunityPostUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommunityPostDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommunityPostUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommunityPostUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommunityPostUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostPayload>
+        }
+        aggregate: {
+          args: Prisma.CommunityPostAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommunityPost>
+        }
+        groupBy: {
+          args: Prisma.CommunityPostGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommunityPostGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommunityPostCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommunityPostCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommunityPostLike: {
+      payload: Prisma.$CommunityPostLikePayload<ExtArgs>
+      fields: Prisma.CommunityPostLikeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommunityPostLikeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommunityPostLikeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>
+        }
+        findFirst: {
+          args: Prisma.CommunityPostLikeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommunityPostLikeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>
+        }
+        findMany: {
+          args: Prisma.CommunityPostLikeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>[]
+        }
+        create: {
+          args: Prisma.CommunityPostLikeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>
+        }
+        createMany: {
+          args: Prisma.CommunityPostLikeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommunityPostLikeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>[]
+        }
+        delete: {
+          args: Prisma.CommunityPostLikeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>
+        }
+        update: {
+          args: Prisma.CommunityPostLikeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>
+        }
+        deleteMany: {
+          args: Prisma.CommunityPostLikeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommunityPostLikeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommunityPostLikeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>[]
+        }
+        upsert: {
+          args: Prisma.CommunityPostLikeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostLikePayload>
+        }
+        aggregate: {
+          args: Prisma.CommunityPostLikeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommunityPostLike>
+        }
+        groupBy: {
+          args: Prisma.CommunityPostLikeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommunityPostLikeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommunityPostLikeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommunityPostLikeCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommunityPostComment: {
+      payload: Prisma.$CommunityPostCommentPayload<ExtArgs>
+      fields: Prisma.CommunityPostCommentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommunityPostCommentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommunityPostCommentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>
+        }
+        findFirst: {
+          args: Prisma.CommunityPostCommentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommunityPostCommentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>
+        }
+        findMany: {
+          args: Prisma.CommunityPostCommentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>[]
+        }
+        create: {
+          args: Prisma.CommunityPostCommentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>
+        }
+        createMany: {
+          args: Prisma.CommunityPostCommentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommunityPostCommentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>[]
+        }
+        delete: {
+          args: Prisma.CommunityPostCommentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>
+        }
+        update: {
+          args: Prisma.CommunityPostCommentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommunityPostCommentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommunityPostCommentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommunityPostCommentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommunityPostCommentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommunityPostCommentPayload>
+        }
+        aggregate: {
+          args: Prisma.CommunityPostCommentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommunityPostComment>
+        }
+        groupBy: {
+          args: Prisma.CommunityPostCommentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommunityPostCommentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommunityPostCommentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommunityPostCommentCountAggregateOutputType> | number
+        }
+      }
+    }
+    SavedPost: {
+      payload: Prisma.$SavedPostPayload<ExtArgs>
+      fields: Prisma.SavedPostFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SavedPostFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SavedPostFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>
+        }
+        findFirst: {
+          args: Prisma.SavedPostFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SavedPostFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>
+        }
+        findMany: {
+          args: Prisma.SavedPostFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>[]
+        }
+        create: {
+          args: Prisma.SavedPostCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>
+        }
+        createMany: {
+          args: Prisma.SavedPostCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SavedPostCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>[]
+        }
+        delete: {
+          args: Prisma.SavedPostDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>
+        }
+        update: {
+          args: Prisma.SavedPostUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>
+        }
+        deleteMany: {
+          args: Prisma.SavedPostDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SavedPostUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SavedPostUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>[]
+        }
+        upsert: {
+          args: Prisma.SavedPostUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedPostPayload>
+        }
+        aggregate: {
+          args: Prisma.SavedPostAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSavedPost>
+        }
+        groupBy: {
+          args: Prisma.SavedPostGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedPostGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SavedPostCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedPostCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserConnection: {
+      payload: Prisma.$UserConnectionPayload<ExtArgs>
+      fields: Prisma.UserConnectionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserConnectionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserConnectionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>
+        }
+        findFirst: {
+          args: Prisma.UserConnectionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserConnectionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>
+        }
+        findMany: {
+          args: Prisma.UserConnectionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>[]
+        }
+        create: {
+          args: Prisma.UserConnectionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>
+        }
+        createMany: {
+          args: Prisma.UserConnectionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserConnectionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>[]
+        }
+        delete: {
+          args: Prisma.UserConnectionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>
+        }
+        update: {
+          args: Prisma.UserConnectionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserConnectionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserConnectionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserConnectionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserConnectionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserConnectionPayload>
+        }
+        aggregate: {
+          args: Prisma.UserConnectionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserConnection>
+        }
+        groupBy: {
+          args: Prisma.UserConnectionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserConnectionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserConnectionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserConnectionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2629,6 +3004,63 @@ export const CareOnboardingScalarFieldEnum = {
 } as const
 
 export type CareOnboardingScalarFieldEnum = (typeof CareOnboardingScalarFieldEnum)[keyof typeof CareOnboardingScalarFieldEnum]
+
+
+export const CommunityPostScalarFieldEnum = {
+  id: 'id',
+  authorId: 'authorId',
+  authorName: 'authorName',
+  authorRole: 'authorRole',
+  title: 'title',
+  content: 'content',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CommunityPostScalarFieldEnum = (typeof CommunityPostScalarFieldEnum)[keyof typeof CommunityPostScalarFieldEnum]
+
+
+export const CommunityPostLikeScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommunityPostLikeScalarFieldEnum = (typeof CommunityPostLikeScalarFieldEnum)[keyof typeof CommunityPostLikeScalarFieldEnum]
+
+
+export const CommunityPostCommentScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  authorId: 'authorId',
+  authorName: 'authorName',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type CommunityPostCommentScalarFieldEnum = (typeof CommunityPostCommentScalarFieldEnum)[keyof typeof CommunityPostCommentScalarFieldEnum]
+
+
+export const SavedPostScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  postId: 'postId',
+  createdAt: 'createdAt'
+} as const
+
+export type SavedPostScalarFieldEnum = (typeof SavedPostScalarFieldEnum)[keyof typeof SavedPostScalarFieldEnum]
+
+
+export const UserConnectionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetUserId: 'targetUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserConnectionScalarFieldEnum = (typeof UserConnectionScalarFieldEnum)[keyof typeof UserConnectionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3076,6 +3508,11 @@ export type GlobalOmitConfig = {
   supportTicket?: Prisma.SupportTicketOmit
   supportMessage?: Prisma.SupportMessageOmit
   careOnboarding?: Prisma.CareOnboardingOmit
+  communityPost?: Prisma.CommunityPostOmit
+  communityPostLike?: Prisma.CommunityPostLikeOmit
+  communityPostComment?: Prisma.CommunityPostCommentOmit
+  savedPost?: Prisma.SavedPostOmit
+  userConnection?: Prisma.UserConnectionOmit
 }
 
 /* Types for Logging */

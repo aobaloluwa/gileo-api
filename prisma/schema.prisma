@@ -1,7 +1,6 @@
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -112,6 +111,13 @@ model User {
   cohortEnrollments CohortEnrollment[]
   assignedServiceRequests ServiceRequest[] @relation("AssignedProvider")
   careOnboardings CareOnboarding[]
+  communityPosts CommunityPost[]
+  postLikes CommunityPostLike[]
+  postComments CommunityPostComment[]
+  savedPosts SavedPost[]
+  initiatedConnections UserConnection[] @relation("UserInitiatedConnections")
+  receivedConnections UserConnection[] @relation("UserReceivedConnections")
+
 
   @@map("users")
 }
@@ -523,3 +529,83 @@ model CareOnboarding {
   @@index([userId])
   @@map("care_onboarding")
 }
+
+model CommunityPost {
+  id          String                 @id @default(uuid()) @db.Uuid
+  authorId    String                 @db.Uuid
+  authorName  String                 @db.VarChar(120)
+  authorRole  String                 @default("Community Member") @db.VarChar(120)
+  title       String?                @db.VarChar(200)
+  content     String                 @db.Text
+  category    String                 @default("Community Share") @db.VarChar(100)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+
+  author      User                   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes       CommunityPostLike[]
+  comments    CommunityPostComment[]
+  savedBy     SavedPost[]
+
+  @@index([authorId, createdAt])
+  @@map("community_posts")
+}
+
+model CommunityPostLike {
+  id        String        @id @default(uuid()) @db.Uuid
+  postId    String        @db.Uuid
+  userId    String        @db.Uuid
+  createdAt DateTime      @default(now())
+
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([userId])
+  @@map("community_post_likes")
+}
+
+model CommunityPostComment {
+  id         String        @id @default(uuid()) @db.Uuid
+  postId     String        @db.Uuid
+  authorId   String        @db.Uuid
+  authorName String        @db.VarChar(120)
+  text       String        @db.Text
+  createdAt  DateTime      @default(now())
+
+  post       CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author     User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([postId, createdAt])
+  @@index([authorId])
+  @@map("community_post_comments")
+}
+
+model SavedPost {
+  id        String        @id @default(uuid()) @db.Uuid
+  userId    String        @db.Uuid
+  postId    String        @db.Uuid
+  createdAt DateTime      @default(now())
+
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@map("saved_posts")
+}
+
+model UserConnection {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  targetUserId String   @db.Uuid
+  createdAt    DateTime @default(now())
+
+  user         User     @relation("UserInitiatedConnections", fields: [userId], references: [id], onDelete: Cascade)
+  targetUser   User     @relation("UserReceivedConnections", fields: [targetUserId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, targetUserId])
+  @@index([userId])
+  @@index([targetUserId])
+  @@map("user_connections")
+}
+

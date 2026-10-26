@@ -10,7 +10,7 @@ import { basename, extname, join, resolve, sep } from 'node:path';
 import {
   ContentStatus, EntitlementType, OrderStatus, PaymentStatus, Prisma, PurchaseType,
   ServiceRequestStatus, SupportStatus, UserRole,
-} from '../generated/prisma/client';
+} from '@prisma/client';
 import { PrismaService } from './prisma/prisma.service';
 import {
   AssignProviderDto, AssignSupportTicketDto, CareOnboardingDto, CreateAnnouncementDto, CreateCategoryDto, CreateCohortDto, CreateCommunityResourceDto, CreateEbookDto, CreateOrderDto, CreateSupportMessageDto,
@@ -126,7 +126,100 @@ export class BusinessService {
     if (!user) throw new NotFoundException('User not found.');
     return this.prisma.user.update({ where: { id: userId }, data: { role: dto.role as UserRole }, select: { id: true, email: true, displayName: true, role: true, createdAt: true } });
   }
+  async seedDemoServicesIfNeeded() {
+    try {
+      const count = await this.prisma.service.count();
+      if (count === 0) {
+        await this.prisma.service.createMany({
+          skipDuplicates: true,
+          data: [
+            {
+              title: 'Home-Service Wound Dressing & Clinical Nursing',
+              slug: 'home-service-wound-dressing',
+              description: 'Professional clinical wound care, sterile dressing, suture removal, and post-procedure management delivered at your home by a registered nurse.',
+              audience: 'Patients recovering from surgery, chronic wound management, or post-hospital discharge.',
+              whatIsIncluded: 'Sterile wound dressing change, clinical assessment, vitals check, physician notes coordination, and care instructions.',
+              priceKobo: 2000000,
+              priceLabel: '₦20,000 / session • Indicative Demo Pricing',
+              isIndicative: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              title: 'Elderly Care & Post-Hospital Recovery',
+              slug: 'elderly-care-post-hospital-recovery',
+              description: 'Dedicated nursing assistance, vitals monitoring, medication support, mobility aid, and recovery companionship for seniors and recovering patients.',
+              audience: 'Seniors, elderly family members, or individuals recovering from major medical procedures.',
+              whatIsIncluded: 'Personalized care plan, daily vitals tracking, medication administration support, mobility assistance, and family updates.',
+              priceKobo: 3500000,
+              priceLabel: 'Custom Care Estimate • Contact Support',
+              isIndicative: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              title: 'Event Medical Coverage & First Aid Standby',
+              slug: 'event-medical-coverage',
+              description: 'On-site standby nurses, emergency response, and equipped first-aid coverage for public gatherings, sports events, and corporate functions.',
+              audience: 'Event organizers, corporate event planners, and venue managers.',
+              whatIsIncluded: 'On-site registered nurses, emergency response kit, triage station setup, ambulance coordination, and incident reporting.',
+              priceKobo: 5000000,
+              priceLabel: 'Custom Event Quote • Contact Support',
+              isIndicative: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              title: 'On-Set & Production Medical Coverage',
+              slug: 'onset-film-production-medical',
+              description: 'Dedicated on-set medical personnel and safety compliance for film sets, TV productions, commercials, and high-activity creative projects.',
+              audience: 'Film directors, production managers, crew leads, and media agencies.',
+              whatIsIncluded: 'Continuous set standby, cast/crew safety triage, emergency first response, heat/exhaustion monitoring, and health compliance.',
+              priceKobo: 6000000,
+              priceLabel: 'Custom Production Quote • Contact Support',
+              isIndicative: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              title: 'Community Health Outreaches & Screenings',
+              slug: 'community-health-outreaches',
+              description: 'Structured community health screenings, medical outreaches, blood pressure/glucose testing, and wellness education tailored for groups.',
+              audience: 'NGOs, religious bodies, community leaders, and philanthropic organizations.',
+              whatIsIncluded: 'Mobile clinical team, health screening tools, vitals assessment, health education talks, and referral guidance.',
+              priceKobo: 7500000,
+              priceLabel: 'Custom Outreach Estimate • Contact Support',
+              isIndicative: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              title: 'Corporate & Organisational Medical Services',
+              slug: 'corporate-organisational-medical',
+              description: 'On-site corporate wellness checks, employee health screenings, occupational health support, and executive wellness programs.',
+              audience: 'HR departments, corporate organizations, and business executives.',
+              whatIsIncluded: 'Employee health screenings, ergonomic assessment, wellness lectures, occupational health reports, and quarterly reviews.',
+              priceKobo: 10000000,
+              priceLabel: 'Custom Corporate Retainer • Contact Support',
+              isIndicative: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              title: 'Healthcare Service Coordination & Concierge',
+              slug: 'healthcare-service-coordination',
+              description: 'End-to-end medical concierge service: hospital appointment scheduling, specialist referrals, lab test home sample collection, and prescription delivery.',
+              audience: 'Busy professionals, international patients, and families seeking seamless healthcare navigation.',
+              whatIsIncluded: 'Dedicated nurse coordinator, priority specialist referrals, home sample collection, prescription delivery, and medical record management.',
+              priceKobo: 2500000,
+              priceLabel: '₦25,000 / month • Concierge Access',
+              isIndicative: true,
+              status: ContentStatus.PUBLISHED,
+            },
+          ],
+        });
+      }
+    } catch (err) {
+      console.error('Service seed failed:', err);
+    }
+  }
+
   async listServices() {
+    await this.seedDemoServicesIfNeeded();
     return this.prisma.service.findMany({ where: { status: publicServiceStatus }, orderBy: { title: 'asc' } });
   }
   async createService(userId: string, dto: CreateServiceDto) {
@@ -487,24 +580,68 @@ export class BusinessService {
         });
       }
 
-      const resourceCount = await this.prisma.communityResource.count({ where: { status: ContentStatus.PUBLISHED } });
+
+
+      const resourceCount = await this.prisma.communityResource.count();
       if (resourceCount === 0) {
         await this.prisma.communityResource.createMany({
           skipDuplicates: true,
           data: [
             {
-              title: 'Exploring Non-Traditional Nursing Pathways',
-              slug: 'exploring-non-traditional-nursing-pathways',
-              description: 'Learn about nurse concierge roles, corporate healthcare coordination, and independent practice models.',
-              content: 'Traditional bedside nursing is only one aspect of a rewarding healthcare career. Learn how nurses build independent practices, coordinate corporate health programs, and manage clinical concierge services.',
+              slug: 'career-pathways-beyond-bedside-nursing',
+              title: 'Career Pathways Beyond Bedside Nursing',
+              description: 'A comprehensive starter guide for registered nurses interested in independent concierge nursing, health consulting, and corporate health services.',
+              content: `Key Focus Areas:
+1. Executive Nursing & Concierge Services: Providing personalized, premium healthcare coordination and home recovery management.
+2. Corporate Health & Wellness Consultancy: Designing employee wellness checks and occupational health protocols.
+3. Medical Production & Event Coverage: Providing clinical oversight for TV/Film productions and high-profile events.
+4. Continuous Skill Upgrade: Building leadership, client communication, and healthcare business acumen.`,
               status: ContentStatus.PUBLISHED,
             },
             {
-              title: 'Building a Strong Professional Nursing Portfolio',
-              slug: 'building-a-strong-professional-nursing-portfolio',
-              description: 'Key components of a standout nursing portfolio for global healthcare opportunities.',
-              content: 'A professional nursing portfolio highlights your clinical competencies, certifications, leadership experience, and continuous professional development.',
+              slug: 'executive-nursing-portfolio-template',
+              title: 'Executive Nursing Portfolio Blueprint & Template',
+              description: 'Step-by-step framework for packaging your clinical experience, certifications, and leadership achievements for global practice opportunities.',
+              content: `Portfolio Structure:
+- Executive Summary & Personal Statement
+- Key Clinical Competencies & Specializations
+- Professional Certifications & Academic Credentials
+- Leadership, Mentorship & Project Highlights
+- Client Testimonials & Employer Recommendations`,
               status: ContentStatus.PUBLISHED,
+            },
+            {
+              slug: 'international-nursing-licensure-roadmap',
+              title: 'NCLEX & Global Nursing Licensure Roadmap',
+              description: 'Essential timeline and documentation checklist for nurses preparing for international credential evaluation (UK, US, Canada, Australia).',
+              content: `Step 1: Credential Evaluation (CGFNS / NMC / AHPRA)
+Step 2: English Language Proficiency (IELTS Academic / OET)
+Step 3: Exam Preparation (NCLEX-RN / CBT)
+Step 4: Visa Sponsorship & Interview Preparation`,
+              status: ContentStatus.PUBLISHED,
+            },
+          ],
+        });
+      }
+
+      const announcementCount = await this.prisma.announcement.count();
+      if (announcementCount === 0) {
+        await this.prisma.announcement.createMany({
+          skipDuplicates: true,
+          data: [
+            {
+              slug: 'welcome-to-gileo-nurses-community',
+              title: 'Welcome to Gileo Nurses Community!',
+              body: 'We are thrilled to welcome you to the Gileo Nurses Community — a dedicated space for nurses to explore career pathways beyond bedside roles, access free professional resources, share insights, and connect with global peers.',
+              status: ContentStatus.PUBLISHED,
+              publishedAt: new Date(),
+            },
+            {
+              slug: 'gileo-elevate-cohorts-enrolment-open',
+              title: 'Gileo Elevate November Cohort Enrolments Now Open',
+              body: 'Applications for the upcoming Nurse Concierge & Executive Leadership Cohort are now live. Reserve your seat early to access exclusive mentorship sessions and structured business models.',
+              status: ContentStatus.PUBLISHED,
+              publishedAt: new Date(),
             },
           ],
         });
@@ -570,6 +707,55 @@ export class BusinessService {
     ]);
     return { ebooks: ebooks.map(x => x.ebook).filter(Boolean), cohorts: cohorts.map(x => x.cohort).filter(Boolean) };
   }
+  async cohortContent(userId: string, cohortId: string) {
+    await this.requireUser(userId);
+    const entitlement = await this.prisma.entitlement.findFirst({
+      where: { userId, type: EntitlementType.ELEVATE_COHORT, cohortId, revokedAt: null },
+    });
+    if (!entitlement) {
+      throw new ForbiddenException('A verified enrolment entitlement is required to access this cohort\'s member resources.');
+    }
+    const cohort = await this.prisma.elevateCohort.findUnique({
+      where: { id: cohortId },
+    });
+    if (!cohort) throw new NotFoundException('Cohort not found.');
+
+    return {
+      cohortId: cohort.id,
+      title: cohort.title,
+      schedule: cohort.schedule || 'Weekly Live Masterclasses on Saturdays at 10:00 AM WAT via Gileo Elevate Portal.',
+      overview: cohort.overview,
+      learningOutcomes: cohort.learningOutcomes,
+      memberMaterials: [
+        {
+          id: 'mat-1',
+          title: 'Gileo Elevate Cohort Handbook & Orientation Guide',
+          description: 'Weekly breakdown, masterclass schedules, and project milestone rubrics.',
+          type: 'GUIDE',
+        },
+        {
+          id: 'mat-2',
+          title: 'Executive Nursing Portfolio & CV Workbooks',
+          description: 'Editable templates and case studies for structuring international leadership portfolios.',
+          type: 'TEMPLATE',
+        },
+        {
+          id: 'mat-3',
+          title: 'Live Workshop Portal & Class Recordings Archive',
+          description: 'Direct access link to weekly Zoom live streams and archived video lectures.',
+          type: 'PORTAL_LINK',
+        },
+      ],
+      announcements: [
+        {
+          id: 'ann-c1',
+          title: 'Welcome to your Gileo Elevate Cohort!',
+          body: 'Check the orientation handbook and join our private cohort group for peer networking.',
+          createdAt: cohort.createdAt.toISOString(),
+        },
+      ],
+    };
+  }
   async communityMembers() {
     return this.prisma.user.findMany({
       select: {
@@ -586,52 +772,69 @@ export class BusinessService {
 
   private postLikesMap = new Map<string, Set<string>>();
   private postCommentsMap = new Map<string, Array<{ id: string; authorName: string; text: string; createdAt: number }>>();
+  private userConnectionsMap = new Map<string, Set<string>>();
+  private userSavedPostsMap = new Map<string, Set<string>>();
 
-  async getCommunityPosts() {
+  async getCommunityPosts(authorIdFilter?: string, currentUserId?: string) {
     await this.seedDemoCohortsAndCommunityIfNeeded();
-    const posts = await this.prisma.communityResource.findMany({
-      where: { status: ContentStatus.PUBLISHED },
+    const whereCondition = authorIdFilter ? { authorId: authorIdFilter } : {};
+
+    const posts = await this.prisma.communityPost.findMany({
+      where: whereCondition,
+      include: {
+        likes: true,
+        comments: { orderBy: { createdAt: 'asc' } },
+        savedBy: true,
+      },
       orderBy: { createdAt: 'desc' },
     });
 
     return posts.map((p) => {
-      const likesSet = this.postLikesMap.get(p.id) || new Set();
-      const commentsList = this.postCommentsMap.get(p.id) || [];
-      const authorName = p.title.startsWith('Update by ') ? p.title.replace('Update by ', '') : 'Gileo Nurse';
+      const isLiked = currentUserId ? p.likes.some((l) => l.userId === currentUserId) : false;
+      const isSaved = currentUserId ? p.savedBy.some((s) => s.userId === currentUserId) : false;
 
       return {
         id: p.id,
+        authorId: p.authorId,
+        authorName: p.authorName,
+        authorRole: p.authorRole,
         title: p.title,
-        authorName,
-        authorRole: p.resourceUrl || 'Community Member',
-        content: p.content || p.description,
+        content: p.content,
+        category: p.category,
         createdAt: p.createdAt.getTime(),
-        likesCount: likesSet.size,
-        commentsCount: commentsList.length,
-        commentsList,
-        category: p.resourceUrl || 'Community Share',
+        likesCount: p.likes.length,
+        isLiked,
+        isSaved,
+        commentsCount: p.comments.length,
+        commentsList: p.comments.map((c) => ({
+          id: c.id,
+          authorName: c.authorName,
+          text: c.text,
+          createdAt: c.createdAt.getTime(),
+        })),
       };
     });
   }
 
   async likeCommunityPost(userId: string, postId: string) {
     await this.requireUser(userId);
-    let likesSet = this.postLikesMap.get(postId);
-    if (!likesSet) {
-      likesSet = new Set<string>();
-      this.postLikesMap.set(postId, likesSet);
-    }
+    const existing = await this.prisma.communityPostLike.findUnique({
+      where: { postId_userId: { postId, userId } },
+    });
 
     let isLiked = false;
-    if (likesSet.has(userId)) {
-      likesSet.delete(userId);
+    if (existing) {
+      await this.prisma.communityPostLike.delete({ where: { id: existing.id } });
       isLiked = false;
     } else {
-      likesSet.add(userId);
+      await this.prisma.communityPostLike.create({
+        data: { postId, userId },
+      });
       isLiked = true;
     }
 
-    return { postId, likesCount: likesSet.size, isLiked };
+    const likesCount = await this.prisma.communityPostLike.count({ where: { postId } });
+    return { postId, likesCount, isLiked };
   }
 
   async commentCommunityPost(userId: string, postId: string, dto: { text: string }) {
@@ -639,21 +842,37 @@ export class BusinessService {
     const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { displayName: true, email: true } });
     const authorName = user?.displayName || user?.email?.split('@')[0] || 'Gileo Nurse';
 
-    let comments = this.postCommentsMap.get(postId);
-    if (!comments) {
-      comments = [];
-      this.postCommentsMap.set(postId, comments);
-    }
+    const comment = await this.prisma.communityPostComment.create({
+      data: {
+        postId,
+        authorId: userId,
+        authorName,
+        text: dto.text,
+      },
+    });
 
-    const commentObj = {
-      id: `c-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
-      authorName,
-      text: dto.text,
-      createdAt: Date.now(),
+    const commentsCount = await this.prisma.communityPostComment.count({ where: { postId } });
+    const commentsList = await this.prisma.communityPostComment.findMany({
+      where: { postId },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    return {
+      postId,
+      comment: {
+        id: comment.id,
+        authorName: comment.authorName,
+        text: comment.text,
+        createdAt: comment.createdAt.getTime(),
+      },
+      commentsCount,
+      commentsList: commentsList.map((c) => ({
+        id: c.id,
+        authorName: c.authorName,
+        text: c.text,
+        createdAt: c.createdAt.getTime(),
+      })),
     };
-
-    comments.push(commentObj);
-    return { postId, comment: commentObj, commentsCount: comments.length, commentsList: comments };
   }
 
   async createCommunityPost(userId: string, dto: { title?: string; content: string; category?: string }) {
@@ -661,17 +880,123 @@ export class BusinessService {
     const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { displayName: true, email: true } });
     const authorName = user?.displayName || user?.email?.split('@')[0] || 'Gileo Nurse';
 
-    const resource = await this.prisma.communityResource.create({
+    const post = await this.prisma.communityPost.create({
       data: {
+        authorId: userId,
+        authorName,
+        authorRole: 'Gileo Community Member',
         title: dto.title || `Update by ${authorName}`,
-        slug: `post-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-        description: dto.content,
         content: dto.content,
-        resourceUrl: dto.category || 'Community Share',
-        status: ContentStatus.PUBLISHED,
+        category: dto.category || 'Community Share',
       },
     });
-    return resource;
+
+    return {
+      id: post.id,
+      authorId: post.authorId,
+      authorName: post.authorName,
+      authorRole: post.authorRole,
+      title: post.title,
+      content: post.content,
+      category: post.category,
+      createdAt: post.createdAt.getTime(),
+      likesCount: 0,
+      commentsCount: 0,
+      commentsList: [],
+    };
+  }
+
+  async getUserConnections(userId: string) {
+    await this.requireUser(userId);
+    const connections = await this.prisma.userConnection.findMany({
+      where: { userId },
+      select: { targetUserId: true },
+    });
+    return connections.map((c) => c.targetUserId);
+  }
+
+  async toggleUserConnection(userId: string, targetUserId: string) {
+    await this.requireUser(userId);
+    const existing = await this.prisma.userConnection.findUnique({
+      where: { userId_targetUserId: { userId, targetUserId } },
+    });
+
+    let isConnected = false;
+    if (existing) {
+      await this.prisma.userConnection.delete({ where: { id: existing.id } });
+      isConnected = false;
+    } else {
+      await this.prisma.userConnection.create({
+        data: { userId, targetUserId },
+      });
+      isConnected = true;
+    }
+
+    const connectionsCount = await this.prisma.userConnection.count({ where: { userId } });
+    const connections = await this.getUserConnections(userId);
+    return { targetUserId, isConnected, connectionsCount, connections };
+  }
+
+  async getUserSavedPosts(userId: string) {
+    await this.requireUser(userId);
+    const saved = await this.prisma.savedPost.findMany({
+      where: { userId },
+      include: {
+        post: {
+          include: {
+            likes: true,
+            comments: { orderBy: { createdAt: 'asc' } },
+            savedBy: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return saved.map((s) => {
+      const p = s.post;
+      return {
+        id: p.id,
+        authorId: p.authorId,
+        authorName: p.authorName,
+        authorRole: p.authorRole,
+        title: p.title,
+        content: p.content,
+        category: p.category,
+        createdAt: p.createdAt.getTime(),
+        likesCount: p.likes.length,
+        isLiked: p.likes.some((l) => l.userId === userId),
+        isSaved: true,
+        commentsCount: p.comments.length,
+        commentsList: p.comments.map((c) => ({
+          id: c.id,
+          authorName: c.authorName,
+          text: c.text,
+          createdAt: c.createdAt.getTime(),
+        })),
+      };
+    });
+  }
+
+  async toggleSavePost(userId: string, postId: string) {
+    await this.requireUser(userId);
+    const existing = await this.prisma.savedPost.findUnique({
+      where: { userId_postId: { userId, postId } },
+    });
+
+    let isSaved = false;
+    if (existing) {
+      await this.prisma.savedPost.delete({ where: { id: existing.id } });
+      isSaved = false;
+    } else {
+      await this.prisma.savedPost.create({
+        data: { userId, postId },
+      });
+      isSaved = true;
+    }
+
+    const savedPostsCount = await this.prisma.savedPost.count({ where: { userId } });
+    return { postId, isSaved, savedPostsCount };
   }
 
   async joinCommunity(userId: string) {
@@ -820,7 +1145,7 @@ export class BusinessService {
     try {
       const gateway = await this.paystackRequest('/transaction/initialize', 'POST', {
         email: user.email, amount: amountKobo, currency: 'NGN', reference,
-        callback_url: this.config.get<string>('PAYSTACK_CALLBACK_URL'),
+        callback_url: this.config.get<string>('PAYSTACK_CALLBACK_URL') || 'gileo://payment-callback',
         metadata: { paymentId: payment.id, userId, purchaseType: dto.purchaseType, targetId: dto.targetId },
       });
       return await this.prisma.payment.update({ where: { id: payment.id }, data: { status: PaymentStatus.PENDING, paystackAccessCode: gateway.access_code, authorizationUrl: gateway.authorization_url }, select: { id: true, reference: true, amountKobo: true, currency: true, status: true, authorizationUrl: true, paystackAccessCode: true } });

@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model User
@@ -238,6 +238,12 @@ export type UserWhereInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentListRelationFilter
   assignedServiceRequests?: Prisma.ServiceRequestListRelationFilter
   careOnboardings?: Prisma.CareOnboardingListRelationFilter
+  communityPosts?: Prisma.CommunityPostListRelationFilter
+  postLikes?: Prisma.CommunityPostLikeListRelationFilter
+  postComments?: Prisma.CommunityPostCommentListRelationFilter
+  savedPosts?: Prisma.SavedPostListRelationFilter
+  initiatedConnections?: Prisma.UserConnectionListRelationFilter
+  receivedConnections?: Prisma.UserConnectionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -267,6 +273,12 @@ export type UserOrderByWithRelationInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentOrderByRelationAggregateInput
   assignedServiceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput
   careOnboardings?: Prisma.CareOnboardingOrderByRelationAggregateInput
+  communityPosts?: Prisma.CommunityPostOrderByRelationAggregateInput
+  postLikes?: Prisma.CommunityPostLikeOrderByRelationAggregateInput
+  postComments?: Prisma.CommunityPostCommentOrderByRelationAggregateInput
+  savedPosts?: Prisma.SavedPostOrderByRelationAggregateInput
+  initiatedConnections?: Prisma.UserConnectionOrderByRelationAggregateInput
+  receivedConnections?: Prisma.UserConnectionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -299,6 +311,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   cohortEnrollments?: Prisma.CohortEnrollmentListRelationFilter
   assignedServiceRequests?: Prisma.ServiceRequestListRelationFilter
   careOnboardings?: Prisma.CareOnboardingListRelationFilter
+  communityPosts?: Prisma.CommunityPostListRelationFilter
+  postLikes?: Prisma.CommunityPostLikeListRelationFilter
+  postComments?: Prisma.CommunityPostCommentListRelationFilter
+  savedPosts?: Prisma.SavedPostListRelationFilter
+  initiatedConnections?: Prisma.UserConnectionListRelationFilter
+  receivedConnections?: Prisma.UserConnectionListRelationFilter
 }, "id" | "email" | "phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
@@ -360,6 +378,12 @@ export type UserCreateInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -389,6 +413,12 @@ export type UserUncheckedCreateInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUpdateInput = {
@@ -418,6 +448,12 @@ export type UserUpdateInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -447,6 +483,12 @@ export type UserUncheckedUpdateInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -785,6 +827,90 @@ export type UserUpdateOneRequiredWithoutCareOnboardingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCareOnboardingsInput, Prisma.UserUpdateWithoutCareOnboardingsInput>, Prisma.UserUncheckedUpdateWithoutCareOnboardingsInput>
 }
 
+export type UserCreateNestedOneWithoutCommunityPostsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommunityPostsInput, Prisma.UserUncheckedCreateWithoutCommunityPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommunityPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCommunityPostsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommunityPostsInput, Prisma.UserUncheckedCreateWithoutCommunityPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommunityPostsInput
+  upsert?: Prisma.UserUpsertWithoutCommunityPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommunityPostsInput, Prisma.UserUpdateWithoutCommunityPostsInput>, Prisma.UserUncheckedUpdateWithoutCommunityPostsInput>
+}
+
+export type UserCreateNestedOneWithoutPostLikesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostLikesInput, Prisma.UserUncheckedCreateWithoutPostLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPostLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostLikesInput, Prisma.UserUncheckedCreateWithoutPostLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostLikesInput
+  upsert?: Prisma.UserUpsertWithoutPostLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostLikesInput, Prisma.UserUpdateWithoutPostLikesInput>, Prisma.UserUncheckedUpdateWithoutPostLikesInput>
+}
+
+export type UserCreateNestedOneWithoutPostCommentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostCommentsInput, Prisma.UserUncheckedCreateWithoutPostCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPostCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostCommentsInput, Prisma.UserUncheckedCreateWithoutPostCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostCommentsInput
+  upsert?: Prisma.UserUpsertWithoutPostCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostCommentsInput, Prisma.UserUpdateWithoutPostCommentsInput>, Prisma.UserUncheckedUpdateWithoutPostCommentsInput>
+}
+
+export type UserCreateNestedOneWithoutSavedPostsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedPostsInput, Prisma.UserUncheckedCreateWithoutSavedPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSavedPostsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedPostsInput, Prisma.UserUncheckedCreateWithoutSavedPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedPostsInput
+  upsert?: Prisma.UserUpsertWithoutSavedPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSavedPostsInput, Prisma.UserUpdateWithoutSavedPostsInput>, Prisma.UserUncheckedUpdateWithoutSavedPostsInput>
+}
+
+export type UserCreateNestedOneWithoutInitiatedConnectionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInitiatedConnectionsInput, Prisma.UserUncheckedCreateWithoutInitiatedConnectionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInitiatedConnectionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReceivedConnectionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedConnectionsInput, Prisma.UserUncheckedCreateWithoutReceivedConnectionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedConnectionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInitiatedConnectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInitiatedConnectionsInput, Prisma.UserUncheckedCreateWithoutInitiatedConnectionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInitiatedConnectionsInput
+  upsert?: Prisma.UserUpsertWithoutInitiatedConnectionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInitiatedConnectionsInput, Prisma.UserUpdateWithoutInitiatedConnectionsInput>, Prisma.UserUncheckedUpdateWithoutInitiatedConnectionsInput>
+}
+
+export type UserUpdateOneRequiredWithoutReceivedConnectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedConnectionsInput, Prisma.UserUncheckedCreateWithoutReceivedConnectionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedConnectionsInput
+  upsert?: Prisma.UserUpsertWithoutReceivedConnectionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReceivedConnectionsInput, Prisma.UserUpdateWithoutReceivedConnectionsInput>, Prisma.UserUncheckedUpdateWithoutReceivedConnectionsInput>
+}
+
 export type UserCreateWithoutUserPermissionsInput = {
   id?: string
   email?: string | null
@@ -811,6 +937,12 @@ export type UserCreateWithoutUserPermissionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutUserPermissionsInput = {
@@ -839,6 +971,12 @@ export type UserUncheckedCreateWithoutUserPermissionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutUserPermissionsInput = {
@@ -872,6 +1010,12 @@ export type UserCreateWithoutPermissionsGrantedInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutPermissionsGrantedInput = {
@@ -900,6 +1044,12 @@ export type UserUncheckedCreateWithoutPermissionsGrantedInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutPermissionsGrantedInput = {
@@ -944,6 +1094,12 @@ export type UserUpdateWithoutUserPermissionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserPermissionsInput = {
@@ -972,6 +1128,12 @@ export type UserUncheckedUpdateWithoutUserPermissionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUpsertWithoutPermissionsGrantedInput = {
@@ -1011,6 +1173,12 @@ export type UserUpdateWithoutPermissionsGrantedInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPermissionsGrantedInput = {
@@ -1039,6 +1207,12 @@ export type UserUncheckedUpdateWithoutPermissionsGrantedInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutAuthIdentitiesInput = {
@@ -1067,6 +1241,12 @@ export type UserCreateWithoutAuthIdentitiesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
@@ -1095,6 +1275,12 @@ export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthIdentitiesInput = {
@@ -1139,6 +1325,12 @@ export type UserUpdateWithoutAuthIdentitiesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
@@ -1167,6 +1359,12 @@ export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutRefreshSessionsInput = {
@@ -1195,6 +1393,12 @@ export type UserCreateWithoutRefreshSessionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutRefreshSessionsInput = {
@@ -1223,6 +1427,12 @@ export type UserUncheckedCreateWithoutRefreshSessionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutRefreshSessionsInput = {
@@ -1267,6 +1477,12 @@ export type UserUpdateWithoutRefreshSessionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshSessionsInput = {
@@ -1295,6 +1511,12 @@ export type UserUncheckedUpdateWithoutRefreshSessionsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutAuthActionTokensInput = {
@@ -1323,6 +1545,12 @@ export type UserCreateWithoutAuthActionTokensInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthActionTokensInput = {
@@ -1351,6 +1579,12 @@ export type UserUncheckedCreateWithoutAuthActionTokensInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthActionTokensInput = {
@@ -1395,6 +1629,12 @@ export type UserUpdateWithoutAuthActionTokensInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthActionTokensInput = {
@@ -1423,6 +1663,12 @@ export type UserUncheckedUpdateWithoutAuthActionTokensInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutServiceRequestsInput = {
@@ -1451,6 +1697,12 @@ export type UserCreateWithoutServiceRequestsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutServiceRequestsInput = {
@@ -1479,6 +1731,12 @@ export type UserUncheckedCreateWithoutServiceRequestsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutServiceRequestsInput = {
@@ -1512,6 +1770,12 @@ export type UserCreateWithoutAssignedServiceRequestsInput = {
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedServiceRequestsInput = {
@@ -1540,6 +1804,12 @@ export type UserUncheckedCreateWithoutAssignedServiceRequestsInput = {
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedServiceRequestsInput = {
@@ -1584,6 +1854,12 @@ export type UserUpdateWithoutServiceRequestsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutServiceRequestsInput = {
@@ -1612,6 +1888,12 @@ export type UserUncheckedUpdateWithoutServiceRequestsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUpsertWithoutAssignedServiceRequestsInput = {
@@ -1651,6 +1933,12 @@ export type UserUpdateWithoutAssignedServiceRequestsInput = {
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedServiceRequestsInput = {
@@ -1679,6 +1967,12 @@ export type UserUncheckedUpdateWithoutAssignedServiceRequestsInput = {
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -1707,6 +2001,12 @@ export type UserCreateWithoutOrdersInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -1735,6 +2035,12 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -1779,6 +2085,12 @@ export type UserUpdateWithoutOrdersInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -1807,6 +2119,12 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -1835,6 +2153,12 @@ export type UserCreateWithoutPaymentsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -1863,6 +2187,12 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -1907,6 +2237,12 @@ export type UserUpdateWithoutPaymentsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -1935,6 +2271,12 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutPurchasesInput = {
@@ -1963,6 +2305,12 @@ export type UserCreateWithoutPurchasesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutPurchasesInput = {
@@ -1991,6 +2339,12 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutPurchasesInput = {
@@ -2035,6 +2389,12 @@ export type UserUpdateWithoutPurchasesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchasesInput = {
@@ -2063,6 +2423,12 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutCohortEnrollmentsInput = {
@@ -2091,6 +2457,12 @@ export type UserCreateWithoutCohortEnrollmentsInput = {
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutCohortEnrollmentsInput = {
@@ -2119,6 +2491,12 @@ export type UserUncheckedCreateWithoutCohortEnrollmentsInput = {
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutCohortEnrollmentsInput = {
@@ -2163,6 +2541,12 @@ export type UserUpdateWithoutCohortEnrollmentsInput = {
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCohortEnrollmentsInput = {
@@ -2191,6 +2575,12 @@ export type UserUncheckedUpdateWithoutCohortEnrollmentsInput = {
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutEntitlementsInput = {
@@ -2219,6 +2609,12 @@ export type UserCreateWithoutEntitlementsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutEntitlementsInput = {
@@ -2247,6 +2643,12 @@ export type UserUncheckedCreateWithoutEntitlementsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutEntitlementsInput = {
@@ -2291,6 +2693,12 @@ export type UserUpdateWithoutEntitlementsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEntitlementsInput = {
@@ -2319,6 +2727,12 @@ export type UserUncheckedUpdateWithoutEntitlementsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutCommunityMembershipInput = {
@@ -2347,6 +2761,12 @@ export type UserCreateWithoutCommunityMembershipInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutCommunityMembershipInput = {
@@ -2375,6 +2795,12 @@ export type UserUncheckedCreateWithoutCommunityMembershipInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutCommunityMembershipInput = {
@@ -2419,6 +2845,12 @@ export type UserUpdateWithoutCommunityMembershipInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommunityMembershipInput = {
@@ -2447,6 +2879,12 @@ export type UserUncheckedUpdateWithoutCommunityMembershipInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutSupportTicketsInput = {
@@ -2475,6 +2913,12 @@ export type UserCreateWithoutSupportTicketsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutSupportTicketsInput = {
@@ -2503,6 +2947,12 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutSupportTicketsInput = {
@@ -2547,6 +2997,12 @@ export type UserUpdateWithoutSupportTicketsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportTicketsInput = {
@@ -2575,6 +3031,12 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutSupportMessagesInput = {
@@ -2603,6 +3065,12 @@ export type UserCreateWithoutSupportMessagesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutSupportMessagesInput = {
@@ -2631,6 +3099,12 @@ export type UserUncheckedCreateWithoutSupportMessagesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
   careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutSupportMessagesInput = {
@@ -2675,6 +3149,12 @@ export type UserUpdateWithoutSupportMessagesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportMessagesInput = {
@@ -2703,6 +3183,12 @@ export type UserUncheckedUpdateWithoutSupportMessagesInput = {
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
   careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutCareOnboardingsInput = {
@@ -2731,6 +3217,12 @@ export type UserCreateWithoutCareOnboardingsInput = {
   communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutCareOnboardingsInput = {
@@ -2759,6 +3251,12 @@ export type UserUncheckedCreateWithoutCareOnboardingsInput = {
   communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutCareOnboardingsInput = {
@@ -2803,6 +3301,12 @@ export type UserUpdateWithoutCareOnboardingsInput = {
   communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCareOnboardingsInput = {
@@ -2831,6 +3335,924 @@ export type UserUncheckedUpdateWithoutCareOnboardingsInput = {
   communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
   cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserCreateWithoutCommunityPostsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserUncheckedCreateWithoutCommunityPostsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserCreateOrConnectWithoutCommunityPostsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommunityPostsInput, Prisma.UserUncheckedCreateWithoutCommunityPostsInput>
+}
+
+export type UserUpsertWithoutCommunityPostsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCommunityPostsInput, Prisma.UserUncheckedUpdateWithoutCommunityPostsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommunityPostsInput, Prisma.UserUncheckedCreateWithoutCommunityPostsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCommunityPostsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCommunityPostsInput, Prisma.UserUncheckedUpdateWithoutCommunityPostsInput>
+}
+
+export type UserUpdateWithoutCommunityPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCommunityPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserCreateWithoutPostLikesInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserUncheckedCreateWithoutPostLikesInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserCreateOrConnectWithoutPostLikesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostLikesInput, Prisma.UserUncheckedCreateWithoutPostLikesInput>
+}
+
+export type UserUpsertWithoutPostLikesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPostLikesInput, Prisma.UserUncheckedUpdateWithoutPostLikesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostLikesInput, Prisma.UserUncheckedCreateWithoutPostLikesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPostLikesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPostLikesInput, Prisma.UserUncheckedUpdateWithoutPostLikesInput>
+}
+
+export type UserUpdateWithoutPostLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPostLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserCreateWithoutPostCommentsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserUncheckedCreateWithoutPostCommentsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserCreateOrConnectWithoutPostCommentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostCommentsInput, Prisma.UserUncheckedCreateWithoutPostCommentsInput>
+}
+
+export type UserUpsertWithoutPostCommentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPostCommentsInput, Prisma.UserUncheckedUpdateWithoutPostCommentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostCommentsInput, Prisma.UserUncheckedCreateWithoutPostCommentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPostCommentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPostCommentsInput, Prisma.UserUncheckedUpdateWithoutPostCommentsInput>
+}
+
+export type UserUpdateWithoutPostCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPostCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserCreateWithoutSavedPostsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserUncheckedCreateWithoutSavedPostsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserCreateOrConnectWithoutSavedPostsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedPostsInput, Prisma.UserUncheckedCreateWithoutSavedPostsInput>
+}
+
+export type UserUpsertWithoutSavedPostsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSavedPostsInput, Prisma.UserUncheckedUpdateWithoutSavedPostsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedPostsInput, Prisma.UserUncheckedCreateWithoutSavedPostsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSavedPostsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSavedPostsInput, Prisma.UserUncheckedUpdateWithoutSavedPostsInput>
+}
+
+export type UserUpdateWithoutSavedPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSavedPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserCreateWithoutInitiatedConnectionsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserUncheckedCreateWithoutInitiatedConnectionsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  receivedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserCreateOrConnectWithoutInitiatedConnectionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInitiatedConnectionsInput, Prisma.UserUncheckedCreateWithoutInitiatedConnectionsInput>
+}
+
+export type UserCreateWithoutReceivedConnectionsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
+  id?: string
+  email?: string | null
+  phoneNumber?: string | null
+  passwordHash?: string | null
+  displayName?: string | null
+  role?: $Enums.UserRole
+  emailVerifiedAt?: Date | string | null
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedCreateNestedManyWithoutUserInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.LearningPurchaseUncheckedCreateNestedManyWithoutUserInput
+  entitlements?: Prisma.EntitlementUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+  userPermissions?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutUserInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedCreateNestedManyWithoutGrantedByUserInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedCreateNestedOneWithoutUserInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutAssignedProviderInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedCreateNestedManyWithoutUserInput
+  communityPosts?: Prisma.CommunityPostUncheckedCreateNestedManyWithoutAuthorInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedCreateNestedManyWithoutUserInput
+  postComments?: Prisma.CommunityPostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  savedPosts?: Prisma.SavedPostUncheckedCreateNestedManyWithoutUserInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutReceivedConnectionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedConnectionsInput, Prisma.UserUncheckedCreateWithoutReceivedConnectionsInput>
+}
+
+export type UserUpsertWithoutInitiatedConnectionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInitiatedConnectionsInput, Prisma.UserUncheckedUpdateWithoutInitiatedConnectionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInitiatedConnectionsInput, Prisma.UserUncheckedCreateWithoutInitiatedConnectionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInitiatedConnectionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInitiatedConnectionsInput, Prisma.UserUncheckedUpdateWithoutInitiatedConnectionsInput>
+}
+
+export type UserUpdateWithoutInitiatedConnectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInitiatedConnectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  receivedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUpsertWithoutReceivedConnectionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReceivedConnectionsInput, Prisma.UserUncheckedUpdateWithoutReceivedConnectionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedConnectionsInput, Prisma.UserUncheckedCreateWithoutReceivedConnectionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReceivedConnectionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReceivedConnectionsInput, Prisma.UserUncheckedUpdateWithoutReceivedConnectionsInput>
+}
+
+export type UserUpdateWithoutReceivedConnectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  authActionTokens?: Prisma.AuthActionTokenUncheckedUpdateManyWithoutUserNestedInput
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.LearningPurchaseUncheckedUpdateManyWithoutUserNestedInput
+  entitlements?: Prisma.EntitlementUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+  userPermissions?: Prisma.UserPermissionUncheckedUpdateManyWithoutUserNestedInput
+  permissionsGranted?: Prisma.UserPermissionUncheckedUpdateManyWithoutGrantedByUserNestedInput
+  communityMembership?: Prisma.CommunityMembershipUncheckedUpdateOneWithoutUserNestedInput
+  cohortEnrollments?: Prisma.CohortEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  assignedServiceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutAssignedProviderNestedInput
+  careOnboardings?: Prisma.CareOnboardingUncheckedUpdateManyWithoutUserNestedInput
+  communityPosts?: Prisma.CommunityPostUncheckedUpdateManyWithoutAuthorNestedInput
+  postLikes?: Prisma.CommunityPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  postComments?: Prisma.CommunityPostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  savedPosts?: Prisma.SavedPostUncheckedUpdateManyWithoutUserNestedInput
+  initiatedConnections?: Prisma.UserConnectionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -2854,6 +4276,12 @@ export type UserCountOutputType = {
   cohortEnrollments: number
   assignedServiceRequests: number
   careOnboardings: number
+  communityPosts: number
+  postLikes: number
+  postComments: number
+  savedPosts: number
+  initiatedConnections: number
+  receivedConnections: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2872,6 +4300,12 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   cohortEnrollments?: boolean | UserCountOutputTypeCountCohortEnrollmentsArgs
   assignedServiceRequests?: boolean | UserCountOutputTypeCountAssignedServiceRequestsArgs
   careOnboardings?: boolean | UserCountOutputTypeCountCareOnboardingsArgs
+  communityPosts?: boolean | UserCountOutputTypeCountCommunityPostsArgs
+  postLikes?: boolean | UserCountOutputTypeCountPostLikesArgs
+  postComments?: boolean | UserCountOutputTypeCountPostCommentsArgs
+  savedPosts?: boolean | UserCountOutputTypeCountSavedPostsArgs
+  initiatedConnections?: boolean | UserCountOutputTypeCountInitiatedConnectionsArgs
+  receivedConnections?: boolean | UserCountOutputTypeCountReceivedConnectionsArgs
 }
 
 /**
@@ -2989,6 +4423,48 @@ export type UserCountOutputTypeCountCareOnboardingsArgs<ExtArgs extends runtime.
   where?: Prisma.CareOnboardingWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCommunityPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommunityPostWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPostLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommunityPostLikeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPostCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommunityPostCommentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSavedPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SavedPostWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInitiatedConnectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserConnectionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReceivedConnectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserConnectionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3017,6 +4493,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   cohortEnrollments?: boolean | Prisma.User$cohortEnrollmentsArgs<ExtArgs>
   assignedServiceRequests?: boolean | Prisma.User$assignedServiceRequestsArgs<ExtArgs>
   careOnboardings?: boolean | Prisma.User$careOnboardingsArgs<ExtArgs>
+  communityPosts?: boolean | Prisma.User$communityPostsArgs<ExtArgs>
+  postLikes?: boolean | Prisma.User$postLikesArgs<ExtArgs>
+  postComments?: boolean | Prisma.User$postCommentsArgs<ExtArgs>
+  savedPosts?: boolean | Prisma.User$savedPostsArgs<ExtArgs>
+  initiatedConnections?: boolean | Prisma.User$initiatedConnectionsArgs<ExtArgs>
+  receivedConnections?: boolean | Prisma.User$receivedConnectionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3077,6 +4559,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   cohortEnrollments?: boolean | Prisma.User$cohortEnrollmentsArgs<ExtArgs>
   assignedServiceRequests?: boolean | Prisma.User$assignedServiceRequestsArgs<ExtArgs>
   careOnboardings?: boolean | Prisma.User$careOnboardingsArgs<ExtArgs>
+  communityPosts?: boolean | Prisma.User$communityPostsArgs<ExtArgs>
+  postLikes?: boolean | Prisma.User$postLikesArgs<ExtArgs>
+  postComments?: boolean | Prisma.User$postCommentsArgs<ExtArgs>
+  savedPosts?: boolean | Prisma.User$savedPostsArgs<ExtArgs>
+  initiatedConnections?: boolean | Prisma.User$initiatedConnectionsArgs<ExtArgs>
+  receivedConnections?: boolean | Prisma.User$receivedConnectionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3101,6 +4589,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     cohortEnrollments: Prisma.$CohortEnrollmentPayload<ExtArgs>[]
     assignedServiceRequests: Prisma.$ServiceRequestPayload<ExtArgs>[]
     careOnboardings: Prisma.$CareOnboardingPayload<ExtArgs>[]
+    communityPosts: Prisma.$CommunityPostPayload<ExtArgs>[]
+    postLikes: Prisma.$CommunityPostLikePayload<ExtArgs>[]
+    postComments: Prisma.$CommunityPostCommentPayload<ExtArgs>[]
+    savedPosts: Prisma.$SavedPostPayload<ExtArgs>[]
+    initiatedConnections: Prisma.$UserConnectionPayload<ExtArgs>[]
+    receivedConnections: Prisma.$UserConnectionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3523,6 +5017,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   cohortEnrollments<T extends Prisma.User$cohortEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cohortEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CohortEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedServiceRequests<T extends Prisma.User$assignedServiceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedServiceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   careOnboardings<T extends Prisma.User$careOnboardingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$careOnboardingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CareOnboardingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  communityPosts<T extends Prisma.User$communityPostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$communityPostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunityPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  postLikes<T extends Prisma.User$postLikesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postLikesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunityPostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  postComments<T extends Prisma.User$postCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunityPostCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  savedPosts<T extends Prisma.User$savedPostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$savedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  initiatedConnections<T extends Prisma.User$initiatedConnectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$initiatedConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  receivedConnections<T extends Prisma.User$receivedConnectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4331,6 +5831,150 @@ export type User$careOnboardingsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.CareOnboardingScalarFieldEnum | Prisma.CareOnboardingScalarFieldEnum[]
+}
+
+/**
+ * User.communityPosts
+ */
+export type User$communityPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommunityPost
+   */
+  select?: Prisma.CommunityPostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommunityPost
+   */
+  omit?: Prisma.CommunityPostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommunityPostInclude<ExtArgs> | null
+  where?: Prisma.CommunityPostWhereInput
+  orderBy?: Prisma.CommunityPostOrderByWithRelationInput | Prisma.CommunityPostOrderByWithRelationInput[]
+  cursor?: Prisma.CommunityPostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommunityPostScalarFieldEnum | Prisma.CommunityPostScalarFieldEnum[]
+}
+
+/**
+ * User.postLikes
+ */
+export type User$postLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommunityPostLike
+   */
+  select?: Prisma.CommunityPostLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommunityPostLike
+   */
+  omit?: Prisma.CommunityPostLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommunityPostLikeInclude<ExtArgs> | null
+  where?: Prisma.CommunityPostLikeWhereInput
+  orderBy?: Prisma.CommunityPostLikeOrderByWithRelationInput | Prisma.CommunityPostLikeOrderByWithRelationInput[]
+  cursor?: Prisma.CommunityPostLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommunityPostLikeScalarFieldEnum | Prisma.CommunityPostLikeScalarFieldEnum[]
+}
+
+/**
+ * User.postComments
+ */
+export type User$postCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommunityPostComment
+   */
+  select?: Prisma.CommunityPostCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommunityPostComment
+   */
+  omit?: Prisma.CommunityPostCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommunityPostCommentInclude<ExtArgs> | null
+  where?: Prisma.CommunityPostCommentWhereInput
+  orderBy?: Prisma.CommunityPostCommentOrderByWithRelationInput | Prisma.CommunityPostCommentOrderByWithRelationInput[]
+  cursor?: Prisma.CommunityPostCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommunityPostCommentScalarFieldEnum | Prisma.CommunityPostCommentScalarFieldEnum[]
+}
+
+/**
+ * User.savedPosts
+ */
+export type User$savedPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SavedPost
+   */
+  select?: Prisma.SavedPostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SavedPost
+   */
+  omit?: Prisma.SavedPostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SavedPostInclude<ExtArgs> | null
+  where?: Prisma.SavedPostWhereInput
+  orderBy?: Prisma.SavedPostOrderByWithRelationInput | Prisma.SavedPostOrderByWithRelationInput[]
+  cursor?: Prisma.SavedPostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SavedPostScalarFieldEnum | Prisma.SavedPostScalarFieldEnum[]
+}
+
+/**
+ * User.initiatedConnections
+ */
+export type User$initiatedConnectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserConnection
+   */
+  select?: Prisma.UserConnectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserConnection
+   */
+  omit?: Prisma.UserConnectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserConnectionInclude<ExtArgs> | null
+  where?: Prisma.UserConnectionWhereInput
+  orderBy?: Prisma.UserConnectionOrderByWithRelationInput | Prisma.UserConnectionOrderByWithRelationInput[]
+  cursor?: Prisma.UserConnectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserConnectionScalarFieldEnum | Prisma.UserConnectionScalarFieldEnum[]
+}
+
+/**
+ * User.receivedConnections
+ */
+export type User$receivedConnectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserConnection
+   */
+  select?: Prisma.UserConnectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserConnection
+   */
+  omit?: Prisma.UserConnectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserConnectionInclude<ExtArgs> | null
+  where?: Prisma.UserConnectionWhereInput
+  orderBy?: Prisma.UserConnectionOrderByWithRelationInput | Prisma.UserConnectionOrderByWithRelationInput[]
+  cursor?: Prisma.UserConnectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserConnectionScalarFieldEnum | Prisma.UserConnectionScalarFieldEnum[]
 }
 
 /**

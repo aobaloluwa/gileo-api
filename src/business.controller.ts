@@ -100,6 +100,8 @@ export class BusinessController {
   updateCohort(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateCohortDto) { return this.business.updateCohort(r.user.userId, id, dto); }
   @Get('learning/library') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   myLibrary(@Req() r: AuthRequest) { return this.business.myLibrary(r.user.userId); }
+  @Get('learning/cohorts/:id/content') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  cohortContent(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.cohortContent(r.user.userId, id); }
   @Post('community/resources') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createCommunityResource(@Req() r: AuthRequest, @Body() dto: CreateCommunityResourceDto) { return this.business.createCommunityResource(r.user.userId, dto); }
   @Post('community/announcements') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
@@ -108,7 +110,9 @@ export class BusinessController {
   joinCommunity(@Req() r: AuthRequest) { return this.business.joinCommunity(r.user.userId); }
   @Get('community/resources') communityResources() { return this.business.communityResources(); }
   @Get('community/members') communityMembers() { return this.business.communityMembers(); }
-  @Get('community/posts') getCommunityPosts() { return this.business.getCommunityPosts(); }
+  @Get('community/posts') getCommunityPosts(@Query('authorId') authorId?: string) { return this.business.getCommunityPosts(authorId); }
+  @Get('community/posts/mine') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  getMyCommunityPosts(@Req() r: AuthRequest) { return this.business.getCommunityPosts(r.user.userId); }
   @Post('community/posts') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createCommunityPost(@Req() r: AuthRequest, @Body() dto: { title?: string; content: string; category?: string }) {
     return this.business.createCommunityPost(r.user.userId, dto);
@@ -120,6 +124,18 @@ export class BusinessController {
   @Post('community/posts/:id/comments') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   commentCommunityPost(@Req() r: AuthRequest, @Param('id') postId: string, @Body() dto: { text: string }) {
     return this.business.commentCommunityPost(r.user.userId, postId, dto);
+  }
+  @Get('community/connections') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  getUserConnections(@Req() r: AuthRequest) { return this.business.getUserConnections(r.user.userId); }
+  @Post('community/connections/toggle') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  toggleUserConnection(@Req() r: AuthRequest, @Body() dto: { targetUserId: string }) {
+    return this.business.toggleUserConnection(r.user.userId, dto.targetUserId);
+  }
+  @Get('community/saved-posts') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  getUserSavedPosts(@Req() r: AuthRequest) { return this.business.getUserSavedPosts(r.user.userId); }
+  @Post('community/saved-posts/toggle') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  toggleSavePost(@Req() r: AuthRequest, @Body() dto: { postId: string }) {
+    return this.business.toggleSavePost(r.user.userId, dto.postId);
   }
 
   @Post('support/tickets') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
