@@ -19,7 +19,7 @@ NestJS + PostgreSQL + Prisma API for the GILEO Medicals mobile platform. The exi
 5. Apply migrations to your development database: `npm run db:migrate:deploy`.
 6. Start the API: `npm run start:dev`.
 7. Open Swagger at `http://localhost:3000/api/docs` in development.
-8. Optional for a demo database only: apply `prisma/demo-seed.sql` manually after reviewing the sample estimates. These are illustrative listings, not approved prices or verified inventory.
+8. Optional for a demo databaseerror in  only: apply `prisma/demo-seed.sql` manually after reviewing the sample estimates. These are illustrative listings, not approved prices or verified inventory.
 
 Do not use `prisma migrate reset` against a database with data you need. Review migrations before applying them to shared/production databases. Make a backup first.
 
