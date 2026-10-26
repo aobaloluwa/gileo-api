@@ -1,4 +1,3 @@
-
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
@@ -11,12 +10,22 @@ export class HealthController {
   @Get()
   @ApiOperation({ summary: 'Check API and database health' })
   async checkHealth() {
-    await this.prisma.$queryRaw`SELECT 1`;
+    let dbStatus = 'connected';
+    let dbError: string | null = null;
+
+    try {
+      await this.prisma.$queryRaw`SELECT 1`;
+    } catch (err: any) {
+      dbStatus = 'disconnected';
+      dbError = err?.message || 'Database query failed';
+    }
 
     return {
-      status: 'ok',
+      status: dbStatus === 'connected' ? 'ok' : 'degraded',
       service: 'Gileo API',
-      database: 'connected',
+      database: dbStatus,
+      timestamp: new Date().toISOString(),
+      ...(dbError ? { error: dbError } : {}),
     };
   }
 }
