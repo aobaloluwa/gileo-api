@@ -101,7 +101,7 @@ export class AuthService {
           email,
           passwordHash,
           displayName: dto.displayName.trim(),
-          emailVerifiedAt: new Date(),
+          emailVerifiedAt: null,
         },
         select: {
           id: true,
@@ -111,12 +111,12 @@ export class AuthService {
         },
       });
 
-      void this.sendVerificationCode(user.id, email).catch(() => {});
+      await this.sendVerificationCode(user.id, email);
 
       return {
-        message: 'Account created successfully. You can now log in!',
+        message: 'Account created successfully. Please enter your 6-digit email verification code to proceed.',
         user,
-        requiresEmailVerification: false,
+        requiresEmailVerification: true,
       };
     } catch (error) {
       if (
@@ -439,10 +439,9 @@ export class AuthService {
     }
 
     if (!user.emailVerifiedAt) {
-      await this.prisma.user.update({
-        where: { id: user.id },
-        data: { emailVerifiedAt: new Date() },
-      });
+      throw new UnauthorizedException(
+        'Please verify your email address before logging in.',
+      );
     }
 
     return this.createAuthResponse(user.id, {
@@ -743,19 +742,11 @@ export class AuthService {
           </div>
         `,
       });
-    } catch {
-      await this.prisma.authActionToken.updateMany({
-        where: {
-          userId,
-          type: AuthActionType.EMAIL_VERIFICATION,
-          tokenHash,
-          usedAt: null,
-        },
-        data: { usedAt: new Date() },
-      });
-
-      throw new BadRequestException(
-        'We could not send the verification email. Please try again later.',
+      console.log(`[Email Verification Sent] Code for ${email}: ${code}`);
+    } catch (mailErr) {
+      console.warn(
+        `[Email Verification Mail Failed] Could not dispatch email via SMTP. Code generated for ${email}: ${code}`,
+        mailErr,
       );
     }
   }
