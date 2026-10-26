@@ -95,6 +95,44 @@ export class AuthService {
     const email = dto.email.trim().toLowerCase();
     const passwordHash = await this.hashPassword(dto.password);
 
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      if (!existingUser.emailVerifiedAt) {
+        await this.prisma.user.update({
+          where: { id: existingUser.id },
+          data: {
+            passwordHash,
+            displayName: dto.displayName.trim(),
+          },
+        });
+
+        const verificationCode = await this.sendVerificationCode(
+          existingUser.id,
+          email,
+        );
+
+        return {
+          message:
+            'An unverified account with this email address exists. We sent a new 6-digit verification code.',
+          user: {
+            id: existingUser.id,
+            email: existingUser.email!,
+            displayName: dto.displayName.trim(),
+            createdAt: existingUser.createdAt.toISOString(),
+          },
+          requiresEmailVerification: true,
+          verificationCode,
+        };
+      }
+
+      throw new ConflictException(
+        'An account with this email address is already registered and verified. Please log in instead.',
+      );
+    }
+
     try {
       const user = await this.prisma.user.create({
         data: {
@@ -114,7 +152,8 @@ export class AuthService {
       const verificationCode = await this.sendVerificationCode(user.id, email);
 
       return {
-        message: 'Account created successfully. Please enter your 6-digit email verification code to proceed.',
+        message:
+          'Account created successfully. Please enter your 6-digit email verification code to proceed.',
         user,
         requiresEmailVerification: true,
         verificationCode,
@@ -440,8 +479,9 @@ export class AuthService {
     }
 
     if (!user.emailVerifiedAt) {
+      void this.sendVerificationCode(user.id, email).catch(() => {});
       throw new UnauthorizedException(
-        'Please verify your email address before logging in.',
+        'Please verify your email address before logging in. We sent a fresh verification code to your email.',
       );
     }
 
