@@ -1074,11 +1074,90 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         data: { userId, targetUserId },
       });
       isConnected = true;
+
+      const sender = await this.prisma.user.findUnique({ where: { id: userId }, select: { displayName: true } });
+      await this.createNotification(targetUserId, {
+        title: 'New Connection Request',
+        body: `${sender?.displayName || 'A Gileo Nurse'} sent you a connection request.`,
+        icon: 'person-add',
+        iconBg: '#FFF0F0',
+        iconColor: '#f90202',
+      }).catch(() => null);
     }
 
     const connectionsCount = await this.prisma.userConnection.count({ where: { userId } });
     const connections = await this.getUserConnections(userId);
     return { targetUserId, isConnected, connectionsCount, connections };
+  }
+
+  async getUserNotifications(userId: string) {
+    await this.requireUser(userId);
+    const notifs = await this.prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+
+    if (notifs.length === 0) {
+      const defaultNotif = await this.prisma.notification.create({
+        data: {
+          userId,
+          title: 'Welcome to Gileo Medicals',
+          body: 'Explore healthcare services, medical marketplace, and community network.',
+          icon: 'sparkles',
+          iconBg: '#FFF0F0',
+          iconColor: '#f90202',
+          read: false,
+        },
+      });
+      return [
+        {
+          id: defaultNotif.id,
+          title: defaultNotif.title,
+          body: defaultNotif.body,
+          timeAgo: 'Just now',
+          timestamp: defaultNotif.createdAt.getTime(),
+          icon: defaultNotif.icon,
+          iconBg: defaultNotif.iconBg,
+          iconColor: defaultNotif.iconColor,
+          read: defaultNotif.read,
+        },
+      ];
+    }
+
+    return notifs.map((n) => ({
+      id: n.id,
+      title: n.title,
+      body: n.body,
+      timeAgo: 'Just now',
+      timestamp: n.createdAt.getTime(),
+      icon: n.icon,
+      iconBg: n.iconBg,
+      iconColor: n.iconColor,
+      read: n.read,
+    }));
+  }
+
+  async createNotification(targetUserId: string, dto: { title: string; body: string; icon?: string; iconBg?: string; iconColor?: string }) {
+    return this.prisma.notification.create({
+      data: {
+        userId: targetUserId,
+        title: dto.title,
+        body: dto.body,
+        icon: dto.icon || 'notifications',
+        iconBg: dto.iconBg || '#FFF0F0',
+        iconColor: dto.iconColor || '#f90202',
+      },
+    });
+  }
+
+  async markNotificationsRead(userId: string) {
+    await this.requireUser(userId);
+    await this.prisma.notification.updateMany({
+      where: { userId, read: false },
+      data: { read: true },
+    });
+    return { success: true };
   }
 
   async getUserSavedPosts(userId: string) {

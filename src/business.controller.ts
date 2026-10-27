@@ -146,6 +146,15 @@ export class BusinessController {
     return this.business.toggleSavePost(r.user.userId, dto.postId);
   }
 
+  @Get('notifications') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  getUserNotifications(@Req() r: AuthRequest) {
+    return this.business.getUserNotifications(r.user.userId);
+  }
+  @Post('notifications/mark-read') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  markNotificationsRead(@Req() r: AuthRequest) {
+    return this.business.markNotificationsRead(r.user.userId);
+  }
+
   @Post('support/tickets') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createSupportTicket(@Req() r: AuthRequest, @Body() dto: CreateSupportTicketDto) { return this.business.createSupportTicket(r.user.userId, dto); }
   @Get('support/tickets/mine') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
