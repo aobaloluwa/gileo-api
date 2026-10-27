@@ -121,6 +121,14 @@ export class BusinessController {
   likeCommunityPost(@Req() r: AuthRequest, @Param('id') postId: string) {
     return this.business.likeCommunityPost(r.user.userId, postId);
   }
+  @Post('community/posts/:id/repost') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  repostCommunityPost(@Req() r: AuthRequest, @Param('id') postId: string) {
+    return this.business.repostCommunityPost(r.user.userId, postId);
+  }
+  @Get('community/members/:id/profile')
+  getMemberProfile(@Param('id') memberId: string) {
+    return this.business.getMemberProfile(memberId);
+  }
   @Post('community/posts/:id/comments') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   commentCommunityPost(@Req() r: AuthRequest, @Param('id') postId: string, @Body() dto: { text: string }) {
     return this.business.commentCommunityPost(r.user.userId, postId, dto);

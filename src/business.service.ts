@@ -522,7 +522,14 @@ export class BusinessService {
     return this.prisma.order.update({ where: { id }, data: { status: nextStatus } });
   }
 
-  async listEbooks() { return this.prisma.ebook.findMany({ where: { status: ContentStatus.PUBLISHED }, select: { id: true, slug: true, title: true, description: true, author: true, priceKobo: true, priceLabel: true, isIndicative: true, currency: true, coverImage: true, isDemo: true } }); }
+  async listEbooks() {
+    await this.seedDemoCohortsAndCommunityIfNeeded();
+    return this.prisma.ebook.findMany({
+      where: { status: ContentStatus.PUBLISHED },
+      select: { id: true, slug: true, title: true, description: true, author: true, priceKobo: true, priceLabel: true, isIndicative: true, currency: true, coverImage: true, isDemo: true },
+      orderBy: { createdAt: 'asc' },
+    });
+  }
   async createEbook(userId: string, dto: CreateEbookDto) {
     await this.requirePermission(userId, 'LEARNING_MANAGE');
     return this.prisma.ebook.create({ data: { ...dto, status: dto.status ?? ContentStatus.DRAFT } });
@@ -534,6 +541,85 @@ export class BusinessService {
   }
   async seedDemoCohortsAndCommunityIfNeeded() {
     try {
+      const ebookCount = await this.prisma.ebook.count({ where: { status: ContentStatus.PUBLISHED } });
+      if (ebookCount === 0) {
+        await this.prisma.ebook.createMany({
+          skipDuplicates: true,
+          data: [
+            {
+              id: '9f2d3a1b-4c5e-6f7a-8b9c-0d1e2f3a4b01',
+              slug: 'how-to-become-a-nurse-concierge',
+              title: 'How to Become a Nurse Concierge',
+              description: 'The definitive blueprint for registered nurses building a high-impact independent concierge nursing practice and private care consultancy.',
+              author: 'Gileo Medicals Global Limited',
+              priceKobo: 1500000,
+              priceLabel: '₦15,000 • Digital E-Book Guide',
+              isIndicative: false,
+              coverImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&auto=format&fit=crop&q=80',
+              fileKey: 'demo/how-to-become-a-nurse-concierge.pdf',
+              isDemo: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              id: '9f2d3a1b-4c5e-6f7a-8b9c-0d1e2f3a4b02',
+              slug: 'how-to-build-a-professional-nursing-portfolio',
+              title: 'How to Build a Professional Nursing Portfolio',
+              description: 'Step-by-step workbook and executive templates for structuring clinical competencies, certifications, and leadership milestones for international opportunities.',
+              author: 'Gileo Medicals Global Limited',
+              priceKobo: 1200000,
+              priceLabel: '₦12,000 • Executive Template Guide',
+              isIndicative: false,
+              coverImage: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=600&auto=format&fit=crop&q=80',
+              fileKey: 'demo/how-to-build-a-professional-nursing-portfolio.pdf',
+              isDemo: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              id: '9f2d3a1b-4c5e-6f7a-8b9c-0d1e2f3a4b03',
+              slug: 'how-to-present-yourself-professionally-as-a-nursing-leader',
+              title: 'How to Present Yourself Professionally as a Nursing Leader',
+              description: 'Master executive presence, professional branding, client communication, and public speaking in healthcare and corporate leadership.',
+              author: 'Gileo Medicals Global Limited',
+              priceKobo: 1800000,
+              priceLabel: '₦18,000 • Executive Presence Guide',
+              isIndicative: false,
+              coverImage: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&auto=format&fit=crop&q=80',
+              fileKey: 'demo/how-to-present-yourself-professionally-as-a-nursing-leader.pdf',
+              isDemo: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              id: '9f2d3a1b-4c5e-6f7a-8b9c-0d1e2f3a4b04',
+              slug: 'how-to-build-a-career-in-nursing-leadership',
+              title: 'How to Build a Career in Nursing Leadership',
+              description: 'Strategic roadmap for transitioning from bedside care to clinical management, nursing operations, and executive leadership.',
+              author: 'Gileo Medicals Global Limited',
+              priceKobo: 2000000,
+              priceLabel: '₦20,000 • Career Roadmap',
+              isIndicative: false,
+              coverImage: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&auto=format&fit=crop&q=80',
+              fileKey: 'demo/how-to-build-a-career-in-nursing-leadership.pdf',
+              isDemo: true,
+              status: ContentStatus.PUBLISHED,
+            },
+            {
+              id: '9f2d3a1b-4c5e-6f7a-8b9c-0d1e2f3a4b05',
+              slug: 'global-nursing-careers-and-opportunities',
+              title: 'Global Nursing Careers and Opportunities',
+              description: 'Comprehensive international guide for registration, licensure evaluation (UK, US, Canada, Australia), and relocation sponsorship.',
+              author: 'Gileo Medicals Global Limited',
+              priceKobo: 2500000,
+              priceLabel: '₦25,000 • Global Mobility Guide',
+              isIndicative: false,
+              coverImage: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&auto=format&fit=crop&q=80',
+              fileKey: 'demo/global-nursing-careers-and-opportunities.pdf',
+              isDemo: true,
+              status: ContentStatus.PUBLISHED,
+            },
+          ],
+        });
+      }
+
       const cohortCount = await this.prisma.elevateCohort.count({ where: { status: ContentStatus.PUBLISHED } });
       if (cohortCount === 0) {
         await this.prisma.elevateCohort.createMany({
@@ -784,6 +870,7 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       include: {
         likes: true,
         comments: { orderBy: { createdAt: 'asc' } },
+        reposts: true,
         savedBy: true,
       },
       orderBy: { createdAt: 'desc' },
@@ -792,6 +879,7 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     return posts.map((p) => {
       const isLiked = currentUserId ? p.likes.some((l) => l.userId === currentUserId) : false;
       const isSaved = currentUserId ? p.savedBy.some((s) => s.userId === currentUserId) : false;
+      const isReposted = currentUserId ? p.reposts.some((r) => r.userId === currentUserId) : false;
 
       return {
         id: p.id,
@@ -805,6 +893,8 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         likesCount: p.likes.length,
         isLiked,
         isSaved,
+        repostsCount: p.reposts.length,
+        isReposted,
         commentsCount: p.comments.length,
         commentsList: p.comments.map((c) => ({
           id: c.id,
@@ -814,6 +904,60 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         })),
       };
     });
+  }
+
+  async repostCommunityPost(userId: string, postId: string) {
+    await this.requireUser(userId);
+    const existing = await this.prisma.communityPostRepost.findUnique({
+      where: { postId_userId: { postId, userId } },
+    });
+
+    let isReposted = false;
+    if (existing) {
+      await this.prisma.communityPostRepost.delete({ where: { id: existing.id } });
+      isReposted = false;
+    } else {
+      await this.prisma.communityPostRepost.create({
+        data: { postId, userId },
+      });
+      isReposted = true;
+    }
+
+    const repostsCount = await this.prisma.communityPostRepost.count({ where: { postId } });
+    return { postId, repostsCount, isReposted };
+  }
+
+  async getMemberProfile(targetUserId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: targetUserId },
+      select: { id: true, displayName: true, email: true, role: true, createdAt: true },
+    });
+
+    if (!user) {
+      return {
+        id: targetUserId,
+        displayName: targetUserId,
+        role: 'Registered Nurse',
+        connectionsCount: 1,
+        postsCount: 1,
+      };
+    }
+
+    const [connectionsCount, postsCount] = await Promise.all([
+      this.prisma.userConnection.count({
+        where: { OR: [{ userId: user.id }, { targetUserId: user.id }] },
+      }),
+      this.prisma.communityPost.count({ where: { authorId: user.id } }),
+    ]);
+
+    return {
+      id: user.id,
+      displayName: user.displayName || 'Gileo Member',
+      role: user.role === UserRole.ADMIN ? 'Gileo Health Leader' : 'Registered Nurse',
+      createdAt: user.createdAt,
+      connectionsCount: Math.max(connectionsCount, 1),
+      postsCount,
+    };
   }
 
   async likeCommunityPost(userId: string, postId: string) {

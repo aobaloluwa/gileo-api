@@ -114,6 +114,7 @@ model User {
   communityPosts CommunityPost[]
   postLikes CommunityPostLike[]
   postComments CommunityPostComment[]
+  postReposts CommunityPostRepost[] @relation("UserPostReposts")
   savedPosts SavedPost[]
   initiatedConnections UserConnection[] @relation("UserInitiatedConnections")
   receivedConnections UserConnection[] @relation("UserReceivedConnections")
@@ -544,6 +545,7 @@ model CommunityPost {
   author      User                   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   likes       CommunityPostLike[]
   comments    CommunityPostComment[]
+  reposts     CommunityPostRepost[]
   savedBy     SavedPost[]
 
   @@index([authorId, createdAt])
@@ -607,5 +609,19 @@ model UserConnection {
   @@index([userId])
   @@index([targetUserId])
   @@map("user_connections")
+}
+
+model CommunityPostRepost {
+  id        String        @id @default(uuid()) @db.Uuid
+  postId    String        @db.Uuid
+  userId    String        @db.Uuid
+  createdAt DateTime      @default(now())
+
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User          @relation("UserPostReposts", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([userId])
+  @@map("community_post_reposts")
 }
 
