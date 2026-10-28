@@ -220,7 +220,23 @@ export class BusinessService {
 
   async listServices() {
     await this.seedDemoServicesIfNeeded();
-    return this.prisma.service.findMany({ where: { status: publicServiceStatus }, orderBy: { title: 'asc' } });
+    const services = await this.prisma.service.findMany({ where: { status: ContentStatus.PUBLISHED } });
+
+    const orderMap: Record<string, number> = {
+      'elderly-care-post-hospital-recovery': 1,
+      'onset-film-production-medical': 2,
+      'home-service-wound-dressing': 3,
+      'event-medical-coverage': 4,
+      'corporate-organisational-medical': 5,
+      'healthcare-service-coordination': 6,
+      'community-health-outreaches': 7,
+    };
+
+    return services.sort((a, b) => {
+      const posA = orderMap[a.slug] || 99;
+      const posB = orderMap[b.slug] || 99;
+      return posA - posB;
+    });
   }
   async createService(userId: string, dto: CreateServiceDto) {
     await this.requirePermission(userId, 'SERVICE_CATALOG_MANAGE');
