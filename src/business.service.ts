@@ -732,6 +732,66 @@ Step 4: Visa Sponsorship & Interview Preparation`,
           ],
         });
       }
+
+      const postCount = await this.prisma.communityPost.count();
+      if (postCount === 0) {
+        let systemUser = await this.prisma.user.findFirst({ where: { role: UserRole.ADMIN } });
+        if (!systemUser) {
+          systemUser = await this.prisma.user.create({
+            data: {
+              email: 'community@gileo.com',
+              displayName: 'Nurse Laila Gibson',
+              role: UserRole.ADMIN,
+            },
+          });
+        }
+
+        await this.prisma.communityPost.createMany({
+          skipDuplicates: true,
+          data: [
+            {
+              authorId: systemUser.id,
+              authorName: 'Nurse Laila Gibson',
+              authorRole: 'Executive Nurse Consultant',
+              title: 'Concierge Nursing Practice',
+              content:
+                'Transitioning from bedside nursing to concierge healthcare has been the most fulfilling career move. For any nurse considering executive nursing consulting, start building your portfolio today!',
+              category: 'Career Growth',
+              createdAt: new Date(Date.now() - 3600000 * 2),
+            },
+            {
+              authorId: systemUser.id,
+              authorName: 'Nurse Gia Monroe',
+              authorRole: 'Clinical Practice Lead',
+              title: 'International Licensure',
+              content:
+                'Just completed the NCLEX international licensure documentation roadmap! For nurses looking into UK/US registration, make sure your credentials and transcripts are certified early.',
+              category: 'Global Nursing',
+              createdAt: new Date(Date.now() - 3600000 * 5),
+            },
+            {
+              authorId: systemUser.id,
+              authorName: 'Nurse Valerie Azer',
+              authorRole: 'Community Health Nurse',
+              title: 'Clinical Care Outreach',
+              content:
+                'Patient advocacy and clinical quality assurance are at the heart of our community health outreaches this weekend. Proud to see Gileo nurses leading the charge in Lagos!',
+              category: 'Community Share',
+              createdAt: new Date(Date.now() - 3600000 * 12),
+            },
+            {
+              authorId: systemUser.id,
+              authorName: 'Gileo Medicals',
+              authorRole: 'Official Platform',
+              title: 'Welcome to Gileo Nurses Network',
+              content:
+                'Welcome all registered nurses to the Gileo Nurses Community! Connect with fellow nurses, explore executive cohorts under Elevate, and access career expansion guides.',
+              category: 'Announcement',
+              createdAt: new Date(Date.now() - 3600000 * 24),
+            },
+          ],
+        });
+      }
     } catch (err) {
       console.error('Cohort & Community seed failed:', err);
     }

@@ -112,7 +112,7 @@ export class BusinessController {
   @Get('community/members') communityMembers() { return this.business.communityMembers(); }
   @Get('community/posts') getCommunityPosts(@Query('authorId') authorId?: string) { return this.business.getCommunityPosts(authorId); }
   @Get('community/posts/mine') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
-  getMyCommunityPosts(@Req() r: AuthRequest) { return this.business.getCommunityPosts(r.user.userId); }
+  getMyCommunityPosts(@Req() r: AuthRequest) { return this.business.getCommunityPosts(r.user.userId, r.user.userId); }
   @Post('community/posts') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createCommunityPost(@Req() r: AuthRequest, @Body() dto: { title?: string; content: string; category?: string }) {
     return this.business.createCommunityPost(r.user.userId, dto);
