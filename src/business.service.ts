@@ -1125,17 +1125,26 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       ];
     }
 
-    return notifs.map((n) => ({
-      id: n.id,
-      title: n.title,
-      body: n.body,
-      timeAgo: 'Just now',
-      timestamp: n.createdAt.getTime(),
-      icon: n.icon,
-      iconBg: n.iconBg,
-      iconColor: n.iconColor,
-      read: n.read,
-    }));
+    return notifs.map((n) => {
+      const diffMs = Date.now() - n.createdAt.getTime();
+      const diffMins = Math.floor(diffMs / 60000);
+      let timeAgo = 'Just now';
+      if (diffMins >= 1 && diffMins < 60) timeAgo = `${diffMins}m ago`;
+      else if (diffMins >= 60 && diffMins < 1440) timeAgo = `${Math.floor(diffMins / 60)}h ago`;
+      else if (diffMins >= 1440) timeAgo = `${Math.floor(diffMins / 1440)}d ago`;
+
+      return {
+        id: n.id,
+        title: n.title,
+        body: n.body,
+        timeAgo,
+        timestamp: n.createdAt.getTime(),
+        icon: n.icon,
+        iconBg: n.iconBg,
+        iconColor: n.iconColor,
+        read: n.read,
+      };
+    });
   }
 
   async createNotification(targetUserId: string, dto: { title: string; body: string; icon?: string; iconBg?: string; iconColor?: string }) {

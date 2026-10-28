@@ -150,6 +150,10 @@ export class BusinessController {
   getUserNotifications(@Req() r: AuthRequest) {
     return this.business.getUserNotifications(r.user.userId);
   }
+  @Post('notifications') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  createNotification(@Req() r: AuthRequest, @Body() dto: { title: string; body: string; icon?: string; iconBg?: string; iconColor?: string }) {
+    return this.business.createNotification(r.user.userId, dto);
+  }
   @Post('notifications/mark-read') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   markNotificationsRead(@Req() r: AuthRequest) {
     return this.business.markNotificationsRead(r.user.userId);
