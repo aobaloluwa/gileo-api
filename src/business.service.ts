@@ -925,16 +925,36 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     await this.seedDemoCohortsAndCommunityIfNeeded();
     const whereCondition = authorIdFilter ? { authorId: authorIdFilter } : {};
 
-    const posts = await this.prisma.communityPost.findMany({
-      where: whereCondition,
-      include: {
-        likes: true,
-        comments: { orderBy: { createdAt: 'asc' } },
-        reposts: true,
-        savedBy: true,
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    let posts: any[] = [];
+    try {
+      posts = await this.prisma.communityPost.findMany({
+        where: whereCondition,
+        include: {
+          likes: true,
+          comments: { orderBy: { createdAt: 'asc' } },
+          reposts: true,
+          savedBy: true,
+        },
+        orderBy: { createdAt: 'desc' },
+      });
+    } catch (err: any) {
+      if (err?.code === 'P2021' || err?.message?.includes('does not exist')) {
+        console.warn('Community tables or relations missing in DB. Synchronizing Prisma schema...');
+        await this.prisma.ensureTablesExist();
+        posts = await this.prisma.communityPost.findMany({
+          where: whereCondition,
+          include: {
+            likes: true,
+            comments: { orderBy: { createdAt: 'asc' } },
+            reposts: true,
+            savedBy: true,
+          },
+          orderBy: { createdAt: 'desc' },
+        }).catch(() => []);
+      } else {
+        throw err;
+      }
+    }
 
     return posts.map((p) => {
       const isLiked = currentUserId ? p.likes.some((l) => l.userId === currentUserId) : false;
@@ -981,23 +1001,43 @@ Step 4: Visa Sponsorship & Interview Preparation`,
 
   async repostCommunityPost(userId: string, postId: string) {
     await this.requireUser(userId);
-    const existing = await this.prisma.communityPostRepost.findUnique({
-      where: { postId_userId: { postId, userId } },
-    });
-
-    let isReposted = false;
-    if (existing) {
-      await this.prisma.communityPostRepost.delete({ where: { id: existing.id } });
-      isReposted = false;
-    } else {
-      await this.prisma.communityPostRepost.create({
-        data: { postId, userId },
+    try {
+      const existing = await this.prisma.communityPostRepost.findUnique({
+        where: { postId_userId: { postId, userId } },
       });
-      isReposted = true;
-    }
 
-    const repostsCount = await this.prisma.communityPostRepost.count({ where: { postId } });
-    return { postId, repostsCount, isReposted };
+      let isReposted = false;
+      if (existing) {
+        await this.prisma.communityPostRepost.delete({ where: { id: existing.id } });
+        isReposted = false;
+      } else {
+        await this.prisma.communityPostRepost.create({
+          data: { postId, userId },
+        });
+        isReposted = true;
+      }
+
+      const repostsCount = await this.prisma.communityPostRepost.count({ where: { postId } });
+      return { postId, repostsCount, isReposted };
+    } catch (err: any) {
+      if (err?.code === 'P2021' || err?.message?.includes('does not exist')) {
+        await this.prisma.ensureTablesExist();
+        const existing = await this.prisma.communityPostRepost.findUnique({
+          where: { postId_userId: { postId, userId } },
+        });
+        let isReposted = false;
+        if (existing) {
+          await this.prisma.communityPostRepost.delete({ where: { id: existing.id } });
+          isReposted = false;
+        } else {
+          await this.prisma.communityPostRepost.create({ data: { postId, userId } });
+          isReposted = true;
+        }
+        const repostsCount = await this.prisma.communityPostRepost.count({ where: { postId } });
+        return { postId, repostsCount, isReposted };
+      }
+      throw err;
+    }
   }
 
   async getMemberProfile(targetUserId: string) {
@@ -1035,23 +1075,43 @@ Step 4: Visa Sponsorship & Interview Preparation`,
 
   async likeCommunityPost(userId: string, postId: string) {
     await this.requireUser(userId);
-    const existing = await this.prisma.communityPostLike.findUnique({
-      where: { postId_userId: { postId, userId } },
-    });
-
-    let isLiked = false;
-    if (existing) {
-      await this.prisma.communityPostLike.delete({ where: { id: existing.id } });
-      isLiked = false;
-    } else {
-      await this.prisma.communityPostLike.create({
-        data: { postId, userId },
+    try {
+      const existing = await this.prisma.communityPostLike.findUnique({
+        where: { postId_userId: { postId, userId } },
       });
-      isLiked = true;
-    }
 
-    const likesCount = await this.prisma.communityPostLike.count({ where: { postId } });
-    return { postId, likesCount, isLiked };
+      let isLiked = false;
+      if (existing) {
+        await this.prisma.communityPostLike.delete({ where: { id: existing.id } });
+        isLiked = false;
+      } else {
+        await this.prisma.communityPostLike.create({
+          data: { postId, userId },
+        });
+        isLiked = true;
+      }
+
+      const likesCount = await this.prisma.communityPostLike.count({ where: { postId } });
+      return { postId, likesCount, isLiked };
+    } catch (err: any) {
+      if (err?.code === 'P2021' || err?.message?.includes('does not exist')) {
+        await this.prisma.ensureTablesExist();
+        const existing = await this.prisma.communityPostLike.findUnique({
+          where: { postId_userId: { postId, userId } },
+        });
+        let isLiked = false;
+        if (existing) {
+          await this.prisma.communityPostLike.delete({ where: { id: existing.id } });
+          isLiked = false;
+        } else {
+          await this.prisma.communityPostLike.create({ data: { postId, userId } });
+          isLiked = true;
+        }
+        const likesCount = await this.prisma.communityPostLike.count({ where: { postId } });
+        return { postId, likesCount, isLiked };
+      }
+      throw err;
+    }
   }
 
   async commentCommunityPost(userId: string, postId: string, dto: { text: string }) {

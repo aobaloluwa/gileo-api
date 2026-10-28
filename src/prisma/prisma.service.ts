@@ -8,6 +8,8 @@ export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
+  private isSyncing = false;
+
   constructor() {
     let connectionString = process.env.DATABASE_URL || '';
     const isLocal =
@@ -36,20 +38,29 @@ export class PrismaService
     super({ adapter });
   }
 
-  async onModuleInit() {
-    await this.$connect();
+  async ensureTablesExist(): Promise<void> {
+    if (this.isSyncing) return;
     try {
-      await this.$queryRaw`SELECT 1 FROM users LIMIT 1`;
+      await this.$queryRaw`SELECT 1 FROM community_post_reposts LIMIT 1`;
+      await this.$queryRaw`SELECT 1 FROM saved_posts LIMIT 1`;
     } catch {
-      console.log('Database tables missing. Running prisma db push on cloud database...');
+      this.isSyncing = true;
+      console.log('Database tables or relations missing in PostgreSQL. Running prisma db push...');
       try {
         const { execSync } = await import('node:child_process');
         execSync('npx prisma db push --accept-data-loss', { stdio: 'inherit' });
-        console.log('Database schema pushed successfully!');
+        console.log('Database schema synchronized successfully!');
       } catch (pushErr) {
         console.error('Failed to auto-push Prisma schema:', pushErr);
+      } finally {
+        this.isSyncing = false;
       }
     }
+  }
+
+  async onModuleInit() {
+    await this.$connect();
+    await this.ensureTablesExist();
   }
 
   async onModuleDestroy() {
