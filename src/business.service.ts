@@ -956,10 +956,10 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       }
     }
 
-    return posts.map((p) => {
-      const isLiked = currentUserId ? p.likes.some((l) => l.userId === currentUserId) : false;
-      const isSaved = currentUserId ? p.savedBy.some((s) => s.userId === currentUserId) : false;
-      const isReposted = currentUserId ? p.reposts.some((r) => r.userId === currentUserId) : false;
+    return posts.map((p: any) => {
+      const isLiked = currentUserId ? (p.likes || []).some((l: any) => l.userId === currentUserId) : false;
+      const isSaved = currentUserId ? (p.savedBy || []).some((s: any) => s.userId === currentUserId) : false;
+      const isReposted = currentUserId ? (p.reposts || []).some((r: any) => r.userId === currentUserId) : false;
 
       const postCreatedAt = p.createdAt
         ? p.createdAt instanceof Date
@@ -976,13 +976,13 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         content: p.content,
         category: p.category,
         createdAt: isNaN(postCreatedAt) ? Date.now() : postCreatedAt,
-        likesCount: p.likes.length,
+        likesCount: (p.likes || []).length,
         isLiked,
         isSaved,
-        repostsCount: p.reposts.length,
+        repostsCount: (p.reposts || []).length,
         isReposted,
-        commentsCount: p.comments.length,
-        commentsList: (p.comments || []).map((c) => {
+        commentsCount: (p.comments || []).length,
+        commentsList: (p.comments || []).map((c: any) => {
           const cCreatedAt = c.createdAt
             ? c.createdAt instanceof Date
               ? c.createdAt.getTime()
@@ -1328,7 +1328,7 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       orderBy: { createdAt: 'desc' },
     });
 
-    return saved.map((s) => {
+    return saved.map((s: any) => {
       const p = s.post;
       const postCreatedAt = p.createdAt
         ? p.createdAt instanceof Date
@@ -1345,11 +1345,11 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         content: p.content,
         category: p.category,
         createdAt: isNaN(postCreatedAt) ? Date.now() : postCreatedAt,
-        likesCount: p.likes.length,
-        isLiked: p.likes.some((l) => l.userId === userId),
+        likesCount: (p.likes || []).length,
+        isLiked: (p.likes || []).some((l: any) => l.userId === userId),
         isSaved: true,
-        commentsCount: p.comments.length,
-        commentsList: (p.comments || []).map((c) => {
+        commentsCount: (p.comments || []).length,
+        commentsList: (p.comments || []).map((c: any) => {
           const cCreatedAt = c.createdAt
             ? c.createdAt instanceof Date
               ? c.createdAt.getTime()
