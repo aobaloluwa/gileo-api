@@ -110,7 +110,20 @@ export class BusinessController {
   joinCommunity(@Req() r: AuthRequest) { return this.business.joinCommunity(r.user.userId); }
   @Get('community/resources') communityResources() { return this.business.communityResources(); }
   @Get('community/members') communityMembers() { return this.business.communityMembers(); }
-  @Get('community/posts') getCommunityPosts(@Query('authorId') authorId?: string) { return this.business.getCommunityPosts(authorId); }
+  @Get('community/posts')
+  getCommunityPosts(@Req() req: any, @Query('authorId') authorId?: string) {
+    let currentUserId: string | undefined = req.user?.userId;
+    if (!currentUserId && req.headers?.authorization) {
+      try {
+        const token = req.headers.authorization.replace(/^Bearer\s+/i, '');
+        const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf8'));
+        if (payload?.sub) {
+          currentUserId = payload.sub;
+        }
+      } catch {}
+    }
+    return this.business.getCommunityPosts(authorId, currentUserId);
+  }
   @Get('community/posts/mine') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   getMyCommunityPosts(@Req() r: AuthRequest) { return this.business.getCommunityPosts(r.user.userId, r.user.userId); }
   @Post('community/posts') @UseGuards(JwtAuthGuard) @ApiBearerAuth()

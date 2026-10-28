@@ -941,6 +941,12 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       const isSaved = currentUserId ? p.savedBy.some((s) => s.userId === currentUserId) : false;
       const isReposted = currentUserId ? p.reposts.some((r) => r.userId === currentUserId) : false;
 
+      const postCreatedAt = p.createdAt
+        ? p.createdAt instanceof Date
+          ? p.createdAt.getTime()
+          : new Date(p.createdAt).getTime()
+        : Date.now();
+
       return {
         id: p.id,
         authorId: p.authorId,
@@ -949,19 +955,26 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         title: p.title,
         content: p.content,
         category: p.category,
-        createdAt: p.createdAt.getTime(),
+        createdAt: isNaN(postCreatedAt) ? Date.now() : postCreatedAt,
         likesCount: p.likes.length,
         isLiked,
         isSaved,
         repostsCount: p.reposts.length,
         isReposted,
         commentsCount: p.comments.length,
-        commentsList: p.comments.map((c) => ({
-          id: c.id,
-          authorName: c.authorName,
-          text: c.text,
-          createdAt: c.createdAt.getTime(),
-        })),
+        commentsList: (p.comments || []).map((c) => {
+          const cCreatedAt = c.createdAt
+            ? c.createdAt instanceof Date
+              ? c.createdAt.getTime()
+              : new Date(c.createdAt).getTime()
+            : Date.now();
+          return {
+            id: c.id,
+            authorName: c.authorName,
+            text: c.text,
+            createdAt: isNaN(cCreatedAt) ? Date.now() : cCreatedAt,
+          };
+        }),
       };
     });
   }
@@ -1095,6 +1108,12 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       },
     });
 
+    const postCreatedAt = post.createdAt
+      ? post.createdAt instanceof Date
+        ? post.createdAt.getTime()
+        : new Date(post.createdAt).getTime()
+      : Date.now();
+
     return {
       id: post.id,
       authorId: post.authorId,
@@ -1103,8 +1122,12 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       title: post.title,
       content: post.content,
       category: post.category,
-      createdAt: post.createdAt.getTime(),
+      createdAt: isNaN(postCreatedAt) ? Date.now() : postCreatedAt,
       likesCount: 0,
+      isLiked: false,
+      isSaved: false,
+      repostsCount: 0,
+      isReposted: false,
       commentsCount: 0,
       commentsList: [],
     };
@@ -1247,6 +1270,12 @@ Step 4: Visa Sponsorship & Interview Preparation`,
 
     return saved.map((s) => {
       const p = s.post;
+      const postCreatedAt = p.createdAt
+        ? p.createdAt instanceof Date
+          ? p.createdAt.getTime()
+          : new Date(p.createdAt).getTime()
+        : Date.now();
+
       return {
         id: p.id,
         authorId: p.authorId,
@@ -1255,17 +1284,24 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         title: p.title,
         content: p.content,
         category: p.category,
-        createdAt: p.createdAt.getTime(),
+        createdAt: isNaN(postCreatedAt) ? Date.now() : postCreatedAt,
         likesCount: p.likes.length,
         isLiked: p.likes.some((l) => l.userId === userId),
         isSaved: true,
         commentsCount: p.comments.length,
-        commentsList: p.comments.map((c) => ({
-          id: c.id,
-          authorName: c.authorName,
-          text: c.text,
-          createdAt: c.createdAt.getTime(),
-        })),
+        commentsList: (p.comments || []).map((c) => {
+          const cCreatedAt = c.createdAt
+            ? c.createdAt instanceof Date
+              ? c.createdAt.getTime()
+              : new Date(c.createdAt).getTime()
+            : Date.now();
+          return {
+            id: c.id,
+            authorName: c.authorName,
+            text: c.text,
+            createdAt: isNaN(cCreatedAt) ? Date.now() : cCreatedAt,
+          };
+        }),
       };
     });
   }
