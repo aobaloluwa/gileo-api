@@ -1509,15 +1509,22 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     await this.requirePermission(userId, 'DASHBOARD_READ');
 
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const paidStatuses = [
+      OrderStatus.PAID,
+      OrderStatus.PROCESSING,
+      OrderStatus.FULFILMENT,
+      OrderStatus.SHIPPED,
+      OrderStatus.DELIVERED,
+    ];
 
     const [
       totalUsers,
       newUsersCount,
       totalOrders,
+      ordersPaidCount,
       activeServices,
       openTickets,
-      paymentsList,
-      ordersList,
+      paidOrdersList,
       lowStockProducts,
       recentOrdersRaw,
       topProductsRaw,
@@ -1526,18 +1533,15 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       this.prisma.user.count(),
       this.prisma.user.count({ where: { createdAt: { gte: thirtyDaysAgo } } }),
       this.prisma.order.count(),
+      this.prisma.order.count({ where: { status: { in: paidStatuses } } }),
       this.prisma.serviceRequest.count(),
       this.prisma.supportTicket.count({ where: { status: { in: [SupportStatus.OPEN, SupportStatus.IN_PROGRESS] } } }),
-      this.prisma.payment.findMany({
-        where: { status: PaymentStatus.VERIFIED },
-        select: { amountKobo: true, createdAt: true },
-      }),
       this.prisma.order.findMany({
-        where: { status: { not: OrderStatus.CANCELLED } },
+        where: { status: { in: paidStatuses } },
         select: { totalKobo: true, createdAt: true },
       }),
       this.prisma.product.findMany({
-        where: { stock: { lte: 25 } },
+        orderBy: { stock: 'asc' },
         select: { id: true, title: true, stock: true },
         take: 5,
       }),
@@ -1559,16 +1563,16 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       }),
     ]);
 
-    const totalRevenueKobo =
-      paymentsList.reduce((acc, p) => acc + (p.amountKobo || 0), 0) ||
-      ordersList.reduce((acc, o) => acc + (o.totalKobo || 0), 0);
+    // Total Revenue from PAID orders only
+    const totalRevenueKobo = paidOrdersList.reduce((acc, o) => acc + (o.totalKobo || 0), 0);
 
-    const conversionRate = totalUsers > 0 ? ((totalOrders / totalUsers) * 100).toFixed(2) : '0.00';
+    // Conversion Rate = Ratio of orders paid vs orders started
+    const conversionRate = totalOrders > 0 ? ((ordersPaidCount / totalOrders) * 100).toFixed(2) : '0.00';
 
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const dayData: Record<string, number> = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0, Sun: 0 };
 
-    ordersList.forEach((o) => {
+    paidOrdersList.forEach((o) => {
       const d = new Date(o.createdAt);
       const dayName = days[d.getDay() === 0 ? 6 : d.getDay() - 1];
       if (dayName) {
@@ -1584,7 +1588,7 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       title: p.title,
       stockLeft: p.stock,
       icon: 'shirt-outline',
-      color: '#F10505',
+      color: p.stock <= 10 ? '#F10505' : '#B45309',
     }));
 
     const recentOrders = recentOrdersRaw.map((o) => ({
@@ -1608,8 +1612,8 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     const topProducts = topProductsRaw.map((p) => ({
       id: p.id,
       title: p.title,
-      sold: `${Math.max(0, 100 - p.stock)} sold`,
-      revenue: `₦${Math.floor((p.priceKobo * Math.max(0, 100 - p.stock)) / 100).toLocaleString()}`,
+      sold: `${Math.max(0, p.stock < 100 ? 100 - p.stock : 0)} sold`,
+      revenue: `₦${Math.floor((p.priceKobo * Math.max(0, p.stock < 100 ? 100 - p.stock : 0)) / 100).toLocaleString()}`,
       icon: 'shirt-outline',
       color: '#F10505',
     }));
