@@ -200,7 +200,14 @@ export class BusinessController {
   updateTicket(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateStatusDto) { return this.business.updateSupportTicket(r.user.userId, id, dto); }
 
   @Get('admin/dashboard') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
-  adminDashboard(@Req() r: AuthRequest) { return this.business.adminDashboard(r.user.userId); }
+  adminDashboard(
+    @Req() r: AuthRequest,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('period') period?: string,
+  ) {
+    return this.business.adminDashboard(r.user.userId, startDate, endDate, period);
+  }
   @Get('admin/payments') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   listPayments(@Req() r: AuthRequest) { return this.business.listPayments(r.user.userId); }
 

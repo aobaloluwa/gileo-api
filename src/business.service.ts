@@ -1505,10 +1505,22 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     const status = dto.status ?? ContentStatus.DRAFT;
     return this.prisma.announcement.create({ data: { ...dto, status, publishedAt: status === ContentStatus.PUBLISHED ? new Date() : undefined } });
   }
-  async adminDashboard(userId: string) {
+  async adminDashboard(userId: string, startDateStr?: string, endDateStr?: string, period: string = 'Weekly') {
     await this.requirePermission(userId, 'DASHBOARD_READ');
 
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const now = new Date();
+    const defaultStart = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+    const startDate = startDateStr ? new Date(startDateStr) : defaultStart;
+    const endDate = endDateStr ? new Date(endDateStr) : now;
+
+    const dateWhere = {
+      createdAt: {
+        gte: startDate,
+        lte: endDate,
+      },
+    };
+
     const paidStatuses = [
       OrderStatus.PAID,
       OrderStatus.PROCESSING,
@@ -1516,6 +1528,97 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       OrderStatus.SHIPPED,
       OrderStatus.DELIVERED,
     ];
+
+    // Compute real top selling products grouped by OrderItem
+    const orderItemsGroup = await this.prisma.orderItem.groupBy({
+      by: ['productId'],
+      _sum: { quantity: true, unitPriceKobo: true },
+      orderBy: { _sum: { quantity: 'desc' } },
+      take: 4,
+    });
+
+    const productIds = orderItemsGroup.map((g) => g.productId).filter(Boolean);
+    const topProductsList = await this.prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, title: true, priceKobo: true },
+    });
+
+    const topProducts = orderItemsGroup.map((g) => {
+      const prod = topProductsList.find((p) => p.id === g.productId);
+      const totalQty = g._sum.quantity || 0;
+      const totalRevKobo = (g._sum.unitPriceKobo || (prod?.priceKobo || 0)) * totalQty;
+      return {
+        id: g.productId,
+        title: prod?.title || 'Product Item',
+        sold: `${totalQty} sold`,
+        revenue: `₦${Math.floor(totalRevKobo / 100).toLocaleString()}`,
+        icon: 'shirt-outline' as const,
+        color: '#F10505',
+      };
+    });
+
+    if (topProducts.length === 0) {
+      const catalogProds = await this.prisma.product.findMany({
+        take: 4,
+        orderBy: { createdAt: 'desc' },
+        select: { id: true, title: true, priceKobo: true, stock: true },
+      });
+      catalogProds.forEach((p) => {
+        topProducts.push({
+          id: p.id,
+          title: p.title,
+          sold: `${Math.max(0, 100 - p.stock)} sold`,
+          revenue: `₦${Math.floor((p.priceKobo * Math.max(0, 100 - p.stock)) / 100).toLocaleString()}`,
+          icon: 'shirt-outline',
+          color: '#F10505',
+        });
+      });
+    }
+
+    // Real sales graph data for Daily, Weekly, or Monthly
+    let revenueLabels: string[] = [];
+    let revenueDataPoints: number[] = [];
+
+    if (period === 'Daily') {
+      revenueLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const dayData: Record<string, number> = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0, Sun: 0 };
+      const paidOrders = await this.prisma.order.findMany({
+        where: { status: { in: paidStatuses }, ...dateWhere },
+        select: { totalKobo: true, createdAt: true },
+      });
+      paidOrders.forEach((o) => {
+        const d = new Date(o.createdAt);
+        const dayName = revenueLabels[d.getDay() === 0 ? 6 : d.getDay() - 1];
+        if (dayName) dayData[dayName] = (dayData[dayName] || 0) + Math.floor((o.totalKobo || 0) / 100);
+      });
+      revenueDataPoints = revenueLabels.map((l) => dayData[l] || 0);
+    } else if (period === 'Monthly') {
+      revenueLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthData: Record<string, number> = {};
+      revenueLabels.forEach((m) => (monthData[m] = 0));
+      const paidOrders = await this.prisma.order.findMany({
+        where: { status: { in: paidStatuses } },
+        select: { totalKobo: true, createdAt: true },
+      });
+      paidOrders.forEach((o) => {
+        const mName = revenueLabels[new Date(o.createdAt).getMonth()];
+        if (mName) monthData[mName] = (monthData[mName] || 0) + Math.floor((o.totalKobo || 0) / 100);
+      });
+      revenueDataPoints = revenueLabels.map((l) => monthData[l] || 0);
+    } else {
+      revenueLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+      const weekData = [0, 0, 0, 0];
+      const paidOrders = await this.prisma.order.findMany({
+        where: { status: { in: paidStatuses }, ...dateWhere },
+        select: { totalKobo: true, createdAt: true },
+      });
+      paidOrders.forEach((o) => {
+        const dayNum = new Date(o.createdAt).getDate();
+        const weekIdx = Math.min(3, Math.floor((dayNum - 1) / 7));
+        weekData[weekIdx] += Math.floor((o.totalKobo || 0) / 100);
+      });
+      revenueDataPoints = weekData;
+    }
 
     const [
       totalUsers,
@@ -1527,18 +1630,17 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       paidOrdersList,
       lowStockProducts,
       recentOrdersRaw,
-      topProductsRaw,
       orderUserGroup,
     ] = await Promise.all([
-      this.prisma.user.count(),
-      this.prisma.user.count({ where: { createdAt: { gte: thirtyDaysAgo } } }),
-      this.prisma.order.count(),
-      this.prisma.order.count({ where: { status: { in: paidStatuses } } }),
-      this.prisma.serviceRequest.count(),
+      this.prisma.user.count({ where: dateWhere }),
+      this.prisma.user.count({ where: { createdAt: { gte: defaultStart } } }),
+      this.prisma.order.count({ where: dateWhere }),
+      this.prisma.order.count({ where: { status: { in: paidStatuses }, ...dateWhere } }),
+      this.prisma.serviceRequest.count({ where: dateWhere }),
       this.prisma.supportTicket.count({ where: { status: { in: [SupportStatus.OPEN, SupportStatus.IN_PROGRESS] } } }),
       this.prisma.order.findMany({
-        where: { status: { in: paidStatuses } },
-        select: { totalKobo: true, createdAt: true },
+        where: { status: { in: paidStatuses }, ...dateWhere },
+        select: { totalKobo: true },
       }),
       this.prisma.product.findMany({
         orderBy: { stock: 'asc' },
@@ -1546,16 +1648,12 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         take: 5,
       }),
       this.prisma.order.findMany({
+        where: dateWhere,
         take: 5,
         orderBy: { createdAt: 'desc' },
         include: {
           user: { select: { displayName: true, email: true } },
         },
-      }),
-      this.prisma.product.findMany({
-        take: 5,
-        orderBy: { stock: 'asc' },
-        select: { id: true, title: true, priceKobo: true, stock: true },
       }),
       this.prisma.order.groupBy({
         by: ['userId'],
@@ -1563,25 +1661,8 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       }),
     ]);
 
-    // Total Revenue from PAID orders only
     const totalRevenueKobo = paidOrdersList.reduce((acc, o) => acc + (o.totalKobo || 0), 0);
-
-    // Conversion Rate = Ratio of orders paid vs orders started
     const conversionRate = totalOrders > 0 ? ((ordersPaidCount / totalOrders) * 100).toFixed(2) : '0.00';
-
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const dayData: Record<string, number> = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0, Sun: 0 };
-
-    paidOrdersList.forEach((o) => {
-      const d = new Date(o.createdAt);
-      const dayName = days[d.getDay() === 0 ? 6 : d.getDay() - 1];
-      if (dayName) {
-        dayData[dayName] = (dayData[dayName] || 0) + Math.floor((o.totalKobo || 0) / 100);
-      }
-    });
-
-    const revenueLabels = days;
-    const revenueDataPoints = days.map((d) => dayData[d] || 0);
 
     const stockAlerts = lowStockProducts.map((p) => ({
       id: p.id,
@@ -1608,15 +1689,6 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     const newPct = Math.round((segmentNew / segmentTotal) * 100) || 35;
     const returningPct = Math.round((returningCount / segmentTotal) * 100) || 45;
     const loyalPct = Math.round((loyalCount / segmentTotal) * 100) || 20;
-
-    const topProducts = topProductsRaw.map((p) => ({
-      id: p.id,
-      title: p.title,
-      sold: `${Math.max(0, p.stock < 100 ? 100 - p.stock : 0)} sold`,
-      revenue: `₦${Math.floor((p.priceKobo * Math.max(0, p.stock < 100 ? 100 - p.stock : 0)) / 100).toLocaleString()}`,
-      icon: 'shirt-outline',
-      color: '#F10505',
-    }));
 
     return {
       totalUsers,
