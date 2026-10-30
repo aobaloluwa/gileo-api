@@ -126,6 +126,18 @@ export class BusinessService {
     if (!user) throw new NotFoundException('User not found.');
     return this.prisma.user.update({ where: { id: userId }, data: { role: dto.role as UserRole }, select: { id: true, email: true, displayName: true, role: true, createdAt: true } });
   }
+  async deleteUser(adminId: string, userId: string) {
+    await this.requireAdmin(adminId);
+    if (adminId === userId) throw new BadRequestException('You cannot delete your own account.');
+    const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { id: true, role: true } });
+    if (!user) throw new NotFoundException('User not found.');
+    if (user.role === UserRole.ADMIN) {
+      const admins = await this.prisma.user.count({ where: { role: UserRole.ADMIN } });
+      if (admins <= 1) throw new BadRequestException('GILEO must retain at least one administrator.');
+    }
+    await this.prisma.user.delete({ where: { id: userId } });
+    return { success: true, message: 'User account deleted successfully.' };
+  }
   async seedDemoServicesIfNeeded() {
     try {
       const count = await this.prisma.service.count();
@@ -1700,6 +1712,45 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     return { status: PaymentStatus.REFUNDED, reference, gatewayStatus: status };
   }
 
+  async deleteService(userId: string, id: string) {
+    await this.requirePermission(userId, 'SERVICE_CATALOG_MANAGE');
+    if (!(await this.prisma.service.findUnique({ where: { id } }))) throw new NotFoundException('Service not found.');
+    await this.prisma.service.delete({ where: { id } });
+    return { success: true, message: 'Service deleted successfully.' };
+  }
+
+  async deleteProduct(userId: string, id: string) {
+    await this.requirePermission(userId, 'CATALOG_MANAGE');
+    if (!(await this.prisma.product.findUnique({ where: { id } }))) throw new NotFoundException('Product not found.');
+    await this.prisma.product.delete({ where: { id } });
+    return { success: true, message: 'Product deleted successfully.' };
+  }
+
+  async deleteCommunityPost(userId: string, id: string) {
+    const user = await this.requireUser(userId);
+    const post = await this.prisma.communityPost.findUnique({ where: { id }, select: { id: true, authorId: true } });
+    if (!post) throw new NotFoundException('Post not found.');
+    if (post.authorId !== userId && user.role !== UserRole.ADMIN) {
+      throw new ForbiddenException('You can only delete your own posts.');
+    }
+    await this.prisma.communityPost.delete({ where: { id } });
+    return { success: true, message: 'Community post deleted successfully.' };
+  }
+
+  async deleteEbook(userId: string, id: string) {
+    await this.requirePermission(userId, 'LEARNING_MANAGE');
+    if (!(await this.prisma.ebook.findUnique({ where: { id } }))) throw new NotFoundException('E-Book not found.');
+    await this.prisma.ebook.delete({ where: { id } });
+    return { success: true, message: 'E-Book deleted successfully.' };
+  }
+
+  async deleteCohort(userId: string, id: string) {
+    await this.requirePermission(userId, 'LEARNING_MANAGE');
+    if (!(await this.prisma.elevateCohort.findUnique({ where: { id } }))) throw new NotFoundException('Cohort not found.');
+    await this.prisma.elevateCohort.delete({ where: { id } });
+    return { success: true, message: 'Cohort deleted successfully.' };
+  }
+
   verifyPaystackSignature(rawBody: Buffer | undefined, signature: string | undefined) {
     const secret = this.config.get<string>('PAYSTACK_SECRET_KEY');
     if (!secret || !rawBody || !signature) return false;
@@ -1708,6 +1759,7 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     try { supplied = Buffer.from(signature, 'hex'); } catch { return false; }
     return supplied.length === expected.length && timingSafeEqual(supplied, expected);
   }
+
   async handlePaystackWebhook(event: any) {
     if (event?.event === 'charge.success' && typeof event?.data?.reference === 'string') {
       return this.verifyAndFulfil(event.data.reference);

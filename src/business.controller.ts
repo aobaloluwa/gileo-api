@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Patch, Post, Put, Query, Req, UseGuards, UseInterceptors, UploadedFile, StreamableFile, NotFoundException } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put, Query, Req, UseGuards, UseInterceptors, UploadedFile, StreamableFile, NotFoundException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -28,11 +28,15 @@ export class BusinessController {
   setUserPermissions(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: SetUserPermissionsDto) { return this.business.setUserPermissions(r.user.userId, id, dto); }
   @Patch('admin/users/:id/role') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateUserRole(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateUserRoleDto) { return this.business.updateUserRole(r.user.userId, id, dto); }
+  @Delete('admin/users/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  deleteUser(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.deleteUser(r.user.userId, id); }
 
   @Get('services') @ApiOperation({ summary: 'List published healthcare services' })
   listServices() { return this.business.listServices(); }
   @Patch('services/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateService(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateServiceDto) { return this.business.updateService(r.user.userId, id, dto); }
+  @Delete('services/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  deleteService(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.deleteService(r.user.userId, id); }
   @Post('services') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createService(@Req() r: AuthRequest, @Body() dto: CreateServiceDto) { return this.business.createService(r.user.userId, dto); }
   @Post('service-requests') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
@@ -65,6 +69,8 @@ export class BusinessController {
   updateProductStock(@Req() r: AuthRequest, @Param('id') id: string, @Body('stock') stock: number) { return this.business.updateProductStock(r.user.userId, id, stock); }
   @Patch('shop/products/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateProduct(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateProductDto) { return this.business.updateProduct(r.user.userId, id, dto); }
+  @Delete('shop/products/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  deleteProduct(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.deleteProduct(r.user.userId, id); }
   @Post('shop/variants') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createVariant(@Req() r: AuthRequest, @Body() dto: CreateVariantDto) { return this.business.createVariant(r.user.userId, dto); }
   @Patch('shop/variants/:id/stock') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
@@ -93,11 +99,15 @@ export class BusinessController {
   }
   @Patch('learning/ebooks/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateEbook(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateEbookDto) { return this.business.updateEbook(r.user.userId, id, dto); }
+  @Delete('learning/ebooks/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  deleteEbook(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.deleteEbook(r.user.userId, id); }
   @Get('learning/cohorts') listCohorts() { return this.business.listCohorts(); }
   @Post('learning/cohorts') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createCohort(@Req() r: AuthRequest, @Body() dto: CreateCohortDto) { return this.business.createCohort(r.user.userId, dto); }
   @Patch('learning/cohorts/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   updateCohort(@Req() r: AuthRequest, @Param('id') id: string, @Body() dto: UpdateCohortDto) { return this.business.updateCohort(r.user.userId, id, dto); }
+  @Delete('learning/cohorts/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  deleteCohort(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.deleteCohort(r.user.userId, id); }
   @Get('learning/library') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   myLibrary(@Req() r: AuthRequest) { return this.business.myLibrary(r.user.userId); }
   @Get('learning/cohorts/:id/content') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
