@@ -92,6 +92,10 @@ export class BusinessController {
     if (!file) throw new NotFoundException('Upload a PDF file in the file field.');
     return this.business.uploadEbookContent(r.user.userId, id, file);
   }
+  @Post('admin/upload/cloudinary') @UseGuards(JwtAuthGuard) @ApiBearerAuth() @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10 * 1024 * 1024 } }))
+  uploadCloudinaryImage(@Req() r: AuthRequest, @UploadedFile() file?: { originalname: string; mimetype: string; size: number; buffer: Buffer }) {
+    return this.business.uploadToCloudinary(r.user.userId, file);
+  }
   @Get('learning/ebooks/:id/content') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   async ebookContent(@Req() r: AuthRequest, @Param('id') id: string) {
     const result = await this.business.ebookContent(r.user.userId, id);

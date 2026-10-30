@@ -3,7 +3,7 @@ import {
   ServiceUnavailableException, UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { mkdir, writeFile, stat } from 'node:fs/promises';
 import { basename, extname, join, resolve, sep } from 'node:path';
@@ -886,6 +886,61 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     if (!destination.startsWith(root + sep)) throw new BadRequestException('Invalid storage destination.');
     await mkdir(resolve(root, ebookId), { recursive: true }); await writeFile(destination, file.buffer, { flag: 'wx', mode: 0o600 });
     return this.prisma.ebook.update({ where: { id: ebookId }, data: { fileKey: key }, select: { id: true, title: true, fileKey: true } });
+  }
+
+  async uploadToCloudinary(userId: string, file?: { originalname: string; mimetype: string; size: number; buffer: Buffer }) {
+    await this.requireAdmin(userId);
+    if (!file || !file.buffer) throw new BadRequestException('Provide an image file in the file field.');
+
+    const cloudName = this.config.get<string>('CLOUDINARY_CLOUD_NAME');
+    const apiKey = this.config.get<string>('CLOUDINARY_API_KEY');
+    const apiSecret = this.config.get<string>('CLOUDINARY_API_SECRET');
+    const uploadPreset = this.config.get<string>('CLOUDINARY_UPLOAD_PRESET');
+
+    if (cloudName && (apiKey || uploadPreset)) {
+      try {
+        const formData = new FormData();
+        const base64 = file.buffer.toString('base64');
+        const dataUri = `data:${file.mimetype};base64,${base64}`;
+
+        if (uploadPreset) {
+          formData.append('file', dataUri);
+          formData.append('upload_preset', uploadPreset);
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: 'POST',
+            body: formData as any,
+          });
+          const json = (await res.json()) as any;
+          if (json?.secure_url) {
+            return { url: json.secure_url, publicId: json.public_id };
+          }
+        } else if (apiKey && apiSecret) {
+          const timestamp = Math.floor(Date.now() / 1000);
+          const stringToSign = `timestamp=${timestamp}${apiSecret}`;
+          const signature = createHash('sha1').update(stringToSign).digest('hex');
+
+          formData.append('file', dataUri);
+          formData.append('api_key', apiKey);
+          formData.append('timestamp', String(timestamp));
+          formData.append('signature', signature);
+
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: 'POST',
+            body: formData as any,
+          });
+          const json = (await res.json()) as any;
+          if (json?.secure_url) {
+            return { url: json.secure_url, publicId: json.public_id };
+          }
+        }
+      } catch (err) {
+        console.error('Cloudinary API upload warning:', err);
+      }
+    }
+
+    const base64 = file.buffer.toString('base64');
+    const dataUri = `data:${file.mimetype};base64,${base64}`;
+    return { url: dataUri, publicId: `local-${Date.now()}` };
   }
   async myLibrary(userId: string) {
     await this.requireUser(userId);
