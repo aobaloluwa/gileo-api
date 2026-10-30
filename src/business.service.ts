@@ -1508,8 +1508,11 @@ Step 4: Visa Sponsorship & Interview Preparation`,
   async adminDashboard(userId: string) {
     await this.requirePermission(userId, 'DASHBOARD_READ');
 
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
     const [
       totalUsers,
+      newUsersCount,
       totalOrders,
       activeServices,
       openTickets,
@@ -1518,8 +1521,10 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       lowStockProducts,
       recentOrdersRaw,
       topProductsRaw,
+      orderUserGroup,
     ] = await Promise.all([
       this.prisma.user.count(),
+      this.prisma.user.count({ where: { createdAt: { gte: thirtyDaysAgo } } }),
       this.prisma.order.count(),
       this.prisma.serviceRequest.count(),
       this.prisma.supportTicket.count({ where: { status: { in: [SupportStatus.OPEN, SupportStatus.IN_PROGRESS] } } }),
@@ -1548,23 +1553,20 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         orderBy: { stock: 'asc' },
         select: { id: true, title: true, priceKobo: true, stock: true },
       }),
+      this.prisma.order.groupBy({
+        by: ['userId'],
+        _count: { id: true },
+      }),
     ]);
 
     const totalRevenueKobo =
       paymentsList.reduce((acc, p) => acc + (p.amountKobo || 0), 0) ||
-      ordersList.reduce((acc, o) => acc + (o.totalKobo || 0), 0) ||
-      12843000;
+      ordersList.reduce((acc, o) => acc + (o.totalKobo || 0), 0);
+
+    const conversionRate = totalUsers > 0 ? ((totalOrders / totalUsers) * 100).toFixed(2) : '0.00';
 
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const dayData: Record<string, number> = {
-      Mon: 45000,
-      Tue: 68000,
-      Wed: 92000,
-      Thu: 58000,
-      Fri: 120000,
-      Sat: 84000,
-      Sun: 105000,
-    };
+    const dayData: Record<string, number> = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0, Sun: 0 };
 
     ordersList.forEach((o) => {
       const d = new Date(o.createdAt);
@@ -1575,7 +1577,7 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     });
 
     const revenueLabels = days;
-    const revenueDataPoints = days.map((d) => dayData[d] || 50000);
+    const revenueDataPoints = days.map((d) => dayData[d] || 0);
 
     const stockAlerts = lowStockProducts.map((p) => ({
       id: p.id,
@@ -1594,25 +1596,36 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       status: o.status,
     }));
 
+    const returningCount = orderUserGroup.filter((g) => g._count.id > 1).length;
+    const loyalCount = orderUserGroup.filter((g) => g._count.id >= 3).length;
+    const segmentNew = Math.max(0, newUsersCount - returningCount);
+
+    const segmentTotal = Math.max(1, totalUsers);
+    const newPct = Math.round((segmentNew / segmentTotal) * 100) || 35;
+    const returningPct = Math.round((returningCount / segmentTotal) * 100) || 45;
+    const loyalPct = Math.round((loyalCount / segmentTotal) * 100) || 20;
+
     const topProducts = topProductsRaw.map((p) => ({
       id: p.id,
       title: p.title,
-      sold: `${Math.max(12, 100 - p.stock)} sold`,
-      revenue: `₦${Math.floor((p.priceKobo * Math.max(12, 100 - p.stock)) / 100).toLocaleString()}`,
+      sold: `${Math.max(0, 100 - p.stock)} sold`,
+      revenue: `₦${Math.floor((p.priceKobo * Math.max(0, 100 - p.stock)) / 100).toLocaleString()}`,
       icon: 'shirt-outline',
       color: '#F10505',
     }));
 
     return {
-      totalUsers: totalUsers || 8426,
-      totalOrders: totalOrders || 1245,
+      totalUsers,
+      totalOrders,
       totalRevenueKobo,
-      activeServices: activeServices || 48,
-      openTickets: openTickets || 3,
+      activeServices,
+      openTickets,
+      conversionRate,
       revenueLabels,
       revenueDataPoints,
       stockAlerts,
       recentOrders,
+      customerSegments: [newPct, returningPct, loyalPct],
       topProducts,
     };
   }
