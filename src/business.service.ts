@@ -297,7 +297,7 @@ export class BusinessService {
     const user = await this.requireUser(userId);
     const service = await this.prisma.service.findFirst({ where: { id: dto.serviceId, status: ContentStatus.PUBLISHED } });
     if (!service) throw new NotFoundException('Service is not available.');
-    return this.prisma.serviceRequest.create({
+    const req = await this.prisma.serviceRequest.create({
       data: {
         reference: this.ref('SR'), userId: user.id, serviceId: service.id,
         preferredDate: dto.preferredDate ? new Date(dto.preferredDate) : undefined,
@@ -306,6 +306,16 @@ export class BusinessService {
       },
       include: { service: true },
     });
+
+    void this.notifyAdmins({
+      title: `New Care Request - ${req.reference}`,
+      body: `New care request submitted for ${service.title}. Assign a nurse provider in Care Requests.`,
+      icon: 'medkit',
+      iconBg: '#FDF2F2',
+      iconColor: '#F10505',
+    });
+
+    return req;
   }
   async listMyServiceRequests(userId: string) {
     await this.requireUser(userId);
@@ -519,7 +529,20 @@ export class BusinessService {
       });
       return order.id;
     });
-    return this.prisma.order.findUnique({ where: { id: orderId }, include: { items: true } });
+
+    const createdOrder = await this.prisma.order.findUnique({ where: { id: orderId }, include: { items: true } });
+
+    if (createdOrder) {
+      void this.notifyAdmins({
+        title: `New Store Order - ${createdOrder.reference}`,
+        body: `Order ${createdOrder.reference} placed for ₦${Math.floor(createdOrder.totalKobo / 100).toLocaleString()}. Check orders manager to process.`,
+        icon: 'bag-handle',
+        iconBg: '#EFF6FF',
+        iconColor: '#3B82F6',
+      });
+    }
+
+    return createdOrder;
   }
   async listMyOrders(userId: string) {
     await this.requireUser(userId);
@@ -1398,6 +1421,30 @@ Step 4: Visa Sponsorship & Interview Preparation`,
         iconColor: dto.iconColor || '#f90202',
       },
     });
+  }
+
+  async notifyAdmins(dto: { title: string; body: string; icon?: string; iconBg?: string; iconColor?: string }) {
+    try {
+      const admins = await this.prisma.user.findMany({
+        where: { role: UserRole.ADMIN },
+        select: { id: true },
+      });
+
+      if (admins.length > 0) {
+        await this.prisma.notification.createMany({
+          data: admins.map((a) => ({
+            userId: a.id,
+            title: dto.title,
+            body: dto.body,
+            icon: dto.icon || 'notifications',
+            iconBg: dto.iconBg || '#FDF2F2',
+            iconColor: dto.iconColor || '#F10505',
+          })),
+        });
+      }
+    } catch (err) {
+      console.error('Error sending admin notifications:', err);
+    }
   }
 
   async markNotificationsRead(userId: string) {
