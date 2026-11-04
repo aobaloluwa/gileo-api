@@ -120,6 +120,8 @@ export class BusinessController {
   createCommunityResource(@Req() r: AuthRequest, @Body() dto: CreateCommunityResourceDto) { return this.business.createCommunityResource(r.user.userId, dto); }
   @Post('community/announcements') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   createAnnouncement(@Req() r: AuthRequest, @Body() dto: CreateAnnouncementDto) { return this.business.createAnnouncement(r.user.userId, dto); }
+  @Delete('community/announcements/:id') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  deleteAnnouncement(@Req() r: AuthRequest, @Param('id') id: string) { return this.business.deleteAnnouncement(r.user.userId, id); }
   @Post('community/join') @UseGuards(JwtAuthGuard) @ApiBearerAuth()
   joinCommunity(@Req() r: AuthRequest) { return this.business.joinCommunity(r.user.userId); }
   @Get('community/resources') communityResources() { return this.business.communityResources(); }

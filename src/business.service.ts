@@ -1618,6 +1618,12 @@ Step 4: Visa Sponsorship & Interview Preparation`,
       },
     });
   }
+  async deleteAnnouncement(userId: string, id: string) {
+    await this.requirePermission(userId, 'COMMUNITY_MANAGE');
+    if (!(await this.prisma.announcement.findUnique({ where: { id } }))) throw new NotFoundException('Announcement not found.');
+    await this.prisma.announcement.delete({ where: { id } });
+    return { success: true, message: 'Announcement deleted successfully.' };
+  }
   async adminDashboard(userId: string, startDateStr?: string, endDateStr?: string, period: string = 'Weekly') {
     await this.requirePermission(userId, 'DASHBOARD_READ');
 
