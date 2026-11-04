@@ -468,9 +468,43 @@ export class BusinessService {
   }
   async createProduct(userId: string, dto: CreateProductDto) {
     await this.requirePermission(userId, 'INVENTORY_MANAGE');
-    const category = await this.prisma.productCategory.findUnique({ where: { id: dto.categoryId } });
-    if (!category) throw new NotFoundException('Category not found.');
-    return this.prisma.product.create({ data: { ...dto, images: (dto.images ?? []) as any, status: dto.status ?? ContentStatus.DRAFT } });
+    let categoryId = dto.categoryId;
+    if (!categoryId) {
+      let defaultCat = await this.prisma.productCategory.findFirst({ where: { slug: 'gileo-scrubs' } });
+      if (!defaultCat) {
+        defaultCat = await this.prisma.productCategory.create({
+          data: { name: 'Gileo Scrubs', slug: 'gileo-scrubs', description: 'Gileo scrubs and medical uniforms' },
+        });
+      }
+      categoryId = defaultCat.id;
+    } else {
+      const category = await this.prisma.productCategory.findUnique({ where: { id: categoryId } });
+      if (!category) throw new NotFoundException('Category not found.');
+    }
+
+    const slug = dto.slug || dto.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `product-${Date.now()}`;
+    const description = dto.description || 'Premium Gileo medical product';
+
+    let imagesPayload: any = dto.images ?? [];
+    if (dto.colors || dto.sizes) {
+      imagesPayload = {
+        urls: Array.isArray(dto.images) ? dto.images : [],
+        colors: dto.colors || [],
+        sizes: dto.sizes || [],
+      };
+    }
+
+    const { colors, sizes, ...rest } = dto as any;
+    return this.prisma.product.create({
+      data: {
+        ...rest,
+        categoryId,
+        slug,
+        description,
+        images: imagesPayload as any,
+        status: dto.status ?? ContentStatus.PUBLISHED,
+      },
+    });
   }
   async updateProductStock(userId: string, productId: string, stock: number) {
     await this.requirePermission(userId, 'INVENTORY_MANAGE');
@@ -479,9 +513,32 @@ export class BusinessService {
   }
   async updateProduct(userId: string, id: string, dto: UpdateProductDto) {
     await this.requirePermission(userId, 'INVENTORY_MANAGE');
-    if (!(await this.prisma.product.findUnique({ where: { id } }))) throw new NotFoundException('Product not found.');
+    const existing = await this.prisma.product.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException('Product not found.');
     if (dto.categoryId && !(await this.prisma.productCategory.findUnique({ where: { id: dto.categoryId } }))) throw new NotFoundException('Category not found.');
-    return this.prisma.product.update({ where: { id }, data: { ...dto, ...(dto.images ? { images: dto.images as any } : {}) } });
+
+    let imagesPayload: any = dto.images;
+    if (dto.colors || dto.sizes || Array.isArray(dto.images)) {
+      const existingImages = existing.images as any;
+      const currentUrls = Array.isArray(dto.images)
+        ? dto.images
+        : (Array.isArray(existingImages?.urls) ? existingImages.urls : (Array.isArray(existingImages) ? existingImages : []));
+
+      imagesPayload = {
+        urls: currentUrls,
+        colors: dto.colors ?? (existingImages?.colors || []),
+        sizes: dto.sizes ?? (existingImages?.sizes || []),
+      };
+    }
+
+    const { colors, sizes, ...restDto } = dto as any;
+    return this.prisma.product.update({
+      where: { id },
+      data: {
+        ...restDto,
+        ...(imagesPayload !== undefined ? { images: imagesPayload as any } : {}),
+      },
+    });
   }
   async createVariant(userId: string, dto: CreateVariantDto) {
     await this.requirePermission(userId, 'INVENTORY_MANAGE');
@@ -2023,7 +2080,7 @@ Step 4: Visa Sponsorship & Interview Preparation`,
   }
 
   async deleteProduct(userId: string, id: string) {
-    await this.requirePermission(userId, 'CATALOG_MANAGE');
+    await this.requirePermission(userId, 'INVENTORY_MANAGE');
     if (!(await this.prisma.product.findUnique({ where: { id } }))) throw new NotFoundException('Product not found.');
     await this.prisma.product.delete({ where: { id } });
     return { success: true, message: 'Product deleted successfully.' };

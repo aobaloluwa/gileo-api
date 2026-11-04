@@ -24,13 +24,15 @@ export class CreateCategoryDto {
   @IsOptional() @IsString() description?: string;
 }
 export class CreateProductDto {
-  @IsUUID() categoryId!: string;
-  @IsString() @MinLength(2) @MaxLength(160) slug!: string;
+  @IsOptional() @IsUUID() categoryId?: string;
+  @IsOptional() @IsString() @MinLength(2) @MaxLength(160) slug?: string;
   @IsString() @MinLength(2) @MaxLength(180) title!: string;
-  @IsString() @MinLength(5) description!: string;
+  @IsOptional() @IsString() description?: string;
   @IsInt() @Min(0) priceKobo!: number;
   @IsOptional() @IsInt() @Min(0) @Max(1000000) stock?: number;
   @IsOptional() @IsArray() images?: string[];
+  @IsOptional() @IsArray() colors?: any[];
+  @IsOptional() @IsArray() sizes?: any[];
   @IsOptional() @IsBoolean() isDemo?: boolean;
   @IsOptional() @IsIn(['DRAFT','PUBLISHED','ARCHIVED']) status?: 'DRAFT'|'PUBLISHED'|'ARCHIVED';
 }
@@ -115,10 +117,12 @@ export class UpdateProductDto {
   @IsOptional() @IsUUID() categoryId?: string;
   @IsOptional() @IsString() @MinLength(2) @MaxLength(160) slug?: string;
   @IsOptional() @IsString() @MinLength(2) @MaxLength(180) title?: string;
-  @IsOptional() @IsString() @MinLength(5) description?: string;
+  @IsOptional() @IsString() description?: string;
   @IsOptional() @IsInt() @Min(0) priceKobo?: number;
   @IsOptional() @IsInt() @Min(0) @Max(1000000) stock?: number;
   @IsOptional() @IsArray() images?: string[];
+  @IsOptional() @IsArray() colors?: any[];
+  @IsOptional() @IsArray() sizes?: any[];
   @IsOptional() @IsBoolean() isDemo?: boolean;
   @IsOptional() @IsIn(['DRAFT','PUBLISHED','ARCHIVED']) status?: 'DRAFT'|'PUBLISHED'|'ARCHIVED';
 }
