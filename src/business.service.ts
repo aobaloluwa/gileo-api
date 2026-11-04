@@ -635,9 +635,9 @@ export class BusinessService {
       return this.prisma.order.findUnique({ where: { id }, include: { items: true } });
     }
     const orderTransitions: Partial<Record<OrderStatus, OrderStatus[]>> = {
-      PAID: [OrderStatus.PROCESSING],
-      PROCESSING: [OrderStatus.FULFILMENT],
-      FULFILMENT: [OrderStatus.SHIPPED],
+      PAID: [OrderStatus.PROCESSING, OrderStatus.FULFILMENT, OrderStatus.SHIPPED, OrderStatus.DELIVERED],
+      PROCESSING: [OrderStatus.FULFILMENT, OrderStatus.SHIPPED, OrderStatus.DELIVERED],
+      FULFILMENT: [OrderStatus.SHIPPED, OrderStatus.DELIVERED],
       SHIPPED: [OrderStatus.DELIVERED],
     };
     if (!(orderTransitions[order.status] ?? []).includes(nextStatus)) throw new BadRequestException(`Invalid order transition: ${order.status} -> ${nextStatus}.`);
