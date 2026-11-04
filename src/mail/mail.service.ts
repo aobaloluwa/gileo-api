@@ -11,14 +11,38 @@ export class MailService implements OnModuleInit {
   private isConfigured = false;
 
   constructor(private readonly configService: ConfigService) {
-    const host = this.configService.get<string>('MAIL_HOST');
-    const port = Number(this.configService.get<number | string>('MAIL_PORT')) || 587;
-    const user = this.configService.get<string>('MAIL_USER');
-    const rawPassword = this.configService.get<string>('MAIL_PASSWORD');
-    const configuredFrom = this.configService.get<string>('MAIL_FROM');
+    const user =
+      this.configService.get<string>('MAIL_USER') ||
+      this.configService.get<string>('SMTP_USER') ||
+      this.configService.get<string>('SMTP_USERNAME') ||
+      this.configService.get<string>('EMAIL_USER');
+
+    const rawPassword =
+      this.configService.get<string>('MAIL_PASSWORD') ||
+      this.configService.get<string>('SMTP_PASSWORD') ||
+      this.configService.get<string>('SMTP_PASS') ||
+      this.configService.get<string>('EMAIL_PASSWORD');
+
+    const host =
+      this.configService.get<string>('MAIL_HOST') ||
+      this.configService.get<string>('SMTP_HOST') ||
+      this.configService.get<string>('EMAIL_HOST');
+
+    const rawPort =
+      this.configService.get<number | string>('MAIL_PORT') ||
+      this.configService.get<number | string>('SMTP_PORT');
+    const port = Number(rawPort) || 587;
+
+    const configuredFrom =
+      this.configService.get<string>('MAIL_FROM') ||
+      this.configService.get<string>('SMTP_FROM') ||
+      this.configService.get<string>('EMAIL_FROM');
 
     if (configuredFrom) {
       this.from = configuredFrom;
+    } else if (user) {
+      const cleanUser = user.trim();
+      this.from = cleanUser.includes('<') ? cleanUser : `Gileo Medicals <${cleanUser}>`;
     }
 
     if (user && rawPassword) {
@@ -26,7 +50,7 @@ export class MailService implements OnModuleInit {
       const cleanHost = (host || '').toLowerCase();
 
       if (cleanHost.includes('gmail') || user.toLowerCase().endsWith('@gmail.com')) {
-        this.logger.log('Configuring MailService with Nodemailer Gmail service integration.');
+        this.logger.log(`Configuring MailService with Gmail service integration for ${user.trim()}.`);
         this.transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: {
@@ -36,14 +60,19 @@ export class MailService implements OnModuleInit {
           tls: {
             rejectUnauthorized: false,
           },
-          connectionTimeout: 10000,
-          greetingTimeout: 10000,
-          socketTimeout: 10000,
+          connectionTimeout: 15000,
+          greetingTimeout: 15000,
+          socketTimeout: 15000,
         });
       } else {
-        const secure = this.configService.get<string>('MAIL_SECURE') === 'true';
+        const secure =
+          this.configService.get<string>('MAIL_SECURE') === 'true' ||
+          this.configService.get<string>('SMTP_SECURE') === 'true' ||
+          port === 465;
+
+        this.logger.log(`Configuring MailService with SMTP host: ${host || 'smtp.gmail.com'}:${port} (secure=${secure}).`);
         this.transporter = nodemailer.createTransport({
-          host,
+          host: host || 'smtp.gmail.com',
           port,
           secure,
           auth: {
@@ -53,15 +82,15 @@ export class MailService implements OnModuleInit {
           tls: {
             rejectUnauthorized: false,
           },
-          connectionTimeout: 10000,
-          greetingTimeout: 10000,
-          socketTimeout: 10000,
+          connectionTimeout: 15000,
+          greetingTimeout: 15000,
+          socketTimeout: 15000,
         });
       }
       this.isConfigured = true;
     } else {
       this.logger.warn(
-        'Mail configuration (MAIL_USER / MAIL_PASSWORD) is incomplete. MailService will run in log-only mode.',
+        'Mail configuration (MAIL_USER/SMTP_USER or MAIL_PASSWORD/SMTP_PASSWORD) is incomplete. MailService will run in log-only mode.',
       );
     }
   }
@@ -86,25 +115,24 @@ export class MailService implements OnModuleInit {
     html?: string;
   }): Promise<void> {
     this.logger.log(`[Mail Dispatch] To: ${options.to} | Subject: "${options.subject}"`);
-    this.logger.log(`[Mail Content]: ${options.text}`);
 
     if (this.transporter && this.isConfigured) {
       try {
-        await this.transporter.sendMail({
+        const info = await this.transporter.sendMail({
           from: this.from,
           to: options.to,
           subject: options.subject,
           text: options.text,
           ...(options.html ? { html: options.html } : {}),
         });
-        this.logger.log(`Email successfully delivered to ${options.to}`);
+        this.logger.log(`Email successfully delivered to ${options.to} (MessageId: ${info.messageId})`);
       } catch (err) {
         this.logger.error(
           `Failed to dispatch SMTP email to ${options.to}: ${(err as Error)?.message}`,
         );
       }
     } else {
-      this.logger.log(`[Log Mode] Verification email logged for ${options.to}`);
+      this.logger.log(`[Log Mode] Verification email logged for ${options.to} | Text: ${options.text}`);
     }
   }
 }
