@@ -104,7 +104,7 @@ export class CreateCommunityResourceDto {
 }
 export class CreateAnnouncementDto {
   @IsString() @MinLength(2) @MaxLength(200) title!: string;
-  @IsString() @MinLength(2) @MaxLength(160) slug!: string;
+  @IsOptional() @IsString() @MinLength(2) @MaxLength(160) slug?: string;
   @IsString() @MinLength(5) body!: string;
   @IsOptional() @IsIn(['DRAFT','PUBLISHED','ARCHIVED']) status?: 'DRAFT'|'PUBLISHED'|'ARCHIVED';
 }

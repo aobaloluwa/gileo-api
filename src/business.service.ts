@@ -1606,8 +1606,17 @@ Step 4: Visa Sponsorship & Interview Preparation`,
   }
   async createAnnouncement(userId: string, dto: CreateAnnouncementDto) {
     await this.requirePermission(userId, 'COMMUNITY_MANAGE');
-    const status = dto.status ?? ContentStatus.DRAFT;
-    return this.prisma.announcement.create({ data: { ...dto, status, publishedAt: status === ContentStatus.PUBLISHED ? new Date() : undefined } });
+    const status = dto.status ?? ContentStatus.PUBLISHED;
+    const slug = dto.slug || dto.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `announce-${Date.now()}`;
+    return this.prisma.announcement.create({
+      data: {
+        title: dto.title,
+        slug,
+        body: dto.body,
+        status,
+        publishedAt: status === ContentStatus.PUBLISHED ? new Date() : null,
+      },
+    });
   }
   async adminDashboard(userId: string, startDateStr?: string, endDateStr?: string, period: string = 'Weekly') {
     await this.requirePermission(userId, 'DASHBOARD_READ');
