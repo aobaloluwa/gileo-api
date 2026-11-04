@@ -477,12 +477,25 @@ export class BusinessService {
   }
   async createProduct(userId: string, dto: CreateProductDto) {
     await this.requirePermission(userId, 'INVENTORY_MANAGE');
+    const requestedCategoryName = (dto.categoryName || dto.category || '').trim();
     let categoryId = dto.categoryId;
-    if (!categoryId) {
-      let defaultCat = await this.prisma.productCategory.findFirst({ where: { slug: 'gileo-scrubs' } });
+
+    if (requestedCategoryName) {
+      const catSlug = requestedCategoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `category-${Date.now()}`;
+      let matchedCat = await this.prisma.productCategory.findFirst({
+        where: { OR: [{ name: { equals: requestedCategoryName, mode: 'insensitive' } }, { slug: catSlug }] },
+      });
+      if (!matchedCat) {
+        matchedCat = await this.prisma.productCategory.create({
+          data: { name: requestedCategoryName, slug: catSlug, description: `${requestedCategoryName} catalog category` },
+        });
+      }
+      categoryId = matchedCat.id;
+    } else if (!categoryId) {
+      let defaultCat = await this.prisma.productCategory.findFirst({ where: { slug: 'gileo-products' } });
       if (!defaultCat) {
         defaultCat = await this.prisma.productCategory.create({
-          data: { name: 'Gileo Scrubs', slug: 'gileo-scrubs', description: 'Gileo scrubs and medical uniforms' },
+          data: { name: 'Gileo Products', slug: 'gileo-products', description: 'Gileo products and medical supplies' },
         });
       }
       categoryId = defaultCat.id;
@@ -503,7 +516,7 @@ export class BusinessService {
       };
     }
 
-    const { colors, sizes, ...rest } = dto as any;
+    const { colors, sizes, categoryName, category, ...rest } = dto as any;
     return this.prisma.product.create({
       data: {
         ...rest,
@@ -524,7 +537,26 @@ export class BusinessService {
     await this.requirePermission(userId, 'INVENTORY_MANAGE');
     const existing = await this.prisma.product.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Product not found.');
-    if (dto.categoryId && !(await this.prisma.productCategory.findUnique({ where: { id: dto.categoryId } }))) throw new NotFoundException('Category not found.');
+
+    const requestedCategoryName = (dto.categoryName || dto.category || '').trim();
+    let categoryId = dto.categoryId;
+
+    if (requestedCategoryName) {
+      const catSlug = requestedCategoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `category-${Date.now()}`;
+      let matchedCat = await this.prisma.productCategory.findFirst({
+        where: { OR: [{ name: { equals: requestedCategoryName, mode: 'insensitive' } }, { slug: catSlug }] },
+      });
+      if (!matchedCat) {
+        matchedCat = await this.prisma.productCategory.create({
+          data: { name: requestedCategoryName, slug: catSlug, description: `${requestedCategoryName} catalog category` },
+        });
+      }
+      categoryId = matchedCat.id;
+    } else if (dto.categoryId) {
+      if (!(await this.prisma.productCategory.findUnique({ where: { id: dto.categoryId } }))) {
+        throw new NotFoundException('Category not found.');
+      }
+    }
 
     let imagesPayload: any = dto.images;
     if (dto.colors || dto.sizes || Array.isArray(dto.images)) {
@@ -540,11 +572,12 @@ export class BusinessService {
       };
     }
 
-    const { colors, sizes, ...restDto } = dto as any;
+    const { colors, sizes, categoryName, category, ...restDto } = dto as any;
     return this.prisma.product.update({
       where: { id },
       data: {
         ...restDto,
+        ...(categoryId ? { categoryId } : {}),
         ...(imagesPayload !== undefined ? { images: imagesPayload as any } : {}),
       },
     });

@@ -25,6 +25,8 @@ export class CreateCategoryDto {
 }
 export class CreateProductDto {
   @IsOptional() @IsUUID() categoryId?: string;
+  @IsOptional() @IsString() categoryName?: string;
+  @IsOptional() @IsString() category?: string;
   @IsOptional() @IsString() @MinLength(2) @MaxLength(160) slug?: string;
   @IsString() @MinLength(2) @MaxLength(180) title!: string;
   @IsOptional() @IsString() description?: string;
@@ -115,6 +117,8 @@ export class UpdateUserRoleDto {
 
 export class UpdateProductDto {
   @IsOptional() @IsUUID() categoryId?: string;
+  @IsOptional() @IsString() categoryName?: string;
+  @IsOptional() @IsString() category?: string;
   @IsOptional() @IsString() @MinLength(2) @MaxLength(160) slug?: string;
   @IsOptional() @IsString() @MinLength(2) @MaxLength(180) title?: string;
   @IsOptional() @IsString() description?: string;
