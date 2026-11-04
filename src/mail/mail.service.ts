@@ -33,13 +33,13 @@ export class MailService implements OnModuleInit {
       this.configService.get<number | string>('SMTP_PORT');
     const port = Number(rawPort) || 587;
 
-    const configuredFrom =
+    let configuredFrom =
       this.configService.get<string>('MAIL_FROM') ||
       this.configService.get<string>('SMTP_FROM') ||
       this.configService.get<string>('EMAIL_FROM');
 
     if (configuredFrom) {
-      this.from = configuredFrom;
+      this.from = configuredFrom.trim().replace(/^["']+|["']+$|^\&quot\;|\&quot\;$/g, '');
     } else if (user) {
       const cleanUser = user.trim();
       this.from = cleanUser.includes('<') ? cleanUser : `Gileo Medicals <${cleanUser}>`;
