@@ -134,14 +134,20 @@ export class MailService implements OnModuleInit {
 
     if (resendKey) {
       try {
+        const cleanResendKey = resendKey.trim();
+        const resendFrom =
+          this.from && !this.from.includes('gmail.com') && !this.from.includes('noreply@gileo.com')
+            ? this.from
+            : 'Gileo <onboarding@resend.dev>';
+
         const res = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${resendKey.trim()}`,
+            Authorization: `Bearer ${cleanResendKey}`,
           },
           body: JSON.stringify({
-            from: this.from,
+            from: resendFrom,
             to: [options.to],
             subject: options.subject,
             text: options.text,
@@ -149,11 +155,34 @@ export class MailService implements OnModuleInit {
           }),
         });
         const json = (await res.json().catch(() => null)) as any;
-        if (res.ok) {
-          this.logger.log(`Email successfully delivered to ${options.to} via Resend API (id: ${json?.id})`);
+        if (res.ok && json?.id) {
+          this.logger.log(`Email successfully delivered to ${options.to} via Resend API (id: ${json.id})`);
           return;
         } else {
-          this.logger.warn(`Resend API response: ${JSON.stringify(json)}`);
+          this.logger.warn(`Resend API response (${res.status}): ${JSON.stringify(json)}`);
+          if (json?.message?.includes('onboarding@resend.dev') || res.status === 403 || res.status === 422) {
+            const retryRes = await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${cleanResendKey}`,
+              },
+              body: JSON.stringify({
+                from: 'Gileo <onboarding@resend.dev>',
+                to: [options.to],
+                subject: options.subject,
+                text: options.text,
+                html: options.html || options.text,
+              }),
+            });
+            const retryJson = (await retryRes.json().catch(() => null)) as any;
+            if (retryRes.ok && retryJson?.id) {
+              this.logger.log(`Email successfully delivered to ${options.to} via Resend onboarding sender (id: ${retryJson.id})`);
+              return;
+            } else {
+              this.logger.warn(`Resend onboarding fallback response: ${JSON.stringify(retryJson)}`);
+            }
+          }
         }
       } catch (err: any) {
         this.logger.warn(`Resend API dispatch notice: ${err?.message}`);
