@@ -993,18 +993,32 @@ Step 4: Visa Sponsorship & Interview Preparation`,
     await this.requireAdmin(userId);
     if (!file || !file.buffer) throw new BadRequestException('Provide an image file in the file field.');
 
-    const cloudName = this.config.get<string>('CLOUDINARY_CLOUD_NAME');
-    const apiKey = this.config.get<string>('CLOUDINARY_API_KEY');
-    const apiSecret = this.config.get<string>('CLOUDINARY_API_SECRET');
-    const uploadPreset = this.config.get<string>('CLOUDINARY_UPLOAD_PRESET');
+    const cloudName =
+      this.config.get<string>('CLOUDINARY_CLOUD_NAME') ||
+      this.config.get<string>('CLOUDINARY_NAME') ||
+      this.config.get<string>('CLOUD_NAME');
+
+    const apiKey =
+      this.config.get<string>('CLOUDINARY_API_KEY') ||
+      this.config.get<string>('CLOUDINARY_KEY') ||
+      this.config.get<string>('API_KEY');
+
+    const apiSecret =
+      this.config.get<string>('CLOUDINARY_API_SECRET') ||
+      this.config.get<string>('CLOUDINARY_SECRET') ||
+      this.config.get<string>('API_SECRET');
+
+    const uploadPreset =
+      this.config.get<string>('CLOUDINARY_UPLOAD_PRESET') ||
+      this.config.get<string>('CLOUDINARY_PRESET');
 
     if (cloudName && (apiKey || uploadPreset)) {
       try {
-        const formData = new FormData();
         const base64 = file.buffer.toString('base64');
         const dataUri = `data:${file.mimetype};base64,${base64}`;
 
         if (uploadPreset) {
+          const formData = new FormData();
           formData.append('file', dataUri);
           formData.append('upload_preset', uploadPreset);
           const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
@@ -1015,11 +1029,14 @@ Step 4: Visa Sponsorship & Interview Preparation`,
           if (json?.secure_url) {
             return { url: json.secure_url, publicId: json.public_id };
           }
-        } else if (apiKey && apiSecret) {
+        }
+
+        if (apiKey && apiSecret) {
           const timestamp = Math.floor(Date.now() / 1000);
           const stringToSign = `timestamp=${timestamp}${apiSecret}`;
           const signature = createHash('sha1').update(stringToSign).digest('hex');
 
+          const formData = new FormData();
           formData.append('file', dataUri);
           formData.append('api_key', apiKey);
           formData.append('timestamp', String(timestamp));
@@ -1032,6 +1049,8 @@ Step 4: Visa Sponsorship & Interview Preparation`,
           const json = (await res.json()) as any;
           if (json?.secure_url) {
             return { url: json.secure_url, publicId: json.public_id };
+          } else if (json?.error?.message) {
+            console.error('Cloudinary API upload error:', json.error.message);
           }
         }
       } catch (err) {
