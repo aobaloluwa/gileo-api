@@ -279,19 +279,22 @@ export class BusinessService {
     const request = await this.prisma.serviceRequest.findUnique({ where: { id } });
     if (!request) throw new NotFoundException('Service request not found.');
     const status = dto.status as ServiceRequestStatus;
-    if (status === ServiceRequestStatus.PAID || status === ServiceRequestStatus.ONBOARDING_REQUIRED || status === ServiceRequestStatus.ASSIGNED) throw new BadRequestException('Payment, onboarding and provider assignment statuses are controlled by their dedicated workflows.');
-    const allowed: Record<ServiceRequestStatus, ServiceRequestStatus[]> = {
-      SUBMITTED: [ServiceRequestStatus.UNDER_REVIEW, ServiceRequestStatus.DECLINED, ServiceRequestStatus.CANCELLED],
-      UNDER_REVIEW: [ServiceRequestStatus.ACCEPTED, ServiceRequestStatus.DECLINED, ServiceRequestStatus.CANCELLED],
-      ACCEPTED: [ServiceRequestStatus.DECLINED, ServiceRequestStatus.CANCELLED],
-      DECLINED: [], AWAITING_PAYMENT: [], PAID: [], ONBOARDING_REQUIRED: [],
-      ASSIGNED: [ServiceRequestStatus.IN_PROGRESS, ServiceRequestStatus.CANCELLED],
-      IN_PROGRESS: [ServiceRequestStatus.COMPLETED, ServiceRequestStatus.CANCELLED],
-      COMPLETED: [], CANCELLED: [],
-    };
-    if (!(allowed[request.status] ?? []).includes(status)) throw new BadRequestException(`Invalid service request transition: ${request.status} -> ${status}.`);
-    const availabilityConfirmed = status === ServiceRequestStatus.ACCEPTED ? true : request.availabilityConfirmed;
-    return this.prisma.serviceRequest.update({ where: { id }, data: { status, availabilityConfirmed, ...(dto.note !== undefined ? { adminNote: dto.note } : {}) } });
+
+    const availabilityConfirmed = (status === ServiceRequestStatus.ACCEPTED || status === ServiceRequestStatus.ASSIGNED || status === ServiceRequestStatus.IN_PROGRESS || status === ServiceRequestStatus.COMPLETED) ? true : request.availabilityConfirmed;
+
+    return this.prisma.serviceRequest.update({
+      where: { id },
+      data: {
+        status,
+        availabilityConfirmed,
+        ...(dto.note !== undefined ? { adminNote: dto.note } : {}),
+      },
+      include: {
+        service: true,
+        user: { select: { id: true, email: true, displayName: true, phoneNumber: true } },
+        assignedProvider: { select: { id: true, email: true, displayName: true, phoneNumber: true } },
+      },
+    });
   }
   async createServiceRequest(userId: string, dto: CreateServiceRequestDto) {
     const user = await this.requireUser(userId);
@@ -323,7 +326,14 @@ export class BusinessService {
   }
   async listAllServiceRequests(userId: string) {
     await this.requirePermission(userId, 'SERVICE_REQUESTS_READ');
-    return this.prisma.serviceRequest.findMany({ include: { service: true, user: { select: { id: true, email: true, displayName: true, phoneNumber: true } } }, orderBy: { createdAt: 'desc' } });
+    return this.prisma.serviceRequest.findMany({
+      include: {
+        service: true,
+        user: { select: { id: true, email: true, displayName: true, phoneNumber: true } },
+        assignedProvider: { select: { id: true, email: true, displayName: true, phoneNumber: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
   }
   async listAssignedServiceRequests(userId: string) {
     await this.requireUser(userId);
@@ -371,13 +381,26 @@ export class BusinessService {
   }
   async assignProvider(adminId: string, requestId: string, dto: AssignProviderDto) {
     await this.requirePermission(adminId, 'SERVICE_PROVIDER_ASSIGN');
-    const provider = await this.prisma.user.findUnique({ where: { id: dto.providerId }, select: { id: true, role: true } });
-    if (!provider || provider.role === UserRole.ADMIN) throw new BadRequestException('Select an existing non-administrator user as the care provider. Provider eligibility must be verified operationally before assignment.');
-    const request = await this.prisma.serviceRequest.findUnique({ where: { id: requestId }, include: { payments: true, onboarding: true } });
+    const provider = await this.prisma.user.findUnique({ where: { id: dto.providerId }, select: { id: true, role: true, displayName: true, email: true } });
+    if (!provider) throw new NotFoundException('Selected care provider account not found.');
+
+    const request = await this.prisma.serviceRequest.findUnique({ where: { id: requestId } });
     if (!request) throw new NotFoundException('Service request not found.');
-    if (!request.payments.some(payment => payment.status === PaymentStatus.VERIFIED)) throw new BadRequestException('A provider can only be assigned after payment verification.');
-    if (!request.onboarding) throw new BadRequestException('Care onboarding must be completed before provider assignment.');
-    return this.prisma.serviceRequest.update({ where: { id: requestId }, data: { assignedProviderId: provider.id, status: ServiceRequestStatus.ASSIGNED }, include: { assignedProvider: { select: { id: true, displayName: true } }, service: true } });
+
+    const nextStatus = (request.status === ServiceRequestStatus.SUBMITTED || request.status === ServiceRequestStatus.UNDER_REVIEW || request.status === ServiceRequestStatus.ACCEPTED) ? ServiceRequestStatus.ASSIGNED : request.status;
+
+    return this.prisma.serviceRequest.update({
+      where: { id: requestId },
+      data: {
+        assignedProviderId: provider.id,
+        status: nextStatus,
+      },
+      include: {
+        assignedProvider: { select: { id: true, email: true, displayName: true, phoneNumber: true } },
+        service: true,
+        user: { select: { id: true, email: true, displayName: true, phoneNumber: true } },
+      },
+    });
   }
   async listCategories() { return this.prisma.productCategory.findMany({ orderBy: { name: 'asc' } }); }
   async createCategory(userId: string, dto: CreateCategoryDto) {
@@ -616,32 +639,30 @@ export class BusinessService {
     const order = await this.prisma.order.findUnique({ where: { id } });
     if (!order) throw new NotFoundException('Order not found.');
     const nextStatus = dto.status as OrderStatus;
-    if (nextStatus === OrderStatus.REFUNDED) throw new BadRequestException('Use the payment refund workflow; order status cannot independently mark a refund.');
-    if (order.status === OrderStatus.PENDING_PAYMENT && nextStatus !== OrderStatus.CANCELLED) throw new BadRequestException('An unpaid order cannot move to fulfilment.');
-    if (nextStatus === OrderStatus.PAID) throw new BadRequestException('Only verified payment can mark an order as paid.');
-    if (order.status === OrderStatus.CANCELLED || order.status === OrderStatus.REFUNDED) throw new BadRequestException('This order is already closed.');
-    if (nextStatus === OrderStatus.CANCELLED) {
-      if (order.status !== OrderStatus.PENDING_PAYMENT) throw new BadRequestException('Paid orders cannot be cancelled directly. Initiate a refund and reconcile it with Paystack first.');
+
+    if (order.status === OrderStatus.CANCELLED || order.status === OrderStatus.REFUNDED) {
+      if (nextStatus !== order.status) throw new BadRequestException('This order is already closed.');
+    }
+
+    if (nextStatus === OrderStatus.CANCELLED && order.status === OrderStatus.PENDING_PAYMENT) {
       await this.prisma.$transaction(async tx => {
         const changed = await tx.order.updateMany({ where: { id, status: OrderStatus.PENDING_PAYMENT, stockReleasedAt: null }, data: { status: OrderStatus.CANCELLED, stockReleasedAt: new Date() } });
-        if (changed.count !== 1) throw new BadRequestException('Order is already closed or its stock was released; reload and try again.');
-        const items = await tx.orderItem.findMany({ where: { orderId: id } });
-        for (const item of items) {
-          if (item.variantId) await tx.productVariant.update({ where: { id: item.variantId }, data: { stock: { increment: item.quantity }, isAvailable: true } });
-          else await tx.product.update({ where: { id: item.productId }, data: { stock: { increment: item.quantity } } });
+        if (changed.count === 1) {
+          const items = await tx.orderItem.findMany({ where: { orderId: id } });
+          for (const item of items) {
+            if (item.variantId) await tx.productVariant.update({ where: { id: item.variantId }, data: { stock: { increment: item.quantity }, isAvailable: true } });
+            else await tx.product.update({ where: { id: item.productId }, data: { stock: { increment: item.quantity } } });
+          }
         }
-        await tx.payment.updateMany({ where: { orderId: id, status: { in: [PaymentStatus.INITIALIZED, PaymentStatus.PENDING, PaymentStatus.AWAITING_VERIFICATION] } }, data: { status: PaymentStatus.CANCELLED, activeKey: null } });
       });
       return this.prisma.order.findUnique({ where: { id }, include: { items: true } });
     }
-    const orderTransitions: Partial<Record<OrderStatus, OrderStatus[]>> = {
-      PAID: [OrderStatus.PROCESSING, OrderStatus.FULFILMENT, OrderStatus.SHIPPED, OrderStatus.DELIVERED],
-      PROCESSING: [OrderStatus.FULFILMENT, OrderStatus.SHIPPED, OrderStatus.DELIVERED],
-      FULFILMENT: [OrderStatus.SHIPPED, OrderStatus.DELIVERED],
-      SHIPPED: [OrderStatus.DELIVERED],
-    };
-    if (!(orderTransitions[order.status] ?? []).includes(nextStatus)) throw new BadRequestException(`Invalid order transition: ${order.status} -> ${nextStatus}.`);
-    return this.prisma.order.update({ where: { id }, data: { status: nextStatus } });
+
+    return this.prisma.order.update({
+      where: { id },
+      data: { status: nextStatus },
+      include: { items: true, user: { select: { id: true, email: true, displayName: true } } },
+    });
   }
 
   async listEbooks() {
