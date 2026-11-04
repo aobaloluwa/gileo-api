@@ -724,19 +724,6 @@ export class AuthService {
       select: { id: true, email: true, displayName: true, role: true },
     });
 
-    if (
-      fullUser?.email &&
-      (fullUser.email.toLowerCase().includes('obaloluwa') ||
-        fullUser.email.toLowerCase().endsWith('@gileo.com')) &&
-      fullUser.role !== UserRole.ADMIN
-    ) {
-      await this.prisma.user.update({
-        where: { id: userId },
-        data: { role: UserRole.ADMIN },
-      });
-      fullUser.role = UserRole.ADMIN;
-    }
-
     return {
       message: 'Login successful.',
       accessToken,
